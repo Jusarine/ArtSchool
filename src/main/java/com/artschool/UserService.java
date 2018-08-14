@@ -16,17 +16,17 @@ public class UserService {
     InstructorRepository instructorRepository;
 
     @Transactional
-    public boolean addStudent(String firstName, String lastName, String password, String phoneNumber, String email){
-        Student student = new Student(firstName, lastName, password, phoneNumber, email);
-        if (studentRepository.findByEmail(email) != null) return false;
+    public boolean addStudent(String firstName, String lastName, String phoneNumber, String email, String password){
+        Student student = new Student(firstName, lastName, phoneNumber, email, password);
+        if (findByEmail(email) != null) return false;
         studentRepository.save(student);
         return true;
     }
 
     @Transactional
-    public boolean addInstructor(String firstName, String lastName, String password, String phoneNumber, String email){
-        Instructor instructor = new Instructor(firstName, lastName, password, phoneNumber, email);
-        if (instructorRepository.findByEmail(email) != null) return false;
+    public boolean addInstructor(String firstName, String lastName, String phoneNumber, String email, String password){
+        Instructor instructor = new Instructor(firstName, lastName, phoneNumber, email, password);
+        if (findByEmail(email) != null) return false;
         instructorRepository.save(instructor);
         return true;
     }

@@ -9,20 +9,109 @@
 <body>
     <div th:replace="header :: header"></div>
 
-    <div class="col-4 mx-auto mt-5 pt-5" >
-        <form class="form-horizontal" th:action="@{/j_spring_security_check}" method="POST">
-            <div class="form-group">
-                <label class="control-label" for="email">Email:</label>
-                <input type="text" name="j_login" class="form-control" id="email" placeholder="Enter email">
+    <div class="col-5 mx-auto mt-5 pt-5">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-sign-in-tab" data-toggle="tab" href="#nav-sign-in" role="tab" aria-controls="nav-sign-in" aria-selected="true">Sign in</a>
+                <a class="nav-item nav-link" id="nav-sign-up-tab" data-toggle="tab" href="#nav-sign-up" role="tab" aria-controls="nav-sign-up" aria-selected="false">Sign up</a>
             </div>
-            <div class="form-group">
-                <label class="control-label" for="pwd">Password:</label>
-                <input type="password" name="j_password" class="form-control" id="pwd" placeholder="Enter password">
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-sign-in" role="tabpanel" aria-labelledby="nav-sign-in-tab">
+
+                <form class="needs-validation form-horizontal mt-4 ml-4" novalidate th:action="@{/j_spring_security_check}" method="POST">
+                    <div class="form-group row">
+                        <label for="sin_email" class="col-3 col-form-label">Email:</label>
+                        <div class="col-9">
+                            <input type="email" name="j_login" class="form-control" id="sin_email" placeholder="Enter email" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid email.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="sin_pwd" class="col-3 col-form-label">Password:</label>
+                        <div class="col-9">
+                            <input type="password" name="j_password" class="form-control" id="sin_pwd" placeholder="Enter password" required>
+                            <div class="invalid-feedback">
+                                Please enter a password.
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="sign_in" class="btn btn-primary">Submit</button>
+                </form>
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Sign In</button>
+
+            <div class="tab-pane fade" id="nav-sign-up" role="tabpanel" aria-labelledby="nav-sign-up-tab">
+                <form class="needs-validation form-horizontal mt-4 ml-4" novalidate th:action="@{/new_user}" method="POST">
+                    <div class="form-group row">
+                        <label for="first_name" class="col-4 col-form-label">First name:</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name" pattern="[a-zA-Z]+" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid first name.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="last_name" class="col-4 col-form-label">Last name:</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last name" pattern="[a-zA-Z]+" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid last name.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phone_number" class="col-4 col-form-label">Phone number:</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone number" pattern="[0-9]{12}" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid phone number.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-4 col-form-label">Email:</label>
+                        <div class="col-8">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                            <div class="invalid-feedback">
+                                Please provide a valid email.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-4 col-form-label">Password:</label>
+                        <div class="col-8">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                            <div class="invalid-feedback">
+                                Please choose a password.
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="sign_up" type="submit">Submit</button>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
+
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 </body>
 </html>

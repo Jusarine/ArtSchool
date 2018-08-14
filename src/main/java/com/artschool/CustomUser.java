@@ -17,8 +17,6 @@ public abstract class CustomUser {
     @Column(name = "last_name")
     private String lastName;
 
-    private String password;
-
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
@@ -27,17 +25,19 @@ public abstract class CustomUser {
 
     private String email;
 
+    private String password;
+
     private String description;
 
     public CustomUser() {
     }
 
-    public CustomUser(String firstName, String lastName, String password, String phoneNumber, String email) {
+    public CustomUser(String firstName, String lastName, String phoneNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.password = password;
     }
 
     public long getId() {
@@ -58,14 +58,6 @@ public abstract class CustomUser {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public UserRole getRole() {
@@ -90,6 +82,14 @@ public abstract class CustomUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getDescription() {
