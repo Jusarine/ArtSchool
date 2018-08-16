@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Art School</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -12,18 +12,18 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#art-school-navbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
             <img src="favicon.ico" height="30" class="d-inline-block align-top">Art School
         </a>
         <div class="collapse navbar-collapse" id="art-school-navbar">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="/">Home</a>
                 <a class="nav-item nav-link" href="#">Courses</a>
                 <a class="nav-item nav-link" href="#">Instructors</a>
                 <a class="nav-item nav-link" href="#">Gallery</a>
             </div>
             <div class="navbar-nav ml-md-auto">
-                <a class="nav-item nav-link" href="/login">Sign in</a>
+                <a class="nav-item nav-link" sec:authorize="!isAuthenticated()" href="/login" style="color: indianred">Sign in</a>
+                <a class="nav-item nav-link" sec:authorize="isAuthenticated()" href="/user" th:text="${user.firstName}" style="color: mediumseagreen"></a>
             </div>
         </div>
     </nav>

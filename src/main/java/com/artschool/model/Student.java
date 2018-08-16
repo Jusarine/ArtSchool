@@ -1,4 +1,4 @@
-package com.artschool;
+package com.artschool.model;
 
 import javax.persistence.*;
 

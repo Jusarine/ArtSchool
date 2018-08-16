@@ -1,4 +1,4 @@
-package com.artschool;
+package com.artschool.model;
 
 public enum UserRole {
     USER, ADMIN;
