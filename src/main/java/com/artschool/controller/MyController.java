@@ -5,8 +5,6 @@ import com.artschool.model.Student;
 import com.artschool.service.SecurityService;
 import com.artschool.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,20 +38,9 @@ public class MyController {
         return "login";
     }
 
-    @GetMapping("/student")
-    public String student(){
-        return "student";
-    }
-
-    @GetMapping("/instructor")
-    public String instructor(){
-        return "instructor";
-    }
-
     @GetMapping("/user")
-    public String user(Authentication authentication){
-        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) return "redirect:/instructor";
-        else return "redirect:/student";
+    public String user(){
+        return "user";
     }
 
     @GetMapping("/authorized")
@@ -77,7 +64,7 @@ public class MyController {
         if (student != null){
             securityService.login(email, password);
             model.addAttribute("user", student);
-            return "redirect:/student";
+            return "redirect:/user";
         }
         return "redirect:/login";
     }

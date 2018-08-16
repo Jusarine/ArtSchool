@@ -22,8 +22,8 @@
                 <a class="nav-item nav-link" href="#">Gallery</a>
             </div>
             <div class="navbar-nav ml-md-auto">
-                <a class="nav-item nav-link" sec:authorize="!isAuthenticated()" href="/login" style="color: indianred">Sign in</a>
-                <a class="nav-item nav-link" sec:authorize="isAuthenticated()" href="/user" th:text="${user.firstName}" style="color: mediumseagreen"></a>
+                <a class="nav-item nav-link text-warning" sec:authorize="!isAuthenticated()" href="/login">Sign in</a>
+                <a class="nav-item nav-link text-white" sec:authorize="isAuthenticated()" href="/user" th:text="${user.firstName}"></a>
             </div>
         </div>
     </nav>
