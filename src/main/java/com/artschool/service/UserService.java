@@ -8,9 +8,13 @@ import java.util.List;
 
 public interface UserService {
 
-    Student addStudent(String firstName, String lastName, String phoneNumber, String email, String password);
+    Student createStudent(String firstName, String lastName, String phoneNumber, String email, String password);
 
-    Instructor addInstructor(String firstName, String lastName, String phoneNumber, String email, String password);
+    Student createStudent(Student student);
+
+    Instructor createInstructor(String firstName, String lastName, String phoneNumber, String email, String password);
+
+    Instructor createInstructor(Instructor instructor);
 
     Student findStudentByEmail(String email);
 

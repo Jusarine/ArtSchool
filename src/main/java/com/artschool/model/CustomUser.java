@@ -9,12 +9,13 @@ public abstract class CustomUser {
 
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -23,6 +24,7 @@ public abstract class CustomUser {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String password;
@@ -98,5 +100,19 @@ public abstract class CustomUser {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "CustomUser{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role=" + role +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

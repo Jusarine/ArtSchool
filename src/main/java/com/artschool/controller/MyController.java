@@ -59,7 +59,7 @@ public class MyController {
                              Model model){
 
         String encodedPassword = passwordEncoder.encode(password);
-        Student student = userService.addStudent(firstName, lastName, phoneNumber, email, encodedPassword);
+        Student student = userService.createStudent(firstName, lastName, phoneNumber, email, encodedPassword);
 
         if (student != null){
             securityService.login(email, password);
