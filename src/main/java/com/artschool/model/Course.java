@@ -1,14 +1,13 @@
 package com.artschool.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "course_id")
     private long id;
 
@@ -21,7 +20,11 @@ public class Course {
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "course_student",
+            joinColumns = {@JoinColumn(name = "course_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "student_id", nullable = false)}
+    )
     private Set<Student> students = new HashSet<>();
 
     public Course() {
@@ -78,9 +81,29 @@ public class Course {
         return "Course{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 ", instructor=" + instructor +
                 ", students=" + students +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course that = (Course) o;
+
+        if (id == that.id) return false;
+        if(name != null ? !name.equals(that.name) : that.name != null) return false;
+        if(description != null ? !description.equals(that.description) : that.description != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = (int) id;
+        hash = 31 * hash + (name != null ? name.hashCode() : 0);
+        hash = 31 * hash + (description != null ? description.hashCode() : 0);
+        return hash;
     }
 }

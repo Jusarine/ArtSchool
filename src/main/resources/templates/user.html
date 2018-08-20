@@ -10,7 +10,7 @@
     <div th:replace="header :: header"></div>
 
     <div class="row mt-5">
-        <div class="col-3 pl-5 ml-5">
+        <div class="col-2 pl-5 ml-5">
             <div class="list-group" id="list-tab" role="tablist">
                 <a class="list-group-item list-group-item-action active" id="profile-list" data-toggle="list" href="#profile" role="tab" aria-controls="profile">
                     Profile
@@ -21,24 +21,20 @@
                 <a class="list-group-item list-group-item-action" id="gallery-list" data-toggle="list" href="#gallery" role="tab" aria-controls="messages">
                     My gallery
                 </a>
-                <a class="list-group-item list-group-item-action" id="sign_out-list" data-toggle="list" href="#sign_out" role="tab" aria-controls="messages">
-                    Sign out
-                </a>
             </div>
         </div>
-        <div class="col-8 mt-3">
+        <div class="col-9 mt-3">
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-list">
                     <div th:replace="profile :: profile"></div>
                 </div>
                 <div class="tab-pane fade" id="courses" role="tabpanel" aria-labelledby="courses-list">
-                    My courses
+                    <div th:object="${user.courses}">
+                        <div th:replace="courses :: courses"></div>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="gallery" role="tabpanel" aria-labelledby="gallery-list">
                     My gallery
-                </div>
-                <div class="tab-pane fade" id="sign_out" role="tabpanel" aria-labelledby="sign_out-list">
-                    Sign out
                 </div>
             </div>
         </div>

@@ -16,6 +16,10 @@ public interface UserService {
 
     Instructor createInstructor(Instructor instructor);
 
+    Student findStudentById(long id);
+
+    Instructor findInstructorById(long id);
+
     Student findStudentByEmail(String email);
 
     Instructor findInstructorByEmail(String email);

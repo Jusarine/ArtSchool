@@ -1,24 +1,14 @@
 package com.artschool.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Student extends CustomUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "student_id")
-    private long id;
-
     private Integer age;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "student_courses",
-            joinColumns = {@JoinColumn(name = "student_id", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "course_id", nullable = false)}
-    )
+    @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();
 
     public Student() {
@@ -27,10 +17,6 @@ public class Student extends CustomUser {
     public Student(String firstName, String lastName, String phoneNumber, String email, String password) {
         super(firstName, lastName, phoneNumber, email, password);
         super.setRole(UserRole.USER);
-    }
-
-    public long getId() {
-        return id;
     }
 
     public Integer getAge() {
@@ -56,8 +42,25 @@ public class Student extends CustomUser {
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + id +
+                "id=" + super.getId() +
                 ", age=" + age +
-                "} " + super.toString();
+                "} ";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        if (!super.equals(o)) return false;
+        Student that = (Student) o;
+        if (age != null ? !age.equals(that.age) : that.age != null) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = super.hashCode();
+        hash = 31 * hash + (age != null ? age.hashCode() : 0);
+        return hash;
     }
 }

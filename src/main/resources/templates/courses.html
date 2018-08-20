@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Art School</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:fragment="courses">
+    <div class="card-group">
+        <div class="col-4 mb-4" th:each="course: ${#object}">
+            <div class="card">
+                <img class="card-img-top" src="course.png" style="object-fit: cover; height: 230px;">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${course.name}"></h5>
+                    <p class="card-text" th:text="${course.description}" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

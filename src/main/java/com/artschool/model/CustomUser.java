@@ -115,4 +115,35 @@ public abstract class CustomUser {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomUser)) return false;
+        CustomUser that = (CustomUser) o;
+
+        if (id != that.id) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (role != null ? !role.equals(that.role) : that.role != null) return false;
+        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = (int) id;
+        hash = 31 * hash + (firstName != null ? firstName.hashCode() : 0);
+        hash = 31 * hash + (lastName != null ? lastName.hashCode() : 0);
+        hash = 31 * hash + (role != null ? role.hashCode() : 0);
+        hash = 31 * hash + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        hash = 31 * hash + (email != null ? email.hashCode() : 0);
+        hash = 31 * hash + (password != null ? password.hashCode() : 0);
+        hash = 31 * hash + (description != null ? description.hashCode() : 0);
+        return hash;
+    }
 }

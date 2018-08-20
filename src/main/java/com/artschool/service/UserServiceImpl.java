@@ -24,8 +24,15 @@ public class UserServiceImpl implements UserService{
         this.instructorRepository = instructorRepository;
     }
 
-    @Transactional
     @Override
+    public Student createStudent(Student student) {
+        if (findByEmail(student.getEmail()) != null) return null;
+        studentRepository.save(student);
+        return student;
+    }
+
+    @Override
+    @Transactional
     public Student createStudent(String firstName, String lastName, String phoneNumber, String email, String password){
         if (findByEmail(email) != null) return null;
         Student student = new Student(firstName, lastName, phoneNumber, email, password);
@@ -34,14 +41,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Student createStudent(Student student) {
-        if (findByEmail(student.getEmail()) != null) return null;
-        studentRepository.save(student);
-        return student;
-    }
-
     @Transactional
-    @Override
     public Instructor createInstructor(String firstName, String lastName, String phoneNumber, String email, String password){
         if (findByEmail(email) != null) return null;
         Instructor instructor = new Instructor(firstName, lastName, phoneNumber, email, password);
@@ -50,39 +50,52 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public Instructor createInstructor(Instructor instructor) {
         if(findByEmail(instructor.getEmail()) != null) return null;
         instructorRepository.save(instructor);
         return instructor;
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
+    public Student findStudentById(long id){
+        return studentRepository.findStudentById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Instructor findInstructorById(long id){
+        return instructorRepository.findInstructorById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Student findStudentByEmail(String email){
-        return studentRepository.findByEmail(email);
+        return studentRepository.findStudentByEmail(email);
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public Instructor findInstructorByEmail(String email){
-        return instructorRepository.findByEmail(email);
+        return instructorRepository.findInstructorByEmail(email);
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public CustomUser findByEmail(String email){
         CustomUser customUser = findStudentByEmail(email);
         return customUser == null ? findInstructorByEmail(email) : customUser;
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public List<Student> findStudents(){
         return studentRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
     public List<Instructor> findInstructors(){
         return instructorRepository.findAll();
     }

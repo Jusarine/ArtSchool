@@ -1,6 +1,5 @@
 package com.artschool.service;
 
-
 import org.springframework.security.core.userdetails.User;
 
 public interface SecurityService {

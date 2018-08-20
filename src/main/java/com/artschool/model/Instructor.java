@@ -2,15 +2,11 @@ package com.artschool.model;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 public class Instructor extends CustomUser{
-
-    @Id
-    @GeneratedValue
-    @Column(name = "instructor_id")
-    private long id;
 
     private Integer rating;
 
@@ -23,10 +19,6 @@ public class Instructor extends CustomUser{
     public Instructor(String firstName, String lastName, String phoneNumber, String email, String password) {
         super(firstName, lastName, phoneNumber, email, password);
         super.setRole(UserRole.ADMIN);
-    }
-
-    public long getId() {
-        return id;
     }
 
     public Integer getRating() {
@@ -52,8 +44,24 @@ public class Instructor extends CustomUser{
     @Override
     public String toString() {
         return "Instructor{" +
-                "id=" + id +
+                "id=" + super.getId() +
                 ", rating=" + rating +
-                "} " + super.toString();
+                "} ";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!super.equals(o)) return false;
+        Instructor that = (Instructor) o;
+        if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = super.hashCode();
+        hash = 31 * hash + (rating != null ? rating.hashCode() : 0);
+        return hash;
     }
 }
