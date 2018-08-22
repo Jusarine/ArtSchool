@@ -76,13 +76,15 @@ public class Course {
         students.add(student);
     }
 
+    public void removeStudent(Student student){
+        students.remove(student);
+    }
+
     @Override
     public String toString() {
         return "Course{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", instructor=" + instructor +
-                ", students=" + students +
                 '}';
     }
 

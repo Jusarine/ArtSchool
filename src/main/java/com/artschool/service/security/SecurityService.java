@@ -1,4 +1,4 @@
-package com.artschool.service;
+package com.artschool.service.security;
 
 import org.springframework.security.core.userdetails.User;
 

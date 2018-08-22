@@ -1,4 +1,4 @@
-package com.artschool.service;
+package com.artschool.service.course;
 
 import com.artschool.model.Course;
 
@@ -44,6 +44,20 @@ public class CourseServiceImpl implements CourseService{
         course.addStudent(student);
         student.addCourse(course);
         courseRepository.save(course);
+    }
+
+    @Override
+    @Transactional
+    public void unenrollFromCourse(Student student, Course course) {
+        course.removeStudent(student);
+        student.removeCourse(course);
+        courseRepository.save(course);
+    }
+
+    @Override
+    @Transactional
+    public boolean isEnrolled(Student student, Course course) {
+        return course.getStudents().contains(student);
     }
 
     @Override

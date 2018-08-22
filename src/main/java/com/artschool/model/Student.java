@@ -39,12 +39,15 @@ public class Student extends CustomUser {
         courses.add(course);
     }
 
+    public void removeCourse(Course course){
+        courses.remove(course);
+    }
+
     @Override
     public String toString() {
         return "Student{" +
-                "id=" + super.getId() +
-                ", age=" + age +
-                "} ";
+                "age=" + age +
+                "} " + super.toString();
     }
 
     @Override

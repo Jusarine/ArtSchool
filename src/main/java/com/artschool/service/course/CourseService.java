@@ -1,4 +1,4 @@
-package com.artschool.service;
+package com.artschool.service.course;
 
 import com.artschool.model.Course;
 import com.artschool.model.Instructor;
@@ -13,6 +13,10 @@ public interface CourseService {
     Course createCourse(Course course);
 
     void enrollInCourse(Student student, Course course);
+
+    void unenrollFromCourse(Student student, Course course);
+
+    boolean isEnrolled(Student student, Course course);
 
     Course findCourseById(long id);
 

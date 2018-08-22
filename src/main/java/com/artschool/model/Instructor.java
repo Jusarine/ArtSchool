@@ -44,9 +44,8 @@ public class Instructor extends CustomUser{
     @Override
     public String toString() {
         return "Instructor{" +
-                "id=" + super.getId() +
-                ", rating=" + rating +
-                "} ";
+                "rating=" + rating +
+                "} " + super.toString();
     }
 
     @Override

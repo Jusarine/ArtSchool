@@ -1,6 +1,7 @@
-package com.artschool.service;
+package com.artschool.service.security;
 
 import com.artschool.model.CustomUser;
+import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

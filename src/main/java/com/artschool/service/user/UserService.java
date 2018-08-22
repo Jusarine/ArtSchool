@@ -1,8 +1,9 @@
-package com.artschool.service;
+package com.artschool.service.user;
 
 import com.artschool.model.CustomUser;
 import com.artschool.model.Instructor;
 import com.artschool.model.Student;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,8 @@ public interface UserService {
     Instructor createInstructor(String firstName, String lastName, String phoneNumber, String email, String password);
 
     Instructor createInstructor(Instructor instructor);
+
+    Student reinitializeStudent(Student student);
 
     Student findStudentById(long id);
 

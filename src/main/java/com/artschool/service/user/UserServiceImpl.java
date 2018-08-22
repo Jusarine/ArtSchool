@@ -1,10 +1,11 @@
-package com.artschool.service;
+package com.artschool.service.user;
 
 import com.artschool.model.CustomUser;
 import com.artschool.model.Instructor;
 import com.artschool.model.Student;
 import com.artschool.repository.InstructorRepository;
 import com.artschool.repository.StudentRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,15 @@ public class UserServiceImpl implements UserService{
         instructorRepository.save(instructor);
         return instructor;
     }
+
+    @Override
+    @Transactional
+    public Student reinitializeStudent(Student student){
+        Student s = findStudentById(student.getId());
+        Hibernate.initialize(s.getCourses());
+        return s;
+    }
+
 
     @Override
     @Transactional(readOnly = true)

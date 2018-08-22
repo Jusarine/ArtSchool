@@ -1,27 +1,17 @@
 package com.artschool.controller;
 
 import com.artschool.model.*;
-import com.artschool.service.CourseService;
-import com.artschool.service.SecurityService;
-import com.artschool.service.UserService;
+import com.artschool.service.course.CourseService;
+import com.artschool.service.security.SecurityService;
+import com.artschool.service.user.UserService;
 import org.hibernate.Hibernate;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 @Controller
 @SessionAttributes("user")
@@ -29,16 +19,13 @@ public class LoginController {
 
     private final UserService userService;
 
-    private final CourseService courseService;
-
     private final SecurityService securityService;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public LoginController(UserService userService, CourseService courseService, SecurityService securityService, PasswordEncoder passwordEncoder) {
+    public LoginController(UserService userService, SecurityService securityService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        this.courseService = courseService;
         this.securityService = securityService;
         this.passwordEncoder = passwordEncoder;
     }
@@ -53,6 +40,11 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("/user")
+    public String user(){
+        return "user";
+    }
+
     @GetMapping("/authorized")
     public String authorize(Model model, Principal principal){
 
@@ -60,21 +52,13 @@ public class LoginController {
         if (student != null){
             Hibernate.initialize(student.getCourses());
             model.addAttribute("user", student);
-            System.err.println("controller" + student.getCourses());
-            return "redirect:/student";
         }
         Instructor instructor = userService.findInstructorByEmail(principal.getName());
         if (instructor != null){
             Hibernate.initialize(instructor.getCourses());
             model.addAttribute("user", instructor);
-            return "redirect:/instructor";
         }
-        return "redirect:/login";
-    }
-
-    @GetMapping("/all_courses")
-    public ModelAndView allCourses(){
-        return new ModelAndView("all_courses", "all_courses", courseService.findCourses());
+        return "redirect:/user";
     }
 
     @PostMapping(value = "/new_user")
@@ -91,7 +75,7 @@ public class LoginController {
         if (student != null){
             securityService.login(email, password);
             model.addAttribute("user", student);
-            return "redirect:/student";
+            return "redirect:/user";
         }
         return "redirect:/login";
     }

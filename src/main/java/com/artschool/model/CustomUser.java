@@ -108,10 +108,8 @@ public abstract class CustomUser {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", role=" + role +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

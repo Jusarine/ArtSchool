@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Art School</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div th:replace="header :: header"></div>
+
+    <div class="row mt-5 mx-5 px-5">
+        <div class="col-4">
+            <figure class="figure">
+                <img src="/course.png" class="figure-img img-fluid rounded">
+            </figure>
+        </div>
+        <div class="col-8">
+            <div class="card">
+                <h5 class="card-header" th:text="${course.name}"></h5>
+                <div class="card-body">
+                    <p class="card-text" th:text="${course.description}"></p>
+                    <p class="card-text" th:text="${course.instructor}"></p>
+                    <p class="card-text" th:text="${course.students}"></p>
+                    <div sec:authorize="hasRole('USER')" th:if="${enrolled}">
+                        <a class="btn btn-danger" th:href="|/course/unenroll/${course.id}|">Unenroll</a>
+                    </div>
+                    <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
+                        <a class="btn btn-primary" th:href="|/course/enroll/${course.id}|">Enroll</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
