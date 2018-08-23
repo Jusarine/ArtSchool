@@ -9,4 +9,6 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
     Course findCourseById(long id);
+
+    List<Course> findCoursesByNameContaining(String name);
 }

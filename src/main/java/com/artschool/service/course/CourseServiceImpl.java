@@ -68,6 +68,12 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional(readOnly = true)
+    public List<Course> findCoursesByName(String name) {
+        return courseRepository.findCoursesByNameContaining(name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Course> findCourses() {
         return courseRepository.findAll();
     }

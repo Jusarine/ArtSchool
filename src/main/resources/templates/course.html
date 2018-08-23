@@ -7,7 +7,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div th:replace="header :: header"></div>
+    <div th:replace="header_fragment :: header_fragment"></div>
 
     <div class="row mt-5 mx-5 px-5">
         <div class="col-4">
@@ -16,18 +16,25 @@
             </figure>
         </div>
         <div class="col-8">
-            <div class="card">
-                <h5 class="card-header" th:text="${course.name}"></h5>
-                <div class="card-body">
-                    <p class="card-text" th:text="${course.description}"></p>
-                    <p class="card-text" th:text="${course.instructor}"></p>
-                    <p class="card-text" th:text="${course.students}"></p>
-                    <div sec:authorize="hasRole('USER')" th:if="${enrolled}">
-                        <a class="btn btn-danger" th:href="|/course/unenroll/${course.id}|">Unenroll</a>
-                    </div>
-                    <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
-                        <a class="btn btn-primary" th:href="|/course/enroll/${course.id}|">Enroll</a>
-                    </div>
+            <div class="jumbotron">
+                <h1 class="display-4" th:text="${course.name}"></h1>
+                <p class="lead" th:text="${course.description}"></p>
+
+                <hr class="my-4">
+                <h4>Instructor:</h4>
+                <p class="lead" th:text="|${course.instructor.firstName} ${course.instructor.lastName}|"></p>
+
+                <hr class="my-4">
+                <h4>Students:</h4>
+                <div th:each="student: ${course.students}">
+                    <p class="lead" th:text="|${student.firstName} ${student.lastName}|"></p>
+                </div>
+
+                <div sec:authorize="hasRole('USER')" th:if="${enrolled}">
+                    <a class="btn btn-danger btn-lg" th:href="|/course/unenroll/${course.id}|">Unenroll</a>
+                </div>
+                <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
+                    <a class="btn btn-primary btn-lg" th:href="|/course/enroll/${course.id}|">Enroll</a>
                 </div>
             </div>
         </div>

@@ -27,13 +27,19 @@ public class CourseController {
 
     @GetMapping("/all")
     public ModelAndView allCourses(){
-        return new ModelAndView("all_courses", "all_courses", courseService.findCourses());
+        return new ModelAndView("courses", "courses", courseService.findCourses());
+    }
+
+    @GetMapping("/search")
+    public ModelAndView search(@RequestParam String request){
+        return new ModelAndView("courses", "courses", courseService.findCoursesByName(request));
     }
 
     @GetMapping("/{id}")
     public ModelAndView get(@PathVariable long id, @SessionAttribute(name = "user", required = false) Student student){
         Course course = courseService.findCourseById(id);
         ModelAndView modelAndView = new ModelAndView("/course", "course", course);
+        modelAndView.addObject("instructor_name", course.getInstructor().getFirstName());
         if (student != null) {
             if (courseService.isEnrolled(student, course))
                 modelAndView.addObject("enrolled", true);
