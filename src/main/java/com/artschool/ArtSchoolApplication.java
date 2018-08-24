@@ -1,6 +1,7 @@
 package com.artschool;
 
 import com.artschool.model.Course;
+import com.artschool.model.Gender;
 import com.artschool.model.Instructor;
 import com.artschool.model.Student;
 import com.artschool.service.course.CourseService;
@@ -23,8 +24,8 @@ public class ArtSchoolApplication {
     public CommandLineRunner demo(final UserService userService, final CourseService courseService) {
         return strings -> {
 
-            Instructor instructor1 = userService.createInstructor("Emily", "Horton", "380508836472", "admin@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS");
-            Instructor instructor2 = userService.createInstructor("Mark", "Reinold", "380978463742", "admin2@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS");
+            Instructor instructor1 = userService.createInstructor("Emily", "Horton", Gender.FEMALE, "380508836472", "admin@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS");
+            Instructor instructor2 = userService.createInstructor("Mark", "Reinold", Gender.MALE, "380978463742", "admin2@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS");
 
             Course course1 = courseService.createCourse("Pen and Ink Drawing",
                     "This class is for beginners where we will learn the basic techniques of pen and ink drawing. We will be focusing on strokes, building depth, tone and value. Various exercises are used as well as learning how to properly use the equipment.",
@@ -35,8 +36,8 @@ public class ArtSchoolApplication {
                     "Learn the art of expressive painting and rethink the process of creating art. Let you creativity guide you.  Follow your instinct and explore different mediums while enjoying this unique process.",
                     instructor2);
 
-            Student student1 = userService.createStudent("Jack", "Ward", "380976352376", "user@gmail.com", "$2a$10$GaihOGb3ZS9I9ZdKxSKi4uXVnuYo/7Hd63qGn2l46gq0xxoeEQ8IS");
-            Student student2 = userService.createStudent("Edgar", "Cannon", "380976352376", "user2@gmail.com", "$2a$10$GaihOGb3ZS9I9ZdKxSKi4uXVnuYo/7Hd63qGn2l46gq0xxoeEQ8IS");
+            Student student1 = userService.createStudent("Jack", "Ward", Gender.MALE, "380976352376", "user@gmail.com", "$2a$10$GaihOGb3ZS9I9ZdKxSKi4uXVnuYo/7Hd63qGn2l46gq0xxoeEQ8IS");
+            Student student2 = userService.createStudent("Edgar", "Cannon", Gender.MALE, "380976352376", "user2@gmail.com", "$2a$10$GaihOGb3ZS9I9ZdKxSKi4uXVnuYo/7Hd63qGn2l46gq0xxoeEQ8IS");
 
             courseService.enrollInCourse(student1, course1);
             courseService.enrollInCourse(student2, course2);

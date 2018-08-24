@@ -1,6 +1,7 @@
 package com.artschool.service.user;
 
 import com.artschool.model.CustomUser;
+import com.artschool.model.Gender;
 import com.artschool.model.Instructor;
 import com.artschool.model.Student;
 import com.artschool.repository.InstructorRepository;
@@ -26,6 +27,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
+    public Student createStudent(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password){
+        if (findByEmail(email) != null) return null;
+        Student student = new Student(firstName, lastName, gender, phoneNumber, email, password);
+        studentRepository.save(student);
+        return student;
+    }
+
+    @Override
     public Student createStudent(Student student) {
         if (findByEmail(student.getEmail()) != null) return null;
         studentRepository.save(student);
@@ -34,18 +44,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public Student createStudent(String firstName, String lastName, String phoneNumber, String email, String password){
+    public Instructor createInstructor(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password){
         if (findByEmail(email) != null) return null;
-        Student student = new Student(firstName, lastName, phoneNumber, email, password);
-        studentRepository.save(student);
-        return student;
-    }
-
-    @Override
-    @Transactional
-    public Instructor createInstructor(String firstName, String lastName, String phoneNumber, String email, String password){
-        if (findByEmail(email) != null) return null;
-        Instructor instructor = new Instructor(firstName, lastName, phoneNumber, email, password);
+        Instructor instructor = new Instructor(firstName, lastName, gender, phoneNumber, email, password);
         instructorRepository.save(instructor);
         return instructor;
     }

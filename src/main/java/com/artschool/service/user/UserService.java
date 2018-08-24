@@ -1,19 +1,19 @@
 package com.artschool.service.user;
 
 import com.artschool.model.CustomUser;
+import com.artschool.model.Gender;
 import com.artschool.model.Instructor;
 import com.artschool.model.Student;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface UserService {
 
-    Student createStudent(String firstName, String lastName, String phoneNumber, String email, String password);
+    Student createStudent(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password);
 
     Student createStudent(Student student);
 
-    Instructor createInstructor(String firstName, String lastName, String phoneNumber, String email, String password);
+    Instructor createInstructor(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password);
 
     Instructor createInstructor(Instructor instructor);
 

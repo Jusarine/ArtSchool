@@ -19,6 +19,9 @@ public abstract class CustomUser {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
     @Column(name = "phone_number")
@@ -31,12 +34,15 @@ public abstract class CustomUser {
 
     private String description;
 
+    private byte[] photo;
+
     public CustomUser() {
     }
 
-    public CustomUser(String firstName, String lastName, String phoneNumber, String email, String password) {
+    public CustomUser(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
@@ -60,6 +66,14 @@ public abstract class CustomUser {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public UserRole getRole() {
@@ -102,12 +116,21 @@ public abstract class CustomUser {
         this.description = description;
     }
 
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
     @Override
     public String toString() {
         return "CustomUser{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", gender='" + gender + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", description='" + description + '\'' +
@@ -123,6 +146,7 @@ public abstract class CustomUser {
         if (id != that.id) return false;
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
         if (role != null ? !role.equals(that.role) : that.role != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
@@ -137,6 +161,7 @@ public abstract class CustomUser {
         int hash = (int) id;
         hash = 31 * hash + (firstName != null ? firstName.hashCode() : 0);
         hash = 31 * hash + (lastName != null ? lastName.hashCode() : 0);
+        hash = 31 * hash + (gender != null ? gender.hashCode() : 0);
         hash = 31 * hash + (role != null ? role.hashCode() : 0);
         hash = 31 * hash + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         hash = 31 * hash + (email != null ? email.hashCode() : 0);

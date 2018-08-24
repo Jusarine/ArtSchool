@@ -14,8 +14,8 @@ public class Student extends CustomUser {
     public Student() {
     }
 
-    public Student(String firstName, String lastName, String phoneNumber, String email, String password) {
-        super(firstName, lastName, phoneNumber, email, password);
+    public Student(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password) {
+        super(firstName, lastName, gender, phoneNumber, email, password);
         super.setRole(UserRole.USER);
     }
 

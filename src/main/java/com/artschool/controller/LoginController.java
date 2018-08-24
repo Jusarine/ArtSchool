@@ -1,7 +1,6 @@
 package com.artschool.controller;
 
 import com.artschool.model.*;
-import com.artschool.service.course.CourseService;
 import com.artschool.service.security.SecurityService;
 import com.artschool.service.user.UserService;
 import org.hibernate.Hibernate;
@@ -64,13 +63,14 @@ public class LoginController {
     @PostMapping(value = "/new_user")
     public String createUser(@RequestParam("first_name") String firstName,
                                @RequestParam("last_name") String lastName,
+                               @RequestParam("gender") String gender,
                                @RequestParam("phone_number") String phoneNumber,
                                @RequestParam("email") String email,
                                @RequestParam("password") String password,
                                Model model){
 
         String encodedPassword = passwordEncoder.encode(password);
-        Student student = userService.createStudent(firstName, lastName, phoneNumber, email, encodedPassword);
+        Student student = userService.createStudent(firstName, lastName, Gender.valueOf(gender), phoneNumber, email, encodedPassword);
 
         if (student != null){
             securityService.login(email, password);
