@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-</head>
-<body>
-<div th:fragment="courses_fragment">
+
+<div th:fragment="courses">
     <div class="card-group mr-4">
         <div class="col-4 mb-4" th:each="course: ${#object}">
             <div class="card">
-                <img class="card-img-top" src="/course.png" style="object-fit: cover; height: 230px;">
+                <img class="card-img-top" src="/images/course.png" style="object-fit: cover; height: 230px;">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${course.name}"></h5>
+                    <h5 class="card-title text-truncate" th:text="${course.name}"></h5>
                     <p class="card-text" th:text="${course.description}" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;"></p>
                     <a class="btn btn-primary" th:href="|/course/${course.id}|">Details</a>
                 </div>
@@ -17,5 +15,3 @@
         </div>
     </div>
 </div>
-</body>
-</html>

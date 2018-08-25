@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Art School</title>
+    <div th:replace="fragments/styles :: styles"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="row mt-5">
+    <div class="col-3">
+        <div th:replace="fragments/user_menu :: user_menu"></div>
+    </div>
+    <div class="col-9">
+        <div th:object="${user.courses}">
+            <div th:replace="fragments/courses :: courses"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

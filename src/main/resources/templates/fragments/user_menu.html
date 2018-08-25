@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<div th:fragment="user_menu">
+    <div class="ml-5">
+        <div class="btn-group-vertical btn-block" role="group">
+            <a class="btn btn-outline-primary" href="/profile">Profile</a>
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    My courses
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="/course/user">Show</a>
+                    <div sec:authorize="hasRole('ADMIN')">
+                        <a class="dropdown-item" href="#">Create new</a>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-outline-primary" href="#">My gallery</a>
+        </div>
+    </div>
+</div>

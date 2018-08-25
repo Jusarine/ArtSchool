@@ -3,7 +3,6 @@ package com.artschool.service.course;
 import com.artschool.model.Course;
 import com.artschool.model.Instructor;
 import com.artschool.model.Student;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,9 +18,12 @@ public interface CourseService {
 
     boolean isEnrolled(Student student, Course course);
 
+    boolean isAuthor(Instructor instructor, Course course);
+
+    void updateCourse(long id, String name, String description);
+
     Course findCourseById(long id);
 
-    @Transactional(readOnly = true)
     List<Course> findCoursesByName(String name);
 
     List<Course> findCourses();

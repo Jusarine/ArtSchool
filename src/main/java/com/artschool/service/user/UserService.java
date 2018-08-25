@@ -19,6 +19,8 @@ public interface UserService {
 
     Student reinitializeStudent(Student student);
 
+    Instructor reinitializeInstructor(Instructor instructor);
+
     Student findStudentById(long id);
 
     Instructor findInstructorById(long id);

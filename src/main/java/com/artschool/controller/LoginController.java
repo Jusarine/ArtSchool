@@ -39,9 +39,9 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/user")
-    public String user(){
-        return "user";
+    @GetMapping("/profile")
+    public String profile(){
+        return "profile";
     }
 
     @GetMapping("/authorized")
@@ -57,10 +57,10 @@ public class LoginController {
             Hibernate.initialize(instructor.getCourses());
             model.addAttribute("user", instructor);
         }
-        return "redirect:/user";
+        return "redirect:/profile";
     }
 
-    @PostMapping(value = "/new_user")
+    @PostMapping("/new_user")
     public String createUser(@RequestParam("first_name") String firstName,
                                @RequestParam("last_name") String lastName,
                                @RequestParam("gender") String gender,
@@ -75,7 +75,7 @@ public class LoginController {
         if (student != null){
             securityService.login(email, password);
             model.addAttribute("user", student);
-            return "redirect:/user";
+            return "redirect:/profile";
         }
         return "redirect:/login";
     }

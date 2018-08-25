@@ -2,27 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Art School</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <div th:replace="fragments/styles :: styles"></div>
 </head>
 <body>
-    <div th:replace="header_fragment :: header_fragment"></div>
+    <div th:replace="fragments/header :: header"></div>
 
     <div class="row mt-5 mx-5 px-5">
         <div class="col-4">
             <figure class="figure">
-                <img src="/course.png" class="figure-img img-fluid rounded">
+                <img src="/images/course.png" class="figure-img img-fluid rounded">
             </figure>
         </div>
         <div class="col-8">
             <div class="jumbotron">
                 <h1 class="display-4" th:text="${course.name}"></h1>
-                <p class="lead" th:text="${course.description}"></p>
+                <a class="lead" th:text="${course.description}"></a>
 
                 <hr class="my-4">
                 <h4>Instructor:</h4>
-                <p class="lead" th:text="|${course.instructor.firstName} ${course.instructor.lastName}|"></p>
+                <a class="lead" th:text="${course.instructor.firstName}"></a>
+                <a class="lead" th:text="${course.instructor.lastName}"></a>
 
                 <hr class="my-4">
                 <h4>Students:</h4>
@@ -35,6 +34,9 @@
                 </div>
                 <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
                     <a class="btn btn-primary btn-lg" th:href="|/course/enroll/${course.id}|">Enroll</a>
+                </div>
+                <div sec:authorize="hasRole('ADMIN')" th:if="${author}">
+                    <a class="btn btn-danger" th:href="|/course/edit/${course.id}|">Edit</a>
                 </div>
             </div>
         </div>

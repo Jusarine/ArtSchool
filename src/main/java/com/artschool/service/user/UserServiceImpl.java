@@ -67,6 +67,13 @@ public class UserServiceImpl implements UserService{
         return s;
     }
 
+    @Override
+    @Transactional
+    public Instructor reinitializeInstructor(Instructor instructor){
+        Instructor i = findInstructorById(instructor.getId());
+        Hibernate.initialize(i.getCourses());
+        return i;
+    }
 
     @Override
     @Transactional(readOnly = true)

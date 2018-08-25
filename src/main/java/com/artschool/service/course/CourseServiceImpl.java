@@ -61,6 +61,21 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    @Transactional
+    public boolean isAuthor(Instructor instructor, Course course) {
+        return course.getInstructor().equals(instructor);
+    }
+
+    @Override
+    @Transactional
+    public void updateCourse(long id, String name, String description) {
+        Course course = findCourseById(id);
+        course.setName(name);
+        course.setDescription(description);
+        courseRepository.save(course);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Course findCourseById(long id) {
         return courseRepository.findCourseById(id);
