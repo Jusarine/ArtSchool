@@ -76,6 +76,12 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
+    @Transactional
+    public void deleteCourse(Course course) {
+        courseRepository.delete(course);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Course findCourseById(long id) {
         return courseRepository.findCourseById(id);

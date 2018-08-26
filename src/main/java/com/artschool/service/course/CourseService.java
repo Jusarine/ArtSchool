@@ -22,6 +22,8 @@ public interface CourseService {
 
     void updateCourse(long id, String name, String description);
 
+    void deleteCourse(Course course);
+
     Course findCourseById(long id);
 
     List<Course> findCoursesByName(String name);

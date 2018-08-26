@@ -15,14 +15,14 @@
         </div>
         <div class="col-8">
             <div class="jumbotron">
-                <h1 class="display-4">Edit course</h1>
-                <form class="needs-validation form-horizontal mt-4" novalidate th:action="|/course/update/${id}|" method="POST">
+                <h1 class="display-4">Create course</h1>
+                <form class="needs-validation form-horizontal mt-4" novalidate action="/course/save" method="POST">
                     <div class="form-group row">
                         <label for="name" class="col-3 col-form-label">
                             <a class="lead">Name:</a>
                         </label>
                         <div class="col-9">
-                            <input type="text" class="form-control" id="name" name="name" th:value="${course.name}" required>
+                            <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -31,11 +31,11 @@
                         </label>
                         <div class="col-9">
                             <div class="input-group">
-                                <textarea class="form-control" id="description" name="description" th:text="${course.description}" rows="7" aria-label="With textarea" required></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="7" aria-label="With textarea" required></textarea>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-primary" id="edit" type="submit">Save</button>
+                    <button class="btn btn-primary" id="save" type="submit">Save</button>
                     <a class="btn btn-light" href="/course/user">Cancel</a>
                 </form>
             </div>

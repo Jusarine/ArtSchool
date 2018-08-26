@@ -39,7 +39,7 @@ public class CourseController {
 
     @GetMapping("/search")
     public ModelAndView search(@RequestParam String request){
-        return new ModelAndView("courses", "courses", courseService.findCoursesByName(request));
+        return new ModelAndView("all_courses", "courses", courseService.findCoursesByName(request));
     }
 
     @GetMapping("/{id}")
@@ -58,7 +58,6 @@ public class CourseController {
     @GetMapping("/enroll/{id}")
     public String enroll(@PathVariable long id, @SessionAttribute(name = "user") Student student, Model model){
         courseService.enrollInCourse(student, courseService.findCourseById(id));
-        model.addAttribute("user", userService.reinitializeStudent(student));
         return "redirect:/course/user";
     }
 
@@ -80,8 +79,31 @@ public class CourseController {
                          @RequestParam String description,
                          @SessionAttribute(name = "user") CustomUser customUser,
                          Model model){
-        model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
         courseService.updateCourse(id, name, description);
+        model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
+        return "redirect:/course/user";
+    }
+
+    @GetMapping("/create")
+    public String create(){
+        return "/create_course";
+    }
+
+    @PostMapping("/save")
+    public String save(@RequestParam String name,
+                         @RequestParam String description,
+                         @SessionAttribute(name = "user") CustomUser customUser,
+                         Model model){
+        courseService.createCourse(name, description, (Instructor) customUser);
+        return "redirect:/course/user";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable long id,
+                         @SessionAttribute(name = "user") CustomUser customUser,
+                         Model model){
+        courseService.deleteCourse(courseService.findCourseById(id));
+        model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
         return "redirect:/course/user";
     }
 }

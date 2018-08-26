@@ -36,7 +36,8 @@
                     <a class="btn btn-primary btn-lg" th:href="|/course/enroll/${course.id}|">Enroll</a>
                 </div>
                 <div sec:authorize="hasRole('ADMIN')" th:if="${author}">
-                    <a class="btn btn-danger" th:href="|/course/edit/${course.id}|">Edit</a>
+                    <a class="btn btn-warning" th:href="|/course/edit/${course.id}|">Edit</a>
+                    <a class="btn btn-danger" th:href="|/course/delete/${course.id}|">Delete</a>
                 </div>
             </div>
         </div>
