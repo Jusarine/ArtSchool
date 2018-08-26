@@ -29,24 +29,24 @@ public class CourseController {
 
     @GetMapping("/all")
     public ModelAndView allCourses(){
-        return new ModelAndView("all_courses", "courses", courseService.findCourses());
+        return new ModelAndView("/course/all_courses", "courses", courseService.findCourses());
     }
 
     @GetMapping("/user")
     public String userCourses(){
-        return "user_courses";
+        return "/course/user_courses";
     }
 
     @GetMapping("/search")
     public ModelAndView search(@RequestParam String request){
-        return new ModelAndView("all_courses", "courses", courseService.findCoursesByName(request));
+        return new ModelAndView("/course/all_courses", "courses", courseService.findCoursesByName(request));
     }
 
     @GetMapping("/{id}")
     public ModelAndView get(@PathVariable long id, @SessionAttribute(name = "user", required = false) CustomUser customUser){
         Course course = courseService.findCourseById(id);
-        ModelAndView modelAndView = new ModelAndView("/course", "course", course);
-        if (customUser instanceof Student ) {
+        ModelAndView modelAndView = new ModelAndView("/course/course", "course", course);
+        if (customUser instanceof Student) {
             modelAndView.addObject("enrolled", courseService.isEnrolled((Student) customUser, course));
         }
         else if (customUser instanceof Instructor){
@@ -56,7 +56,7 @@ public class CourseController {
     }
 
     @GetMapping("/enroll/{id}")
-    public String enroll(@PathVariable long id, @SessionAttribute(name = "user") Student student, Model model){
+    public String enroll(@PathVariable long id, @SessionAttribute(name = "user") Student student){
         courseService.enrollInCourse(student, courseService.findCourseById(id));
         return "redirect:/course/user";
     }
@@ -70,7 +70,7 @@ public class CourseController {
 
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable long id){
-        return new ModelAndView("/edit_course", "course", courseService.findCourseById(id));
+        return new ModelAndView("/course/edit_course", "course", courseService.findCourseById(id));
     }
 
     @PostMapping("/update/{id}")
@@ -86,14 +86,13 @@ public class CourseController {
 
     @GetMapping("/create")
     public String create(){
-        return "/create_course";
+        return "/course/create_course";
     }
 
     @PostMapping("/save")
     public String save(@RequestParam String name,
                          @RequestParam String description,
-                         @SessionAttribute(name = "user") CustomUser customUser,
-                         Model model){
+                         @SessionAttribute(name = "user") CustomUser customUser){
         courseService.createCourse(name, description, (Instructor) customUser);
         return "redirect:/course/user";
     }

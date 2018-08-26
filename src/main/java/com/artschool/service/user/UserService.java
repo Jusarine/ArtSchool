@@ -6,6 +6,7 @@ import com.artschool.model.Instructor;
 import com.artschool.model.Student;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
@@ -24,6 +25,10 @@ public interface UserService {
     Student findStudentById(long id);
 
     Instructor findInstructorById(long id);
+
+    CustomUser findById(long id);
+
+    Set<Instructor> findByName(String name);
 
     Student findStudentByEmail(String email);
 

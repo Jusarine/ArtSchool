@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Art School</title>
+    <div th:replace="fragments/styles :: styles"></div>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="row mt-5">
+        <div class="col-3">
+            <div class="row">
+                <div class="mr-3">
+                    <div class="card mb-auto pl-4">
+                        <div class="card-body">
+                            <form class="form-inline" th:action="@{/instructor/search}" method="GET">
+                                <input class="form-control mb-3" name="request" type="search" placeholder="Instructor name...">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="card-group mr-4">
+                <div class="col-4 mb-4" th:each="u: ${users}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-5">
+                                    <figure class="figure">
+                                        <img th:src="${{u.gender}} == 'FEMALE' ? '/images/girl.png' : '/images/boy.png'" class="figure-img img-fluid rounded-circle">
+                                    </figure>
+                                </div>
+                                <div class="col-7 my-auto">
+                                    <a class="card-text" th:text="${u.firstName}"></a>
+                                    <a class="card-text" th:text="${u.lastName}"></a>
+                                    <a th:href="|/profile/${u.id}|" class="btn btn-outline-primary btn-sm my-2">About</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

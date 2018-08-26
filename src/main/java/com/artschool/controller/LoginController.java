@@ -36,12 +36,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String login(){
-        return "login";
-    }
-
-    @GetMapping("/profile")
-    public String profile(){
-        return "profile";
+        return "/user/login";
     }
 
     @GetMapping("/authorized")

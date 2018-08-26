@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CourseServiceImpl implements CourseService{
@@ -89,7 +90,7 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Course> findCoursesByName(String name) {
+    public Set<Course> findCoursesByName(String name) {
         return courseRepository.findCoursesByNameContaining(name);
     }
 

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Art School</title>
+    <div th:replace="fragments/styles :: styles"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="row mt-5">
+    <div class="col-3">
+        <div class="row">
+            <div class="mr-3">
+                <div class="card mb-auto pl-4">
+                    <div class="card-body">
+                        <form class="form-inline" th:action="@{/instructor/search}" method="GET">
+                            <input class="form-control mb-3" name="request" type="search" placeholder="Instructor name...">
+                            <button class="btn btn-outline-success" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        <div th:object="${member}">
+            <div th:replace="fragments/profile :: profile"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

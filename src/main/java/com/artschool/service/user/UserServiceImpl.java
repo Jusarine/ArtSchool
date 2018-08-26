@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -89,6 +91,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
+    public CustomUser findById(long id){
+        CustomUser customUser = findStudentById(id);
+        return customUser == null ? findInstructorById(id) : customUser;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Student findStudentByEmail(String email){
         return studentRepository.findStudentByEmail(email);
     }
@@ -108,6 +117,25 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
+    public Set<Instructor> findByName(String name) {
+        Set<Instructor> set = new HashSet<>();
+        String[] words = name.split("[\\s]+");
+        if (words.length == 0){
+            set.addAll(instructorRepository.findAll());
+        }
+        else if (words.length == 1){
+            set.addAll(instructorRepository.findInstructorsByFirstNameContaining(words[0]));
+            set.addAll(instructorRepository.findInstructorsByLastNameContaining(words[0]));
+        }
+        else if (words.length == 2){
+            set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[0], words[1]));
+            set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[1], words[0]));
+        }
+        return set;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Student> findStudents(){
         return studentRepository.findAll();
     }
@@ -117,5 +145,4 @@ public class UserServiceImpl implements UserService{
     public List<Instructor> findInstructors(){
         return instructorRepository.findAll();
     }
-
 }

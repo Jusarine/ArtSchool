@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="profile">
+    <div class="mr-5 ml-3">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-4">
+                    <figure class="figure">
+                        <img th:src="${{#object.gender}} == 'FEMALE' ? '/images/girl.png' : '/images/boy.png'" class="figure-img img-fluid rounded-circle" style="object-fit: cover; height: 200px;">
+                    </figure>
+                </div>
+                <div class="col-8 my-auto">
+                    <h1 class="display-4" th:text="|${#object.firstName} ${#object.lastName}|"></h1>
+                    <hr class="my-4">
+
+                    <h4>Email:</h4>
+                    <p class="lead" th:text="${#object.email}"></p>
+
+                    <h4>Phone Number:</h4>
+                    <p class="lead" th:text="${#object.phoneNumber}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

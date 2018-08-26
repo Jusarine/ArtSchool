@@ -5,6 +5,7 @@ import com.artschool.model.Instructor;
 import com.artschool.model.Student;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CourseService {
 
@@ -26,7 +27,7 @@ public interface CourseService {
 
     Course findCourseById(long id);
 
-    List<Course> findCoursesByName(String name);
+    Set<Course> findCoursesByName(String name);
 
     List<Course> findCourses();
 }
