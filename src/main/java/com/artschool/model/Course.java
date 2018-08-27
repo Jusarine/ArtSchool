@@ -14,6 +14,12 @@ public class Course {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private Discipline discipline;
+
+    @Enumerated(EnumType.STRING)
+    private Audience audience;
+
     private String description;
 
     @ManyToOne(optional = false)
@@ -30,8 +36,10 @@ public class Course {
     public Course() {
     }
 
-    public Course(String name, String description, Instructor instructor) {
+    public Course(String name, Discipline discipline, Audience audience, String description, Instructor instructor) {
         this.name = name;
+        this.discipline = discipline;
+        this.audience = audience;
         this.description = description;
         this.instructor = instructor;
     }
@@ -46,6 +54,22 @@ public class Course {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Discipline getDiscipline() {
+        return discipline;
+    }
+
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
+    }
+
+    public Audience getAudience() {
+        return audience;
+    }
+
+    public void setAudience(Audience audience) {
+        this.audience = audience;
     }
 
     public String getDescription() {
@@ -83,8 +107,9 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
+                ", discipline=" + discipline +
+                ", audience=" + audience +
                 '}';
     }
 
@@ -96,6 +121,8 @@ public class Course {
 
         if (id == that.id) return false;
         if(name != null ? !name.equals(that.name) : that.name != null) return false;
+        if(discipline != null ? !discipline.equals(that.discipline) : that.discipline != null) return false;
+        if(audience != null ? !audience.equals(that.audience) : that.audience != null) return false;
         if(description != null ? !description.equals(that.description) : that.description != null) return false;
 
         return true;
@@ -105,6 +132,8 @@ public class Course {
     public int hashCode() {
         int hash = (int) id;
         hash = 31 * hash + (name != null ? name.hashCode() : 0);
+        hash = 31 * hash + (discipline != null ? discipline.hashCode() : 0);
+        hash = 31 * hash + (audience != null ? audience.hashCode() : 0);
         hash = 31 * hash + (description != null ? description.hashCode() : 0);
         return hash;
     }

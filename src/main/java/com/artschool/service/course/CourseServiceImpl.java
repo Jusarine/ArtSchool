@@ -1,9 +1,7 @@
 package com.artschool.service.course;
 
-import com.artschool.model.Course;
+import com.artschool.model.*;
 
-import com.artschool.model.Instructor;
-import com.artschool.model.Student;
 import com.artschool.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +30,8 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public Course createCourse(String name, String description, Instructor instructor) {
-        Course course = new Course(name, description, instructor);
+    public Course createCourse(String name, Discipline discipline, Audience audience, String description, Instructor instructor) {
+        Course course = new Course(name, discipline, audience, description, instructor);
         instructor.addCourse(course);
         courseRepository.save(course);
         return course;
@@ -69,9 +67,11 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public void updateCourse(long id, String name, String description) {
+    public void updateCourse(long id, String name, Discipline discipline, Audience audience, String description) {
         Course course = findCourseById(id);
         course.setName(name);
+        course.setDiscipline(discipline);
+        course.setAudience(audience);
         course.setDescription(description);
         courseRepository.save(course);
     }

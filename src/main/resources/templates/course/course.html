@@ -19,9 +19,21 @@
                 <a class="lead" th:text="${course.description}"></a>
 
                 <hr class="my-4">
-                <h4>Instructor:</h4>
-                <a class="lead" th:text="${course.instructor.firstName}"></a>
-                <a class="lead" th:text="${course.instructor.lastName}"></a>
+                <div class="row">
+                    <div class="col-3">
+                        <h4>Discipline:</h4>
+                        <a class="lead" th:text="${course.discipline}"></a>
+                    </div>
+                    <div class="col-3">
+                        <h4>Audience:</h4>
+                        <a class="lead" th:text="${course.audience}"></a>
+                    </div>
+                    <div class="col-3">
+                        <h4>Instructor:</h4>
+                        <a class="lead" th:text="${course.instructor.firstName}"></a>
+                        <a class="lead" th:text="${course.instructor.lastName}"></a>
+                    </div>
+                </div>
 
                 <hr class="my-4">
                 <h4>Students:</h4>

@@ -26,6 +26,27 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label for="discipline" class="col-3 col-form-label">
+                            <a class="lead">Discipline:</a>
+                        </label>
+                        <div class="col-9">
+                            <select id="discipline" name="discipline" class="form-control" required>
+                                <option th:each="discipline : ${T(com.artschool.model.Discipline).values()}" th:value="${discipline}" th:text="${{discipline}}" th:selected="${discipline} == ${course.discipline} ?: 'selected'"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="audience" class="col-3 col-form-label">
+                            <a class="lead">Audience:</a>
+                        </label>
+                        <div class="col-9">
+                            <select id="audience" name="audience" class="form-control" required>
+                                <option selected></option>
+                                <option th:each="audience : ${T(com.artschool.model.Audience).values()}" th:value="${audience}" th:text="${{audience}}" th:selected="${audience} == ${course.audience} ?: 'selected'"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="description" class="col-3 col-form-label">
                             <a class="lead">Description:</a>
                         </label>

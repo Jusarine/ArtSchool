@@ -1,9 +1,6 @@
 package com.artschool.controller;
 
-import com.artschool.model.Course;
-import com.artschool.model.CustomUser;
-import com.artschool.model.Instructor;
-import com.artschool.model.Student;
+import com.artschool.model.*;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,10 +73,12 @@ public class CourseController {
     @PostMapping("/update/{id}")
     public String update(@PathVariable long id,
                          @RequestParam String name,
+                         @RequestParam Discipline discipline,
+                         @RequestParam Audience audience,
                          @RequestParam String description,
                          @SessionAttribute(name = "user") CustomUser customUser,
                          Model model){
-        courseService.updateCourse(id, name, description);
+        courseService.updateCourse(id, name, discipline, audience, description);
         model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
         return "redirect:/course/user";
     }
@@ -91,9 +90,11 @@ public class CourseController {
 
     @PostMapping("/save")
     public String save(@RequestParam String name,
-                         @RequestParam String description,
-                         @SessionAttribute(name = "user") CustomUser customUser){
-        courseService.createCourse(name, description, (Instructor) customUser);
+                       @RequestParam Discipline discipline,
+                       @RequestParam Audience audience,
+                       @RequestParam String description,
+                       @SessionAttribute(name = "user") CustomUser customUser){
+        courseService.createCourse(name, discipline, audience, description, (Instructor) customUser);
         return "redirect:/course/user";
     }
 

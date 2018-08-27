@@ -1,10 +1,10 @@
 package com.artschool.model;
 
-public enum UserRole {
-    ADMIN, USER;
+public enum Audience {
+    Kids, Teens, Adults;
 
     @Override
     public String toString() {
-        return "ROLE_" + name();
+        return name();
     }
 }

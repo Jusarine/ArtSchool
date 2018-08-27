@@ -1,9 +1,6 @@
 package com.artschool;
 
-import com.artschool.model.Course;
-import com.artschool.model.Gender;
-import com.artschool.model.Instructor;
-import com.artschool.model.Student;
+import com.artschool.model.*;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -28,11 +25,18 @@ public class ArtSchoolApplication {
             Instructor instructor2 = userService.createInstructor("Mark", "Reinold", Gender.MALE, "380978463742", "admin2@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS");
 
             Course course1 = courseService.createCourse("Pen and Ink Drawing",
+                    Discipline.Drawing,
+                    Audience.Teens,
                     "This class is for beginners where we will learn the basic techniques of pen and ink drawing. We will be focusing on strokes, building depth, tone and value. Various exercises are used as well as learning how to properly use the equipment.",
                     instructor1);
-            Course course2 = courseService.createCourse("Landscapes in Oil", "Bring your supplies and come ready to paint! In this workshop, instructor will give group and individualized instruction including, color mixing, composition, atmospheric perspective and other things to bring your landscape to life.",
+            Course course2 = courseService.createCourse("Landscapes in Oil",
+                    Discipline.Painting,
+                    Audience.Adults,
+                    "Bring your supplies and come ready to paint! In this workshop, instructor will give group and individualized instruction including, color mixing, composition, atmospheric perspective and other things to bring your landscape to life.",
                     instructor1);
             Course course3 = courseService.createCourse("Expressive Acrylic Painting",
+                    Discipline.Painting,
+                    Audience.Kids,
                     "Learn the art of expressive painting and rethink the process of creating art. Let you creativity guide you.  Follow your instinct and explore different mediums while enjoying this unique process.",
                     instructor2);
 
