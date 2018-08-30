@@ -22,7 +22,7 @@
                             <a class="lead">Name:</a>
                         </label>
                         <div class="col-9">
-                            <input type="text" class="form-control" id="name" name="name" required>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -30,9 +30,8 @@
                             <a class="lead">Discipline:</a>
                         </label>
                         <div class="col-9">
-                            <select id="discipline" name="discipline" class="form-control" required>
-                                <option selected></option>
-                                <option th:each="discipline : ${T(com.artschool.model.Discipline).values()}" th:value="${discipline}" th:text="${{discipline}}"></option>
+                            <select id="discipline" name="discipline" class="selectpicker form-control" title="Discipline..." required>
+                                <option th:each="discipline : ${T(com.artschool.model.enumeration.Discipline).values()}" th:value="${discipline}" th:text="${{discipline}}"></option>
                             </select>
                         </div>
                     </div>
@@ -41,9 +40,58 @@
                             <a class="lead">Audience:</a>
                         </label>
                         <div class="col-9">
-                            <select id="audience" name="audience" class="form-control" required>
-                                <option selected></option>
-                                <option th:each="audience : ${T(com.artschool.model.Audience).values()}" th:value="${audience}" th:text="${{audience}}"></option>
+                            <select id="audience" name="audience" class="selectpicker form-control" title="Audience..." required>
+                                <option th:each="audience : ${T(com.artschool.model.enumeration.Audience).values()}" th:value="${audience}" th:text="${{audience}}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="fee" class="col-3 col-form-label">
+                            <a class="lead">Fee:</a>
+                        </label>
+                        <div class="col-9">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="number" class="form-control" id="fee" name="fee" value="50" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="date" class="col-3 col-form-label">
+                            <a class="lead">Date:</a>
+                        </label>
+                        <div class="col-9">
+                            <input type="text" class="form-control" id="date" name="date" required/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3 col-form-label">
+                            <a class="lead">Time:</a>
+                        </label>
+                        <div class="col-9">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="input-group clockpicker">
+                                        <input type="text" id="start_time" name="start_time" class="form-control" value="19:00" title="Start time" required>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group clockpicker">
+                                        <input type="text" id="end_time" name="end_time" class="form-control" value="21:00" title="End time" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="days" class="col-3 col-form-label">
+                            <a class="lead">Days:</a>
+                        </label>
+                        <div class="col-9">
+                            <select id="days" name="days" class="selectpicker form-control" multiple title="Day..." required>
+                                <option th:each="day : ${days}" th:value="${day.name}" th:text="${day.getCapitalizedName()}"></option>
                             </select>
                         </div>
                     </div>
@@ -53,7 +101,7 @@
                         </label>
                         <div class="col-9">
                             <div class="input-group">
-                                <textarea class="form-control" id="description" name="description" rows="7" aria-label="With textarea" required></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="7" aria-label="With textarea" placeholder="Description" required></textarea>
                             </div>
                         </div>
                     </div>
@@ -63,6 +111,9 @@
             </div>
         </div>
     </div>
+    <script src="/js/bootstrap_select.js"></script>
+    <script src="/js/date_range_picker.js"></script>
+    <script src="/js/clock_picker.js"></script>
     <script src="/js/form_validation.js"></script>
 </body>
 </html>

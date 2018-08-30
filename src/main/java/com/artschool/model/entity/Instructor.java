@@ -1,8 +1,10 @@
-package com.artschool.model;
+package com.artschool.model.entity;
+
+import com.artschool.model.enumeration.Gender;
+import com.artschool.model.enumeration.UserRole;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -10,7 +12,7 @@ public class Instructor extends CustomUser{
 
     private Integer rating;
 
-    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "instructor", cascade = CascadeType.MERGE)
     private Set<Course> courses = new HashSet<>();
 
     public Instructor() {

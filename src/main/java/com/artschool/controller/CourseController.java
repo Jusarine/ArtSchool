@@ -1,13 +1,20 @@
 package com.artschool.controller;
 
-import com.artschool.model.*;
+import com.artschool.model.entity.*;
+import com.artschool.model.enumeration.Audience;
+import com.artschool.model.enumeration.Discipline;
 import com.artschool.service.course.CourseService;
+import com.artschool.service.course.DateService;
+import com.artschool.service.course.DayService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 
 @Controller
 @RequestMapping("/course")
@@ -18,10 +25,16 @@ public class CourseController {
 
     private final UserService userService;
 
+    private final DayService dayService;
+
+    private final DateService dateService;
+
     @Autowired
-    public CourseController(CourseService courseService, UserService userService) {
+    public CourseController(CourseService courseService, UserService userService, DayService dayService, DateService dateService) {
         this.courseService = courseService;
         this.userService = userService;
+        this.dayService = dayService;
+        this.dateService = dateService;
     }
 
     @GetMapping("/all")
@@ -67,7 +80,10 @@ public class CourseController {
 
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable long id){
-        return new ModelAndView("/course/edit_course", "course", courseService.findCourseById(id));
+        ModelAndView modelAndView = new ModelAndView("/course/edit_course");
+        modelAndView.addObject("course", courseService.findCourseById(id));
+        modelAndView.addObject("days", dayService.findDays());
+        return modelAndView;
     }
 
     @PostMapping("/update/{id}")
@@ -75,26 +91,40 @@ public class CourseController {
                          @RequestParam String name,
                          @RequestParam Discipline discipline,
                          @RequestParam Audience audience,
+                         @RequestParam Integer fee,
+                         @RequestParam String date,
+                         @RequestParam("start_time") LocalTime startTime,
+                         @RequestParam("end_time") LocalTime endTime,
+                         @RequestParam DayOfWeek[] days,
                          @RequestParam String description,
                          @SessionAttribute(name = "user") CustomUser customUser,
                          Model model){
-        courseService.updateCourse(id, name, discipline, audience, description);
+
+        Date courseDate = dateService.createDate(date, startTime, endTime);
+        courseService.updateCourse(id, name, discipline, audience, fee, courseDate, dayService.getDays(days), description);
         model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
         return "redirect:/course/user";
     }
 
     @GetMapping("/create")
-    public String create(){
-        return "/course/create_course";
+    public ModelAndView create(){
+        return new ModelAndView("/course/create_course", "days", dayService.findDays());
     }
 
     @PostMapping("/save")
     public String save(@RequestParam String name,
                        @RequestParam Discipline discipline,
                        @RequestParam Audience audience,
+                       @RequestParam Integer fee,
+                       @RequestParam String date,
+                       @RequestParam("start_time") LocalTime startTime,
+                       @RequestParam("end_time") LocalTime endTime,
+                       @RequestParam DayOfWeek[] days,
                        @RequestParam String description,
                        @SessionAttribute(name = "user") CustomUser customUser){
-        courseService.createCourse(name, discipline, audience, description, (Instructor) customUser);
+
+        Date courseDate = dateService.createDate(date, startTime, endTime);
+        courseService.createCourse(name, discipline, audience, fee, courseDate, dayService.getDays(days), description, (Instructor) customUser);
         return "redirect:/course/user";
     }
 

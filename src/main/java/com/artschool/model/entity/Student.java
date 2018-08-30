@@ -1,4 +1,7 @@
-package com.artschool.model;
+package com.artschool.model.entity;
+
+import com.artschool.model.enumeration.Gender;
+import com.artschool.model.enumeration.UserRole;
 
 import javax.persistence.*;
 import java.util.*;

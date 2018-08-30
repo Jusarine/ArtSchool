@@ -1,7 +1,8 @@
 package com.artschool.service.course;
 
-import com.artschool.model.*;
-
+import com.artschool.model.entity.*;
+import com.artschool.model.enumeration.Audience;
+import com.artschool.model.enumeration.Discipline;
 import com.artschool.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,17 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public Course createCourse(String name, Discipline discipline, Audience audience, String description, Instructor instructor) {
-        Course course = new Course(name, discipline, audience, description, instructor);
+    public Course createCourse(String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
+        Course course = new Course(name, discipline, audience, fee, date, days, description, instructor);
         instructor.addCourse(course);
         courseRepository.save(course);
         return course;
+    }
+
+    @Override
+    @Transactional
+    public void save(Course course) {
+        courseRepository.save(course);
     }
 
     @Override
@@ -67,11 +74,14 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public void updateCourse(long id, String name, Discipline discipline, Audience audience, String description) {
+    public void updateCourse(long id, String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description) {
         Course course = findCourseById(id);
         course.setName(name);
         course.setDiscipline(discipline);
         course.setAudience(audience);
+        course.setFee(fee);
+        course.setDate(date);
+        course.setDays(days);
         course.setDescription(description);
         courseRepository.save(course);
     }

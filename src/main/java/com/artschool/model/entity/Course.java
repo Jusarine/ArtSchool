@@ -1,14 +1,19 @@
-package com.artschool.model;
+package com.artschool.model.entity;
+
+import com.artschool.model.enumeration.Audience;
+import com.artschool.model.enumeration.Discipline;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 @Entity
 public class Course {
 
     @Id
-    @GeneratedValue
     @Column(name = "course_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
@@ -20,13 +25,26 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private Audience audience;
 
+    private Integer fee;
+
+    @OneToOne
+    @JoinColumn(name = "date_id")
+    private Date date;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "course_day",
+            joinColumns = {@JoinColumn(name = "course_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "day_id", nullable = false)}
+    )
+    private List<Day> days = new LinkedList<>();
+
     private String description;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "instructor_id")
     private Instructor instructor;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "course_student",
             joinColumns = {@JoinColumn(name = "course_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "student_id", nullable = false)}
@@ -36,10 +54,13 @@ public class Course {
     public Course() {
     }
 
-    public Course(String name, Discipline discipline, Audience audience, String description, Instructor instructor) {
+    public Course(String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
         this.name = name;
         this.discipline = discipline;
         this.audience = audience;
+        this.fee = fee;
+        this.date = date;
+        this.days = days;
         this.description = description;
         this.instructor = instructor;
     }
@@ -70,6 +91,38 @@ public class Course {
 
     public void setAudience(Audience audience) {
         this.audience = audience;
+    }
+
+    public Integer getFee() {
+        return fee;
+    }
+
+    public void setFee(Integer fee) {
+        this.fee = fee;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public List<Day> getDays() {
+        return days;
+    }
+
+    public void setDays(List<Day> days) {
+        this.days = days;
+    }
+
+    public void addDay(Day day){
+        days.add(day);
+    }
+
+    public void removeDay(Day day){
+        days.remove(day);
     }
 
     public String getDescription() {
@@ -107,9 +160,12 @@ public class Course {
     @Override
     public String toString() {
         return "Course{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", discipline=" + discipline +
                 ", audience=" + audience +
+                ", fee=" + fee +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -123,6 +179,7 @@ public class Course {
         if(name != null ? !name.equals(that.name) : that.name != null) return false;
         if(discipline != null ? !discipline.equals(that.discipline) : that.discipline != null) return false;
         if(audience != null ? !audience.equals(that.audience) : that.audience != null) return false;
+        if(fee != null ? !fee.equals(that.fee) : that.fee != null) return false;
         if(description != null ? !description.equals(that.description) : that.description != null) return false;
 
         return true;
@@ -134,6 +191,7 @@ public class Course {
         hash = 31 * hash + (name != null ? name.hashCode() : 0);
         hash = 31 * hash + (discipline != null ? discipline.hashCode() : 0);
         hash = 31 * hash + (audience != null ? audience.hashCode() : 0);
+        hash = 31 * hash + (fee != null ? fee.hashCode() : 0);
         hash = 31 * hash + (description != null ? description.hashCode() : 0);
         return hash;
     }

@@ -1,4 +1,7 @@
-package com.artschool.model;
+package com.artschool.model.entity;
+
+import com.artschool.model.enumeration.Gender;
+import com.artschool.model.enumeration.UserRole;
 
 import javax.persistence.*;
 
@@ -33,8 +36,6 @@ public abstract class CustomUser {
     private String password;
 
     private String description;
-
-    private byte[] photo;
 
     public CustomUser() {
     }
@@ -114,14 +115,6 @@ public abstract class CustomUser {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.artschool.repository;
 
-import com.artschool.model.Instructor;
+import com.artschool.model.entity.Instructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Set;

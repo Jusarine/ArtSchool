@@ -1,6 +1,8 @@
 package com.artschool.controller;
 
-import com.artschool.model.*;
+import com.artschool.model.entity.Instructor;
+import com.artschool.model.entity.Student;
+import com.artschool.model.enumeration.Gender;
 import com.artschool.service.security.SecurityService;
 import com.artschool.service.user.UserService;
 import org.hibernate.Hibernate;

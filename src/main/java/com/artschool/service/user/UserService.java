@@ -1,9 +1,9 @@
 package com.artschool.service.user;
 
-import com.artschool.model.CustomUser;
-import com.artschool.model.Gender;
-import com.artschool.model.Instructor;
-import com.artschool.model.Student;
+import com.artschool.model.entity.CustomUser;
+import com.artschool.model.enumeration.Gender;
+import com.artschool.model.entity.Instructor;
+import com.artschool.model.entity.Student;
 
 import java.util.List;
 import java.util.Set;

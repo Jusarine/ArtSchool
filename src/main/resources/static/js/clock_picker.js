@@ -1,0 +1,3 @@
+$('.clockpicker').clockpicker({
+    autoclose: 'true'
+});
