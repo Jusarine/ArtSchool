@@ -1,8 +1,7 @@
 package com.artschool.service.course;
 
 import com.artschool.model.entity.*;
-import com.artschool.model.enumeration.Audience;
-import com.artschool.model.enumeration.Discipline;
+import com.artschool.model.form.CourseForm;
 import com.artschool.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,9 +15,15 @@ public class CourseServiceImpl implements CourseService{
 
     private final CourseRepository courseRepository;
 
+    private final DayService dayService;
+
+    private final DateService dateService;
+
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, DayService dayService, DateService dateService) {
         this.courseRepository = courseRepository;
+        this.dayService = dayService;
+        this.dateService = dateService;
     }
 
     @Override
@@ -31,16 +36,32 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public Course createCourse(String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
-        Course course = new Course(name, discipline, audience, fee, date, days, description, instructor);
-        instructor.addCourse(course);
+    public void createCourse(CourseForm form, Instructor instructor) {
+        Course course = new Course(form.getName(), form.getDiscipline(), form.getAudience(), form.getFee(),
+                dateService.createDate(form), dayService.getDays(form.getDays()), form.getDescription(), instructor);
+        course.getInstructor().addCourse(course);
+        courseRepository.save(course);
+    }
+
+    @Override
+    @Transactional
+    public Course updateCourse(Course course) {
         courseRepository.save(course);
         return course;
     }
 
     @Override
     @Transactional
-    public void save(Course course) {
+    public void updateCourse(long courseId, CourseForm form) {
+        Course course = new Course(courseId, form.getName(), form.getDiscipline(), form.getAudience(), form.getFee(),
+                dateService.createDate(form), dayService.getDays(form.getDays()), form.getDescription(),
+                findCourseById(courseId).getInstructor());
+        courseRepository.save(course);
+    }
+
+    @Override
+    @Transactional
+    public void saveOrUpdate(Course course) {
         courseRepository.save(course);
     }
 
@@ -74,28 +95,14 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public void updateCourse(long id, String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description) {
-        Course course = findCourseById(id);
-        course.setName(name);
-        course.setDiscipline(discipline);
-        course.setAudience(audience);
-        course.setFee(fee);
-        course.setDate(date);
-        course.setDays(days);
-        course.setDescription(description);
-        courseRepository.save(course);
-    }
-
-    @Override
-    @Transactional
-    public void deleteCourse(Course course) {
-        courseRepository.delete(course);
+    public void deleteCourse(long courseId) {
+        courseRepository.deleteById(courseId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Course findCourseById(long id) {
-        return courseRepository.findCourseById(id);
+        return courseRepository.findById(id).orElse(null);
     }
 
     @Override

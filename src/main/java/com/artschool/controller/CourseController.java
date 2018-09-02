@@ -1,10 +1,8 @@
 package com.artschool.controller;
 
 import com.artschool.model.entity.*;
-import com.artschool.model.enumeration.Audience;
-import com.artschool.model.enumeration.Discipline;
+import com.artschool.model.form.CourseForm;
 import com.artschool.service.course.CourseService;
-import com.artschool.service.course.DateService;
 import com.artschool.service.course.DayService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 
 @Controller
 @RequestMapping("/course")
@@ -27,14 +22,11 @@ public class CourseController {
 
     private final DayService dayService;
 
-    private final DateService dateService;
-
     @Autowired
-    public CourseController(CourseService courseService, UserService userService, DayService dayService, DateService dateService) {
+    public CourseController(CourseService courseService, UserService userService, DayService dayService) {
         this.courseService = courseService;
         this.userService = userService;
         this.dayService = dayService;
-        this.dateService = dateService;
     }
 
     @GetMapping("/all")
@@ -88,21 +80,12 @@ public class CourseController {
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable long id,
-                         @RequestParam String name,
-                         @RequestParam Discipline discipline,
-                         @RequestParam Audience audience,
-                         @RequestParam Integer fee,
-                         @RequestParam String date,
-                         @RequestParam("start_time") LocalTime startTime,
-                         @RequestParam("end_time") LocalTime endTime,
-                         @RequestParam DayOfWeek[] days,
-                         @RequestParam String description,
+                         @ModelAttribute CourseForm form,
                          @SessionAttribute(name = "user") CustomUser customUser,
                          Model model){
 
-        Date courseDate = dateService.createDate(date, startTime, endTime);
-        courseService.updateCourse(id, name, discipline, audience, fee, courseDate, dayService.getDays(days), description);
-        model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
+        courseService.updateCourse(id, form);
+        model.addAttribute("user", userService.reinitializeInstructor((Instructor) customUser));
         return "redirect:/course/user";
     }
 
@@ -112,19 +95,9 @@ public class CourseController {
     }
 
     @PostMapping("/save")
-    public String save(@RequestParam String name,
-                       @RequestParam Discipline discipline,
-                       @RequestParam Audience audience,
-                       @RequestParam Integer fee,
-                       @RequestParam String date,
-                       @RequestParam("start_time") LocalTime startTime,
-                       @RequestParam("end_time") LocalTime endTime,
-                       @RequestParam DayOfWeek[] days,
-                       @RequestParam String description,
+    public String save(@ModelAttribute CourseForm form,
                        @SessionAttribute(name = "user") CustomUser customUser){
-
-        Date courseDate = dateService.createDate(date, startTime, endTime);
-        courseService.createCourse(name, discipline, audience, fee, courseDate, dayService.getDays(days), description, (Instructor) customUser);
+        courseService.createCourse(form, (Instructor) customUser);
         return "redirect:/course/user";
     }
 
@@ -132,7 +105,7 @@ public class CourseController {
     public String delete(@PathVariable long id,
                          @SessionAttribute(name = "user") CustomUser customUser,
                          Model model){
-        courseService.deleteCourse(courseService.findCourseById(id));
+        courseService.deleteCourse(id);
         model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
         return "redirect:/course/user";
     }

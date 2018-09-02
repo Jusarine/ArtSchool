@@ -1,8 +1,7 @@
 package com.artschool.service.course;
 
 import com.artschool.model.entity.*;
-import com.artschool.model.enumeration.Audience;
-import com.artschool.model.enumeration.Discipline;
+import com.artschool.model.form.CourseForm;
 
 import java.util.List;
 import java.util.Set;
@@ -11,11 +10,15 @@ public interface CourseService {
 
     Course createCourse(Course course);
 
+    void createCourse(CourseForm form, Instructor instructor);
+
+    Course updateCourse(Course course);
+
+    void updateCourse(long courseId, CourseForm form);
+
+    void saveOrUpdate(Course course);
+
     void enrollInCourse(Student student, Course course);
-
-    Course createCourse(String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor);
-
-    void save(Course course);
 
     void unenrollFromCourse(Student student, Course course);
 
@@ -23,9 +26,7 @@ public interface CourseService {
 
     boolean isAuthor(Instructor instructor, Course course);
 
-    void updateCourse(long id, String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description);
-
-    void deleteCourse(Course course);
+    void deleteCourse(long courseId);
 
     Course findCourseById(long id);
 

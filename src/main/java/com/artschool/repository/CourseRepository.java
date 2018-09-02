@@ -7,7 +7,5 @@ import java.util.Set;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 
-    Course findCourseById(long id);
-
     Set<Course> findCoursesByNameContaining(String name);
 }

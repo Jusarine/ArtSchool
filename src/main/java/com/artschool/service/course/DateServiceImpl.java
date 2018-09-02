@@ -1,13 +1,11 @@
 package com.artschool.service.course;
 
 import com.artschool.model.entity.Date;
+import com.artschool.model.form.CourseForm;
 import com.artschool.repository.DateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Service
 public class DateServiceImpl implements DateService{
@@ -21,34 +19,16 @@ public class DateServiceImpl implements DateService{
 
     @Override
     @Transactional
-    public Date createDate(String dateRange, String startTime, String endTime){
-        Date date = new Date(dateRange, startTime, endTime);
-        dateRepository.save(date);
-        return date;
-    }
-
-    @Override
-    @Transactional
-    public Date createDate(String dateRange, LocalTime startTime, LocalTime endTime){
-        Date date = new Date(dateRange, startTime, endTime);
-        dateRepository.save(date);
-        return date;
-    }
-
-    @Override
-    @Transactional
-    public Date createDate(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
-        Date date = new Date(startDate, endDate, startTime, endTime);
-        dateRepository.save(date);
-        return date;
-    }
-
-    @Override
-    @Transactional
     public Date createDate(Date date){
         dateRepository.save(date);
         return date;
     }
 
-
+    @Override
+    @Transactional
+    public Date createDate(CourseForm form){
+        Date date = new Date(form.getDate(), form.getStartTime(), form.getEndTime());
+        dateRepository.save(date);
+        return date;
+    }
 }

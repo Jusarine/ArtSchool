@@ -65,6 +65,18 @@ public class Course {
         this.instructor = instructor;
     }
 
+    public Course(long id, String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
+        this.id = id;
+        this.name = name;
+        this.discipline = discipline;
+        this.audience = audience;
+        this.fee = fee;
+        this.date = date;
+        this.days = days;
+        this.description = description;
+        this.instructor = instructor;
+    }
+
     public long getId() {
         return id;
     }

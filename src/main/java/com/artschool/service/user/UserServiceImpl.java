@@ -4,10 +4,12 @@ import com.artschool.model.entity.CustomUser;
 import com.artschool.model.enumeration.Gender;
 import com.artschool.model.entity.Instructor;
 import com.artschool.model.entity.Student;
+import com.artschool.model.form.SignUpForm;
 import com.artschool.repository.InstructorRepository;
 import com.artschool.repository.StudentRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,21 +25,13 @@ public class UserServiceImpl implements UserService{
     private final InstructorRepository instructorRepository;
 
     @Autowired
-    public UserServiceImpl(StudentRepository studentRepository, InstructorRepository instructorRepository) {
+    public UserServiceImpl(StudentRepository studentRepository, InstructorRepository instructorRepository/*, PasswordEncoder passwordEncoder*/) {
         this.studentRepository = studentRepository;
         this.instructorRepository = instructorRepository;
     }
 
     @Override
     @Transactional
-    public Student createStudent(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password){
-        if (findByEmail(email) != null) return null;
-        Student student = new Student(firstName, lastName, gender, phoneNumber, email, password);
-        studentRepository.save(student);
-        return student;
-    }
-
-    @Override
     public Student createStudent(Student student) {
         if (findByEmail(student.getEmail()) != null) return null;
         studentRepository.save(student);
@@ -46,11 +40,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public Instructor createInstructor(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password){
-        if (findByEmail(email) != null) return null;
-        Instructor instructor = new Instructor(firstName, lastName, gender, phoneNumber, email, password);
-        instructorRepository.save(instructor);
-        return instructor;
+    public Student createStudent(SignUpForm form, PasswordEncoder passwordEncoder) {
+        if (findByEmail(form.getEmail()) != null) return null;
+        String encodedPassword = passwordEncoder.encode(form.getPassword());
+        Student student = new Student(form.getFirstName(), form.getLastName(), Gender.valueOf(form.getGender()),
+                form.getPhoneNumber(), form.getEmail(), encodedPassword);
+        studentRepository.save(student);
+        return student;
     }
 
     @Override
@@ -80,13 +76,13 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional(readOnly = true)
     public Student findStudentById(long id){
-        return studentRepository.findStudentById(id);
+        return studentRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Instructor findInstructorById(long id){
-        return instructorRepository.findInstructorById(id);
+        return instructorRepository.findById(id).orElse(null);
     }
 
     @Override

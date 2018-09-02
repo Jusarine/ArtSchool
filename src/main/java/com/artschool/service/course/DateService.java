@@ -1,17 +1,11 @@
 package com.artschool.service.course;
 
 import com.artschool.model.entity.Date;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
+import com.artschool.model.form.CourseForm;
 
 public interface DateService {
 
-    Date createDate(String dateRange, String startTime, String endTime);
-
-    Date createDate(String dateRange, LocalTime startTime, LocalTime endTime);
-
-    Date createDate(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime);
-
     Date createDate(Date date);
+
+    Date createDate(CourseForm form);
 }

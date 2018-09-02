@@ -7,8 +7,6 @@ import java.util.Set;
 
 public interface InstructorRepository extends JpaRepository<Instructor, Long>{
 
-    Instructor findInstructorById(long id);
-
     Instructor findInstructorByEmail(String email);
 
     Set<Instructor> findInstructorsByFirstNameContaining(String firstName);

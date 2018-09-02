@@ -1,20 +1,19 @@
 package com.artschool.service.user;
 
 import com.artschool.model.entity.CustomUser;
-import com.artschool.model.enumeration.Gender;
 import com.artschool.model.entity.Instructor;
 import com.artschool.model.entity.Student;
+import com.artschool.model.form.SignUpForm;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Set;
 
 public interface UserService {
 
-    Student createStudent(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password);
-
     Student createStudent(Student student);
 
-    Instructor createInstructor(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password);
+    Student createStudent(SignUpForm form, PasswordEncoder passwordEncoder);
 
     Instructor createInstructor(Instructor instructor);
 
