@@ -42,10 +42,13 @@
 
                     <dt class="col-3 lead">Days:</dt>
                     <dd class="col-9 lead">
-                        <ul class="list-inline">
+                        <ul class="list-inline mb-0">
                             <li class="list-inline-item" th:each="day : ${course.days}" th:text="${day.getCapitalizedName()}"></li>
                         </ul>
                     </dd>
+
+                    <dt class="col-3 lead">Duration:</dt>
+                    <dd class="col-9 lead" th:text="|${course.weeksAmount} weeks, ${course.daysAmount} days|"></dd>
                 </dl>
                 <hr class="my-4">
                 <dl class="row">

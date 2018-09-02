@@ -4,9 +4,10 @@ import com.artschool.model.enumeration.Audience;
 import com.artschool.model.enumeration.Discipline;
 
 import javax.persistence.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Course {
@@ -38,6 +39,10 @@ public class Course {
     )
     private List<Day> days = new LinkedList<>();
 
+    private Long weeksAmount;
+
+    private Long daysAmount;
+
     private String description;
 
     @ManyToOne(optional = false)
@@ -61,6 +66,7 @@ public class Course {
         this.fee = fee;
         this.date = date;
         this.days = days;
+        setDaysAndWeeksAmount();
         this.description = description;
         this.instructor = instructor;
     }
@@ -73,6 +79,7 @@ public class Course {
         this.fee = fee;
         this.date = date;
         this.days = days;
+        setDaysAndWeeksAmount();
         this.description = description;
         this.instructor = instructor;
     }
@@ -117,6 +124,14 @@ public class Course {
         return date;
     }
 
+    private List<DayOfWeek> getDaysOfWeek(){
+        List<DayOfWeek> daysOfWeek = new LinkedList<>();
+        for (Day day : days) {
+            daysOfWeek.add(day.getName());
+        }
+        return daysOfWeek;
+    }
+
     public void setDate(Date date) {
         this.date = date;
     }
@@ -135,6 +150,28 @@ public class Course {
 
     public void removeDay(Day day){
         days.remove(day);
+    }
+
+    public Long getWeeksAmount() {
+        return weeksAmount;
+    }
+
+    public void setWeeksAmount(Long weeksAmount) {
+        this.weeksAmount = weeksAmount;
+    }
+
+    public Long getDaysAmount() {
+        return daysAmount;
+    }
+
+    public void setDaysAmount(Long daysAmount) {
+        this.daysAmount = daysAmount;
+    }
+
+    private void setDaysAndWeeksAmount(){
+        List<LocalDate> allDaysBetweenDates = date.getStartDate().datesUntil(date.getEndDate()).collect(Collectors.toList());
+        this.daysAmount = allDaysBetweenDates.stream().filter(day -> getDaysOfWeek().contains(day.getDayOfWeek())).count();
+        this.weeksAmount = (long) Math.ceil(allDaysBetweenDates.size() / 7.);
     }
 
     public String getDescription() {
