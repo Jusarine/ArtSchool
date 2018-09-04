@@ -2,11 +2,11 @@ package com.artschool;
 
 import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Audience;
-import com.artschool.model.enumeration.Discipline;
 import com.artschool.model.enumeration.Gender;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.course.DateService;
 import com.artschool.service.course.DayService;
+import com.artschool.service.course.DisciplineService;
 import com.artschool.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,33 +25,34 @@ public class ArtSchoolApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(final UserService userService, final CourseService courseService, final DayService dayService, final DateService dateService) {
+    public CommandLineRunner demo(final UserService userService, final CourseService courseService, final DayService dayService, final DateService dateService, final DisciplineService disciplineService) {
         return strings -> {
 
             dayService.addDays(DayOfWeek.values());
+            disciplineService.addDiscipline("CERAMICS", "DRAWING", "JEWELLERY", "MOSAICS", "PAINTING", "PRINTMAKING", "SCULPTURE");
 
             Instructor instructor1 = userService.createInstructor(new Instructor("Emily", "Horton", Gender.FEMALE, "380508836472", "admin@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS"));
             Instructor instructor2 = userService.createInstructor(new Instructor("Mark", "Reinold", Gender.MALE, "380978463742", "admin2@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS"));
 
             Course course1 = courseService.createCourse(new Course("Pen and Ink Drawing",
-                    Discipline.Drawing,
-                    Audience.Teens,
+                    disciplineService.getDisciplines("DRAWING"),
+                    Audience.TEENS,
                     60,
                     dateService.createDate(new Date("Sep 5, 2018 - Dec 5, 2018", "12:00", "14:00")),
                     dayService.getDays(DayOfWeek.MONDAY, DayOfWeek.THURSDAY),
                     "This class is for beginners where we will learn the basic techniques of pen and ink drawing. We will be focusing on strokes, building depth, tone and value. Various exercises are used as well as learning how to properly use the equipment.",
                     instructor1));
             Course course2 = courseService.createCourse(new Course("Landscapes in Oil",
-                    Discipline.Painting,
-                    Audience.Adults,
+                    disciplineService.getDisciplines("PAINTING"),
+                    Audience.ADULTS,
                     40,
                     dateService.createDate(new Date("Sep 25, 2018 - Nov 5, 2018", "19:00", "21:00")),
                     dayService.getDays(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY),
                     "Bring your supplies and come ready to paint! In this workshop, instructor will give group and individualized instruction including, color mixing, composition, atmospheric perspective and other things to bring your landscape to life.",
                     instructor1));
             Course course3 = courseService.createCourse(new Course("Expressive Acrylic Painting",
-                    Discipline.Painting,
-                    Audience.Kids,
+                    disciplineService.getDisciplines("PAINTING"),
+                    Audience.KIDS,
                     50,
                     dateService.createDate(new Date("Nov 1, 2018 - Dec 1, 2018", "16:00", "18:00")),
                     dayService.getDays(DayOfWeek.SATURDAY),

@@ -26,12 +26,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="discipline" class="col-3 col-form-label">
+                        <label for="disciplines" class="col-3 col-form-label">
                             <a class="lead">Discipline:</a>
                         </label>
                         <div class="col-9">
-                            <select id="discipline" name="discipline" class="selectpicker form-control" title="Discipline..." required>
-                                <option th:each="discipline : ${T(com.artschool.model.enumeration.Discipline).values()}" th:value="${discipline}" th:text="${{discipline}}"></option>
+                            <select id="disciplines" name="disciplines" class="selectpicker form-control" multiple title="Discipline..." required>
+                                <option th:each="discipline : ${disciplines}" th:value="${discipline.name}" th:text="${discipline.getCapitalizedName()}"></option>
                             </select>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                         </label>
                         <div class="col-9">
                             <select id="audience" name="audience" class="selectpicker form-control" title="Audience..." required>
-                                <option th:each="audience : ${T(com.artschool.model.enumeration.Audience).values()}" th:value="${audience}" th:text="${{audience}}"></option>
+                                <option th:each="audience : ${T(com.artschool.model.enumeration.Audience).values()}" th:value="${{audience}}" th:text="${audience}"></option>
                             </select>
                         </div>
                     </div>

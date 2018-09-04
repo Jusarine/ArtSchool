@@ -1,7 +1,6 @@
 package com.artschool.model.form;
 
 import com.artschool.model.enumeration.Audience;
-import com.artschool.model.enumeration.Discipline;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -10,7 +9,7 @@ public class CourseForm {
 
     private String name;
 
-    private Discipline discipline;
+    private String[] disciplines;
 
     private Audience audience;
 
@@ -37,12 +36,12 @@ public class CourseForm {
         this.name = name;
     }
 
-    public Discipline getDiscipline() {
-        return discipline;
+    public String[] getDisciplines() {
+        return disciplines;
     }
 
-    public void setDiscipline(Discipline discipline) {
-        this.discipline = discipline;
+    public void setDisciplines(String[] disciplines) {
+        this.disciplines = disciplines;
     }
 
     public Audience getAudience() {

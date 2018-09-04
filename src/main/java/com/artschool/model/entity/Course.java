@@ -1,7 +1,6 @@
 package com.artschool.model.entity;
 
 import com.artschool.model.enumeration.Audience;
-import com.artschool.model.enumeration.Discipline;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
@@ -20,15 +19,19 @@ public class Course {
     @Column(nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private Discipline discipline;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "course_discipline",
+            joinColumns = {@JoinColumn(name = "course_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "discipline_id", nullable = false)}
+    )
+    private List<Discipline> disciplines = new LinkedList<>();
 
     @Enumerated(EnumType.STRING)
     private Audience audience;
 
     private Integer fee;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "date_id")
     private Date date;
 
@@ -59,9 +62,9 @@ public class Course {
     public Course() {
     }
 
-    public Course(String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
+    public Course(String name, List<Discipline> disciplines, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
         this.name = name;
-        this.discipline = discipline;
+        this.disciplines = disciplines;
         this.audience = audience;
         this.fee = fee;
         this.date = date;
@@ -71,10 +74,10 @@ public class Course {
         this.instructor = instructor;
     }
 
-    public Course(long id, String name, Discipline discipline, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
+    public Course(long id, String name, List<Discipline> disciplines, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
         this.id = id;
         this.name = name;
-        this.discipline = discipline;
+        this.disciplines = disciplines;
         this.audience = audience;
         this.fee = fee;
         this.date = date;
@@ -96,12 +99,12 @@ public class Course {
         this.name = name;
     }
 
-    public Discipline getDiscipline() {
-        return discipline;
+    public List<Discipline> getDisciplines() {
+        return disciplines;
     }
 
-    public void setDiscipline(Discipline discipline) {
-        this.discipline = discipline;
+    public void setDisciplines(List<Discipline> disciplines) {
+        this.disciplines = disciplines;
     }
 
     public Audience getAudience() {
@@ -171,7 +174,7 @@ public class Course {
     private void setDaysAndWeeksAmount(){
         List<LocalDate> allDaysBetweenDates = date.getStartDate().datesUntil(date.getEndDate()).collect(Collectors.toList());
         this.daysAmount = allDaysBetweenDates.stream().filter(day -> getDaysOfWeek().contains(day.getDayOfWeek())).count();
-        this.weeksAmount = (long) Math.ceil(allDaysBetweenDates.size() / 7.);
+        this.weeksAmount = Math.round(allDaysBetweenDates.size() / 7.);
     }
 
     public String getDescription() {
@@ -211,7 +214,6 @@ public class Course {
         return "Course{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", discipline=" + discipline +
                 ", audience=" + audience +
                 ", fee=" + fee +
                 ", description='" + description + '\'' +
@@ -226,7 +228,6 @@ public class Course {
 
         if (id == that.id) return false;
         if(name != null ? !name.equals(that.name) : that.name != null) return false;
-        if(discipline != null ? !discipline.equals(that.discipline) : that.discipline != null) return false;
         if(audience != null ? !audience.equals(that.audience) : that.audience != null) return false;
         if(fee != null ? !fee.equals(that.fee) : that.fee != null) return false;
         if(description != null ? !description.equals(that.description) : that.description != null) return false;
@@ -238,7 +239,6 @@ public class Course {
     public int hashCode() {
         int hash = (int) id;
         hash = 31 * hash + (name != null ? name.hashCode() : 0);
-        hash = 31 * hash + (discipline != null ? discipline.hashCode() : 0);
         hash = 31 * hash + (audience != null ? audience.hashCode() : 0);
         hash = 31 * hash + (fee != null ? fee.hashCode() : 0);
         hash = 31 * hash + (description != null ? description.hashCode() : 0);

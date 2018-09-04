@@ -25,7 +25,7 @@ public class Date {
 
     private LocalTime endTime;
 
-    @OneToOne(mappedBy = "date", cascade = CascadeType.MERGE)
+    @OneToOne(mappedBy = "date")
     private Course course;
 
     public Date() {

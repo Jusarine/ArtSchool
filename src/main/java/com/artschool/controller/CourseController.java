@@ -4,6 +4,7 @@ import com.artschool.model.entity.*;
 import com.artschool.model.form.CourseForm;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.course.DayService;
+import com.artschool.service.course.DisciplineService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,11 +23,14 @@ public class CourseController {
 
     private final DayService dayService;
 
+    private final DisciplineService disciplineService;
+
     @Autowired
-    public CourseController(CourseService courseService, UserService userService, DayService dayService) {
+    public CourseController(CourseService courseService, UserService userService, DayService dayService, DisciplineService disciplineService) {
         this.courseService = courseService;
         this.userService = userService;
         this.dayService = dayService;
+        this.disciplineService = disciplineService;
     }
 
     @GetMapping("/all")
@@ -75,6 +79,7 @@ public class CourseController {
         ModelAndView modelAndView = new ModelAndView("/course/edit_course");
         modelAndView.addObject("course", courseService.findCourseById(id));
         modelAndView.addObject("days", dayService.findDays());
+        modelAndView.addObject("disciplines", disciplineService.findDisciplines());
         return modelAndView;
     }
 
@@ -91,7 +96,10 @@ public class CourseController {
 
     @GetMapping("/create")
     public ModelAndView create(){
-        return new ModelAndView("/course/create_course", "days", dayService.findDays());
+        ModelAndView modelAndView = new ModelAndView("/course/create_course");
+        modelAndView.addObject("days", dayService.findDays());
+        modelAndView.addObject("disciplines", disciplineService.findDisciplines());
+        return modelAndView;
     }
 
     @PostMapping("/save")

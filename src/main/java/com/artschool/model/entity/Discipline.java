@@ -1,41 +1,43 @@
 package com.artschool.model.entity;
 
 import javax.persistence.*;
-import java.time.DayOfWeek;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Day {
+public class Discipline {
 
     @Id
-    @Column(name = "day_id")
+    @Column(name = "discipline_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Enumerated(EnumType.STRING)
-    private DayOfWeek name;
+    private String name;
 
-    @ManyToMany(mappedBy = "days")
+    @ManyToMany(mappedBy = "disciplines", cascade = CascadeType.MERGE)
     private Set<Course> courses = new HashSet<>();
 
-    public Day() {
+    public Discipline() {
     }
 
-    public Day(DayOfWeek name) {
+    public Discipline(String name) {
         this.name = name;
     }
 
-    public DayOfWeek getName() {
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
         return name;
     }
 
-    public void setName(DayOfWeek name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getCapitalizedName(){
-        return name.toString().substring(0, 1).toUpperCase() + name.toString().substring(1).toLowerCase();
+    public String getCapitalizedName() {
+        return name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
     }
 
     public Set<Course> getCourses() {
@@ -46,17 +48,17 @@ public class Day {
         this.courses = courses;
     }
 
-    public void addCourse(Course course){
+    public void addCourse(Course course) {
         courses.add(course);
     }
 
-    public void removeCourse(Course course){
+    public void removeCourse(Course course) {
         courses.remove(course);
     }
 
     @Override
     public String toString() {
-        return "Day{" +
+        return "Discipline{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
@@ -66,10 +68,10 @@ public class Day {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Day that = (Day) o;
+        Discipline that = (Discipline) o;
 
         if (id == that.id) return false;
-        if(name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;
     }
@@ -80,5 +82,4 @@ public class Day {
         hash = 31 * hash + (name != null ? name.hashCode() : 0);
         return hash;
     }
-
 }

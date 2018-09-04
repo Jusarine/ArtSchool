@@ -19,11 +19,14 @@ public class CourseServiceImpl implements CourseService{
 
     private final DateService dateService;
 
+    private final DisciplineService disciplineService;
+
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, DayService dayService, DateService dateService) {
+    public CourseServiceImpl(CourseRepository courseRepository, DayService dayService, DateService dateService, DisciplineService disciplineService) {
         this.courseRepository = courseRepository;
         this.dayService = dayService;
         this.dateService = dateService;
+        this.disciplineService = disciplineService;
     }
 
     @Override
@@ -37,8 +40,9 @@ public class CourseServiceImpl implements CourseService{
     @Override
     @Transactional
     public void createCourse(CourseForm form, Instructor instructor) {
-        Course course = new Course(form.getName(), form.getDiscipline(), form.getAudience(), form.getFee(),
-                dateService.createDate(form), dayService.getDays(form.getDays()), form.getDescription(), instructor);
+        Course course = new Course(form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
+                form.getAudience(), form.getFee(), dateService.createDate(form), dayService.getDays(form.getDays()),
+                form.getDescription(), instructor);
         course.getInstructor().addCourse(course);
         courseRepository.save(course);
     }
@@ -53,9 +57,9 @@ public class CourseServiceImpl implements CourseService{
     @Override
     @Transactional
     public void updateCourse(long courseId, CourseForm form) {
-        Course course = new Course(courseId, form.getName(), form.getDiscipline(), form.getAudience(), form.getFee(),
-                dateService.createDate(form), dayService.getDays(form.getDays()), form.getDescription(),
-                findCourseById(courseId).getInstructor());
+        Course course = new Course(courseId, form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
+                form.getAudience(), form.getFee(), dateService.createDate(form), dayService.getDays(form.getDays()),
+                form.getDescription(), findCourseById(courseId).getInstructor());
         courseRepository.save(course);
     }
 

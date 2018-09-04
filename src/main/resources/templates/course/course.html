@@ -24,7 +24,11 @@
                     <dd class="col-9 lead" th:text="${course.audience}"></dd>
 
                     <dt class="col-3 lead">Discipline:</dt>
-                    <dd class="col-9 lead" th:text="${course.discipline}"></dd>
+                    <dd class="col-9 lead">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item" th:each="discipline : ${course.disciplines}" th:text="${discipline.getCapitalizedName()}"></li>
+                        </ul>
+                    </dd>
 
                     <dt class="col-3 lead">Instructor:</dt>
                     <dd class="col-9 lead" th:text="|${course.instructor.firstName} ${course.instructor.lastName}|"></dd>
