@@ -74,6 +74,21 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
+    public void editStatus(CustomUser customUser, String status){
+        if (status.equals("")) status = null;
+        customUser.setStatus(status);
+        saveOrUpdate(customUser);
+    }
+
+    @Override
+    @Transactional
+    public void saveOrUpdate(CustomUser customUser) {
+        if (customUser instanceof Student) studentRepository.save((Student) customUser);
+        else if (customUser instanceof Instructor) instructorRepository.save((Instructor) customUser);
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public Student findStudentById(long id){
         return studentRepository.findById(id).orElse(null);

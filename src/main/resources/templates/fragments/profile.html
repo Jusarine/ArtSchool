@@ -12,6 +12,14 @@
                 </div>
                 <div class="col-8 my-auto">
                     <h1 class="display-4" th:text="|${#object.firstName} ${#object.lastName}|"></h1>
+                    <div th:if="${another}">
+                        <a class="lead" th:text="${#object.status}"></a>
+                    </div>
+                    <div th:unless="${another}">
+                        <div class="lead">
+                            <a class="x_editable" id="status" th:text="${#object.status}" data-pk="${#object.id}" data-type="text" data-url="/edit_status"></a>
+                        </div>
+                    </div>
                     <hr class="my-4">
 
                     <h4>Email:</h4>
@@ -23,6 +31,7 @@
             </div>
         </div>
     </div>
+    <script src="/js/x_editable.js"></script>
 </div>
 
 

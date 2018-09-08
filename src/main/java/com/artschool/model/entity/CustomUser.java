@@ -35,7 +35,7 @@ public abstract class CustomUser {
 
     private String password;
 
-    private String description;
+    private String status;
 
     public CustomUser() {
     }
@@ -109,12 +109,12 @@ public abstract class CustomUser {
         this.password = password;
     }
 
-    public String getDescription() {
-        return description;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -126,7 +126,7 @@ public abstract class CustomUser {
                 ", gender='" + gender + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
-                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 
@@ -144,7 +144,7 @@ public abstract class CustomUser {
         if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
 
         return true;
     }
@@ -159,7 +159,7 @@ public abstract class CustomUser {
         hash = 31 * hash + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         hash = 31 * hash + (email != null ? email.hashCode() : 0);
         hash = 31 * hash + (password != null ? password.hashCode() : 0);
-        hash = 31 * hash + (description != null ? description.hashCode() : 0);
+        hash = 31 * hash + (status != null ? status.hashCode() : 0);
         return hash;
     }
 }

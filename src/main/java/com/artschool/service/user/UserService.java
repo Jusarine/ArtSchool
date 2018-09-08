@@ -21,6 +21,10 @@ public interface UserService {
 
     Instructor reinitializeInstructor(Instructor instructor);
 
+    void editStatus(CustomUser customUser, String composition);
+
+    void saveOrUpdate(CustomUser customUser);
+
     Student findStudentById(long id);
 
     Instructor findInstructorById(long id);

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,7 +42,7 @@ public class DisciplineServiceImpl implements DisciplineService{
     @Override
     @Transactional
     public List<Discipline> getDisciplines(String... disciplines){
-        List<Discipline> list = new LinkedList<>();
+        List<Discipline> list = new ArrayList<>();
         for (String discipline : disciplines) {
             list.add(disciplineRepository.findDisciplineByName(discipline));
         }

@@ -24,7 +24,7 @@ public class Course {
             joinColumns = {@JoinColumn(name = "course_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "discipline_id", nullable = false)}
     )
-    private List<Discipline> disciplines = new LinkedList<>();
+    private List<Discipline> disciplines = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Audience audience;
@@ -40,7 +40,7 @@ public class Course {
             joinColumns = {@JoinColumn(name = "course_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "day_id", nullable = false)}
     )
-    private List<Day> days = new LinkedList<>();
+    private List<Day> days = new ArrayList<>();
 
     private Long weeksAmount;
 
@@ -128,7 +128,7 @@ public class Course {
     }
 
     private List<DayOfWeek> getDaysOfWeek(){
-        List<DayOfWeek> daysOfWeek = new LinkedList<>();
+        List<DayOfWeek> daysOfWeek = new ArrayList<>();
         for (Day day : days) {
             daysOfWeek.add(day.getName());
         }
