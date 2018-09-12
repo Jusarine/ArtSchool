@@ -69,6 +69,8 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.0.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.25" />
+          <element id="library" level="project" name="Maven: com.paypal.sdk:rest-api-sdk:1.14.0" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.8.5" />
         </element>
       </element>
       <element id="directory" name="META-INF">

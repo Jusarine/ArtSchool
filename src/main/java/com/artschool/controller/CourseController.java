@@ -117,4 +117,12 @@ public class CourseController {
         model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
         return "redirect:/course/user";
     }
+
+    @RequestMapping("/{id}/payment/execute")
+    public String paymentExecute(@PathVariable long id,
+                                 @RequestParam(value = "paymentID", required = false) String paymentID){
+        //TODO
+        return "redirect:/user/courses";
+    }
+
 }

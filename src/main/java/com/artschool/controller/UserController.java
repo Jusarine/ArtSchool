@@ -41,7 +41,7 @@ public class UserController {
         return new ModelAndView("/user/users", "users", userService.findInstructors());
     }
 
-    @RequestMapping("/edit_status")
+    @PostMapping("/edit_status")
     public @ResponseBody String editStatus(@SessionAttribute(name = "user") CustomUser customUser,
                                      @RequestParam("value") String status){
         userService.editStatus(customUser, status);

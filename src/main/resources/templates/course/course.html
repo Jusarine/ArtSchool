@@ -67,7 +67,51 @@
                     <a class="btn btn-danger btn-lg" th:href="|/course/unenroll/${course.id}|">Unenroll</a>
                 </div>
                 <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
-                    <a class="btn btn-primary btn-lg" th:href="|/course/enroll/${course.id}|">Enroll</a>
+                    <!--<a class="btn btn-primary btn-lg" th:href="|/course/enroll/${course.id}|">Enroll</a>-->
+                    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                    <div id="paypal-button-container"></div>
+                    <script th:inline="javascript">
+                        paypal.Button.render({
+
+                            env: 'sandbox',
+
+                            style: {
+                                label: 'paypal',
+                                size:  'medium',
+                                shape: 'rect',
+                                color: 'blue',
+                                tagline: false
+                            },
+
+                            client: {
+                                sandbox: 'AdAB94pzTA8SBHdnUMa3AKPVgbLRBHr3V1_rjxFU6DXlgKg01FelAoRb0xXAOnef_rnVx4mX8P7ZRTsC'
+                            },
+
+                            commit: true,
+
+                            payment: function(data, actions) {
+                                return actions.payment.create({
+                                    payment: {
+                                        transactions: [
+                                            {
+                                                amount: { total: [[${course.fee}]], currency: 'USD' }
+                                            }
+                                        ]
+                                    }
+                                });
+                            },
+
+                            onAuthorize: function(data, actions) {
+                                var EXECUTE_URL = '/course/' + [[${course.id}]] + '/payment/execute';
+                                var id = {paymentID: data.paymentID};
+                                return paypal.request.post(EXECUTE_URL, id)
+                                    .then(function (res) {
+                                        window.alert('Payment Complete!');
+                                    });
+                            }
+
+                        }, '#paypal-button-container');
+                    </script>
                 </div>
                 <div sec:authorize="hasRole('ADMIN')" th:if="${author}">
                     <a class="btn btn-warning" th:href="|/course/edit/${course.id}|">Edit</a>
