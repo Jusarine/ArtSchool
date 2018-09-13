@@ -68,7 +68,6 @@
                 </div>
                 <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
                     <!--<a class="btn btn-primary btn-lg" th:href="|/course/enroll/${course.id}|">Enroll</a>-->
-                    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
                     <div id="paypal-button-container"></div>
                     <script th:inline="javascript">
                         paypal.Button.render({
@@ -94,7 +93,8 @@
                                     payment: {
                                         transactions: [
                                             {
-                                                amount: { total: [[${course.fee}]], currency: 'USD' }
+                                                amount: { total: [[${course.fee}]], currency: 'USD' },
+                                                description: [[${course.name}]]
                                             }
                                         ]
                                     }
@@ -102,12 +102,10 @@
                             },
 
                             onAuthorize: function(data, actions) {
-                                var EXECUTE_URL = '/course/' + [[${course.id}]] + '/payment/execute';
-                                var id = {paymentID: data.paymentID};
-                                return paypal.request.post(EXECUTE_URL, id)
-                                    .then(function (res) {
-                                        window.alert('Payment Complete!');
-                                    });
+                                return actions.payment.execute().then(function() {
+                                    $.post('/course/' + [[${course.id}]] + '/payment/execute', data.paymentID);
+                                    window.alert('Payment Complete!');
+                                });
                             }
 
                         }, '#paypal-button-container');

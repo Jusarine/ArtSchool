@@ -122,7 +122,7 @@ public class CourseController {
     public String paymentExecute(@PathVariable long id,
                                  @RequestParam(value = "paymentID", required = false) String paymentID){
         //TODO
-        return "redirect:/user/courses";
+        return "redirect:/course/" + id;
     }
 
 }
