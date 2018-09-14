@@ -61,10 +61,10 @@ public class CourseController {
         return modelAndView;
     }
 
-    @GetMapping("/enroll/{id}")
-    public String enroll(@PathVariable long id, @SessionAttribute(name = "user") Student student){
+    @PostMapping("/enroll/{id}")
+    @ResponseBody
+    public void enroll(@PathVariable long id, @SessionAttribute(name = "user") Student student){
         courseService.enrollInCourse(student, courseService.findCourseById(id));
-        return "redirect:/course/user";
     }
 
     @GetMapping("/unenroll/{id}")
@@ -117,12 +117,4 @@ public class CourseController {
         model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
         return "redirect:/course/user";
     }
-
-    @RequestMapping("/{id}/payment/execute")
-    public String paymentExecute(@PathVariable long id,
-                                 @RequestParam(value = "paymentID", required = false) String paymentID){
-        //TODO
-        return "redirect:/course/" + id;
-    }
-
 }
