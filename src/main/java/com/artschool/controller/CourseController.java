@@ -5,12 +5,15 @@ import com.artschool.model.form.CourseForm;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.course.DayService;
 import com.artschool.service.course.DisciplineService;
+import com.artschool.service.course.PaymentService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/course")
@@ -25,12 +28,15 @@ public class CourseController {
 
     private final DisciplineService disciplineService;
 
+    private final PaymentService paymentService;
+
     @Autowired
-    public CourseController(CourseService courseService, UserService userService, DayService dayService, DisciplineService disciplineService) {
+    public CourseController(CourseService courseService, UserService userService, DayService dayService, DisciplineService disciplineService, PaymentService paymentService) {
         this.courseService = courseService;
         this.userService = userService;
         this.dayService = dayService;
         this.disciplineService = disciplineService;
+        this.paymentService = paymentService;
     }
 
     @GetMapping("/all")
@@ -63,8 +69,10 @@ public class CourseController {
 
     @PostMapping("/enroll/{id}")
     @ResponseBody
-    public void enroll(@PathVariable long id, @SessionAttribute(name = "user") Student student){
-        courseService.enrollInCourse(student, courseService.findCourseById(id));
+    public void enroll(@PathVariable long id, @RequestParam String transactionId, @SessionAttribute(name = "user") Student student){
+        Course course = courseService.findCourseById(id);
+        paymentService.createPayment(new Payment(transactionId, student, course, course.getFee(), LocalDate.now()));
+        courseService.enrollInCourse(student, course);
     }
 
     @GetMapping("/unenroll/{id}")

@@ -68,48 +68,7 @@
                 </div>
                 <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
                     <div id="paypal-button-container"></div>
-                    <script th:inline="javascript">
-                        paypal.Button.render({
-
-                            env: 'sandbox',
-
-                            style: {
-                                label: 'paypal',
-                                size:  'medium',
-                                shape: 'rect',
-                                color: 'blue',
-                                tagline: false
-                            },
-
-                            client: {
-                                sandbox: 'AdAB94pzTA8SBHdnUMa3AKPVgbLRBHr3V1_rjxFU6DXlgKg01FelAoRb0xXAOnef_rnVx4mX8P7ZRTsC'
-                            },
-
-                            commit: true,
-
-                            payment: function(data, actions) {
-                                return actions.payment.create({
-                                    payment: {
-                                        transactions: [
-                                            {
-                                                amount: { total: [[${course.fee}]], currency: 'USD' },
-                                                description: [[${course.name}]]
-                                            }
-                                        ]
-                                    }
-                                });
-                            },
-
-                            onAuthorize: function(data, actions) {
-                                return actions.payment.execute().then(function() {
-                                    $.post('/course/enroll/' + [[${course.id}]], function () {
-                                        window.location.href='/course/user';
-                                    });
-                                });
-                            }
-
-                        }, '#paypal-button-container');
-                    </script>
+                    <div th:replace="fragments/payment :: paypal"></div>
                 </div>
                 <div sec:authorize="hasRole('ADMIN')" th:if="${author}">
                     <a class="btn btn-warning" th:href="|/course/edit/${course.id}|">Edit</a>

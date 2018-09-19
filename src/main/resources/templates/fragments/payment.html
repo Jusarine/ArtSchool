@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="styles :: styles"></div>
+</head>
+<body>
+<div th:fragment="paypal">
+<div id="paypal-button-container"></div>
+<script th:inline="javascript">
+    paypal.Button.render({
+
+        env: 'sandbox',
+
+        style: {
+            label: 'paypal',
+            size:  'medium',
+            shape: 'rect',
+            color: 'blue',
+            tagline: false
+        },
+
+        client: {
+            sandbox: 'AdAB94pzTA8SBHdnUMa3AKPVgbLRBHr3V1_rjxFU6DXlgKg01FelAoRb0xXAOnef_rnVx4mX8P7ZRTsC'
+        },
+
+        commit: true,
+
+        payment: function(data, actions) {
+            return actions.payment.create({
+                payment: {
+                    transactions: [
+                        {
+                            amount: { total: [[${course.fee}]], currency: 'USD' },
+                            description: [[${course.name}]]
+                        }
+                    ]
+                }
+            });
+        },
+
+        onAuthorize: function(data, actions) {
+            return actions.payment.execute().then(function() {
+                $.post('/course/enroll/' + [[${course.id}]], {'transactionId': data.paymentID}, function () {
+                    window.location.href='/course/user';
+                });
+            });
+        }
+
+    }, '#paypal-button-container');
+</script>
+</div>
+</body>
+</html>

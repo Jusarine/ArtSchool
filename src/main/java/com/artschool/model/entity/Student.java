@@ -14,6 +14,9 @@ public class Student extends CustomUser {
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();
 
+    @OneToMany(mappedBy = "payer", cascade = CascadeType.MERGE)
+    private Set<Payment> payments = new HashSet<>();
+
     public Student() {
     }
 
@@ -44,6 +47,22 @@ public class Student extends CustomUser {
 
     public void removeCourse(Course course){
         courses.remove(course);
+    }
+
+    public Set<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public void addPayment(Payment payment){
+        payments.add(payment);
+    }
+
+    public void removePayment(Payment payment){
+        payments.remove(payment);
     }
 
     @Override

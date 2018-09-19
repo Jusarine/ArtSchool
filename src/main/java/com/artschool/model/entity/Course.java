@@ -59,6 +59,9 @@ public class Course {
     )
     private Set<Student> students = new HashSet<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
+    private Set<Payment> payments = new HashSet<>();
+
     public Course() {
     }
 
@@ -207,6 +210,22 @@ public class Course {
 
     public void removeStudent(Student student){
         students.remove(student);
+    }
+
+    public Set<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(Set<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public void addPayment(Payment payment){
+        payments.add(payment);
+    }
+
+    public void removePayment(Payment payment){
+        payments.remove(payment);
     }
 
     @Override
