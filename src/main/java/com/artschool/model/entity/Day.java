@@ -13,6 +13,7 @@ public class Day {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private DayOfWeek name;
 

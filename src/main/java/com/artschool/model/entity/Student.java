@@ -9,8 +9,6 @@ import java.util.*;
 @Entity
 public class Student extends CustomUser {
 
-    private Integer age;
-
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new HashSet<>();
 
@@ -23,14 +21,6 @@ public class Student extends CustomUser {
     public Student(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password) {
         super(firstName, lastName, gender, phoneNumber, email, password);
         super.setRole(UserRole.USER);
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public Set<Course> getCourses() {
@@ -67,9 +57,7 @@ public class Student extends CustomUser {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "age=" + age +
-                "} " + super.toString();
+        return "Student{}" + super.toString();
     }
 
     @Override
@@ -78,14 +66,11 @@ public class Student extends CustomUser {
         if (!(o instanceof Student)) return false;
         if (!super.equals(o)) return false;
         Student that = (Student) o;
-        if (age != null ? !age.equals(that.age) : that.age != null) return false;
         return true;
     }
 
     @Override
     public int hashCode() {
-        int hash = super.hashCode();
-        hash = 31 * hash + (age != null ? age.hashCode() : 0);
-        return hash;
+        return super.hashCode();
     }
 }

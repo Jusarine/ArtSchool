@@ -48,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .hasRole("USER")
                 .antMatchers("/instructor/**")
                     .hasRole("ADMIN")
+                .antMatchers("/profile")
+                .hasAnyRole("USER", "ADMIN")
                 .and()
         .exceptionHandling()
                 .accessDeniedPage("/unauthorized")
