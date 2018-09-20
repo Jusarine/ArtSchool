@@ -22,8 +22,11 @@
                     <a th:text="${user.firstName}"></a>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="/profile">Profile</a>
-                    <a class="dropdown-item" href="/logout">Sign out</a>
+                    <a class="btn btn-white btn-block text-body" href="/profile">Profile</a>
+                    <form name='logout' action="/logout" method='POST'>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit" class="btn btn-white btn-block">Sign out</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -17,6 +17,7 @@
             <div class="jumbotron">
                 <h1 class="display-4">Create course</h1>
                 <form class="needs-validation form-horizontal mt-4" novalidate action="/course/save" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <div class="form-group row">
                         <label for="name" class="col-3 col-form-label">
                             <a class="lead">Name:</a>

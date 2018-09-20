@@ -40,8 +40,17 @@
 
         onAuthorize: function(data, actions) {
             return actions.payment.execute().then(function() {
-                $.post('/course/enroll/' + [[${course.id}]], {'transactionId': data.paymentID}, function () {
-                    window.location.href='/course/user';
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                $.post({
+                    url: '/course/enroll/' + [[${course.id}]],
+                    data: {'transactionId': data.paymentID},
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function () {
+                         window.location.href='/course/user'
+                    }
                 });
             });
         }

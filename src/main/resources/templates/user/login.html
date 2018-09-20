@@ -19,6 +19,7 @@
             <div class="tab-pane fade show active" id="nav-sign-in" role="tabpanel" aria-labelledby="nav-sign-in-tab">
 
                 <form class="needs-validation form-horizontal mt-4 ml-4" novalidate th:action="@{/j_spring_security_check}" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <div class="form-group row">
                         <label for="sin_email" class="col-3 col-form-label">Email:</label>
                         <div class="col-9">
@@ -37,6 +38,7 @@
 
             <div class="tab-pane fade" id="nav-sign-up" role="tabpanel" aria-labelledby="nav-sign-up-tab">
                 <form class="needs-validation form-horizontal mt-4 ml-4" novalidate th:action="@{/new_user}" method="POST">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <div class="form-group row">
                         <label for="first_name" class="col-4 col-form-label">First name:</label>
                         <div class="col-8">
