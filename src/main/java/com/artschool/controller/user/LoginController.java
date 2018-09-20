@@ -1,4 +1,4 @@
-package com.artschool.controller;
+package com.artschool.controller.user;
 
 import com.artschool.model.entity.Instructor;
 import com.artschool.model.entity.Student;

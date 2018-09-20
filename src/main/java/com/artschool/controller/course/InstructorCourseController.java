@@ -1,11 +1,10 @@
-package com.artschool.controller;
+package com.artschool.controller.course;
 
 import com.artschool.model.entity.*;
 import com.artschool.model.form.CourseForm;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.course.DayService;
 import com.artschool.service.course.DisciplineService;
-import com.artschool.service.course.PaymentService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,12 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
-
 @Controller
-@RequestMapping("/course")
+@RequestMapping("/instructor/course")
 @SessionAttributes("user")
-public class CourseController {
+public class InstructorCourseController {
 
     private final CourseService courseService;
 
@@ -28,58 +25,17 @@ public class CourseController {
 
     private final DisciplineService disciplineService;
 
-    private final PaymentService paymentService;
-
     @Autowired
-    public CourseController(CourseService courseService, UserService userService, DayService dayService, DisciplineService disciplineService, PaymentService paymentService) {
+    public InstructorCourseController(CourseService courseService, UserService userService, DayService dayService, DisciplineService disciplineService) {
         this.courseService = courseService;
         this.userService = userService;
         this.dayService = dayService;
         this.disciplineService = disciplineService;
-        this.paymentService = paymentService;
     }
 
-    @GetMapping("/all")
-    public ModelAndView allCourses(){
-        return new ModelAndView("/course/all_courses", "courses", courseService.findCourses());
-    }
-
-    @GetMapping("/user")
+    @GetMapping("/list")
     public String userCourses(){
         return "/course/user_courses";
-    }
-
-    @GetMapping("/search")
-    public ModelAndView search(@RequestParam String request){
-        return new ModelAndView("/course/all_courses", "courses", courseService.findCoursesByName(request));
-    }
-
-    @GetMapping("/{id}")
-    public ModelAndView get(@PathVariable long id, @SessionAttribute(name = "user", required = false) CustomUser customUser){
-        Course course = courseService.findCourseById(id);
-        ModelAndView modelAndView = new ModelAndView("/course/course", "course", course);
-        if (customUser instanceof Student) {
-            modelAndView.addObject("enrolled", courseService.isEnrolled((Student) customUser, course));
-        }
-        else if (customUser instanceof Instructor){
-            modelAndView.addObject("author", courseService.isAuthor((Instructor) customUser, course));
-        }
-        return modelAndView;
-    }
-
-    @PostMapping("/enroll/{id}")
-    @ResponseBody
-    public void enroll(@PathVariable long id, @RequestParam String transactionId, @SessionAttribute(name = "user") Student student){
-        Course course = courseService.findCourseById(id);
-        paymentService.createPayment(new Payment(transactionId, student, course, course.getFee(), LocalDate.now()));
-        courseService.enrollInCourse(student, course);
-    }
-
-    @GetMapping("/unenroll/{id}")
-    public String unenroll(@PathVariable long id, @SessionAttribute(name = "user") Student student, Model model){
-        courseService.unenrollFromCourse(student, courseService.findCourseById(id));
-        model.addAttribute("user", userService.reinitializeStudent(student));
-        return "redirect:/course/user";
     }
 
     @GetMapping("/edit/{id}")
@@ -99,7 +55,7 @@ public class CourseController {
 
         courseService.updateCourse(id, form);
         model.addAttribute("user", userService.reinitializeInstructor((Instructor) customUser));
-        return "redirect:/course/user";
+        return "redirect:/instructor/course/list";
     }
 
     @GetMapping("/create")
@@ -114,7 +70,7 @@ public class CourseController {
     public String save(@ModelAttribute CourseForm form,
                        @SessionAttribute(name = "user") CustomUser customUser){
         courseService.createCourse(form, (Instructor) customUser);
-        return "redirect:/course/user";
+        return "redirect:/instructor/course/list";
     }
 
     @GetMapping("/delete/{id}")
@@ -123,6 +79,6 @@ public class CourseController {
                          Model model){
         courseService.deleteCourse(id);
         model.addAttribute("user", userService.reinitializeInstructor((Instructor)customUser));
-        return "redirect:/course/user";
+        return "redirect:/instructor/course/list";
     }
 }

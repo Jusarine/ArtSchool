@@ -16,7 +16,7 @@
         <div class="col-8">
             <div class="jumbotron">
                 <h1 class="display-4">Edit course</h1>
-                <form class="needs-validation form-horizontal mt-4" novalidate th:action="|/course/update/${id}|" method="POST">
+                <form class="needs-validation form-horizontal mt-4" novalidate th:action="|/instructor/course/update/${id}|" method="POST">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <div class="form-group row">
                         <label for="name" class="col-3 col-form-label">

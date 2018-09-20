@@ -1,4 +1,4 @@
-package com.artschool.controller;
+package com.artschool.controller.user;
 
 import com.artschool.model.entity.CustomUser;
 import com.artschool.service.user.UserService;
@@ -31,7 +31,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @GetMapping("/instructor/search")
+    @GetMapping("/search/instructor")
     public ModelAndView search(@RequestParam String request){
         return new ModelAndView("/user/users", "users", userService.findByName(request));
     }

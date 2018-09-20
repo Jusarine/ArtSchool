@@ -10,9 +10,12 @@
                     My courses
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="/course/user">Show</a>
+                    <div sec:authorize="hasRole('USER')">
+                        <a class="dropdown-item" href="/student/course/list">Show</a>
+                    </div>
                     <div sec:authorize="hasRole('ADMIN')">
-                        <a class="dropdown-item" href="/course/create">Create new</a>
+                        <a class="dropdown-item" href="/instructor/course/list">Show</a>
+                        <a class="dropdown-item" href="/instructor/course/create">Create new</a>
                     </div>
                 </div>
             </div>

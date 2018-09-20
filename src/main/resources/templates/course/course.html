@@ -66,15 +66,15 @@
                     </dd>
                 </dl>
                 <div sec:authorize="hasRole('USER')" th:if="${enrolled}">
-                    <a class="btn btn-danger btn-lg" th:href="|/course/unenroll/${course.id}|">Unenroll</a>
+                    <a class="btn btn-danger btn-lg" th:href="|/student/course/unenroll/${course.id}|">Unenroll</a>
                 </div>
                 <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
                     <div id="paypal-button-container"></div>
                     <div th:replace="fragments/payment :: paypal"></div>
                 </div>
                 <div sec:authorize="hasRole('ADMIN')" th:if="${author}">
-                    <a class="btn btn-warning" th:href="|/course/edit/${course.id}|">Edit</a>
-                    <a class="btn btn-danger" th:href="|/course/delete/${course.id}|">Delete</a>
+                    <a class="btn btn-warning" th:href="|/instructor/course/edit/${course.id}|">Edit</a>
+                    <a class="btn btn-danger" th:href="|/instructor/course/delete/${course.id}|">Delete</a>
                 </div>
             </div>
         </div>
