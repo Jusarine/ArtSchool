@@ -1,5 +1,6 @@
 package com.artschool.service.course;
 
+import com.artschool.model.entity.Course;
 import com.artschool.model.entity.Payment;
 import com.artschool.model.entity.Student;
 import com.artschool.repository.PaymentRepository;
@@ -29,5 +30,11 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional(readOnly = true)
     public List<Payment> findPayments(Student student){
         return paymentRepository.findPaymentsByPayer(student);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Payment findPayments(Course product){
+        return paymentRepository.findPaymentByProduct(product);
     }
 }

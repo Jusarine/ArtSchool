@@ -51,6 +51,16 @@ public class StudentCourseController {
         return "redirect:/student/course/list";
     }
 
+    @GetMapping("/restore/{id}")
+    public String restore(@PathVariable long id, @SessionAttribute(name = "user") Student student){
+        Course course = courseService.findCourseById(id);
+        if (paymentService.findPayments(course) != null){
+            courseService.enrollInCourse(student, course);
+            return "redirect:/student/course/list";
+        }
+        return "redirect:/course/" + id;
+    }
+
     @GetMapping("/payments")
     public ModelAndView payments(@SessionAttribute(name = "user") Student student){
         return new ModelAndView("/course/user_payments", "payments", paymentService.findPayments(student));

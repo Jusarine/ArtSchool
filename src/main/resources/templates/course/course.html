@@ -69,6 +69,7 @@
                     <a class="btn btn-danger btn-lg" th:href="|/student/course/unenroll/${course.id}|">Unenroll</a>
                 </div>
                 <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
+                    <a class="btn btn-secondary mb-3" th:href="|/student/course/restore/${course.id}|">Restore using transactions</a>
                     <div id="paypal-button-container"></div>
                     <div th:replace="fragments/payment :: paypal"></div>
                 </div>
