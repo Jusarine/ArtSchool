@@ -7,19 +7,20 @@
             <a class="btn btn-outline-primary" href="/profile">Profile</a>
             <div class="btn-group">
                 <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    My courses
+                    Courses
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <div sec:authorize="hasRole('USER')">
-                        <a class="dropdown-item" href="/student/course/list">Show</a>
+                        <a class="dropdown-item" href="/student/course/list">Mine</a>
                     </div>
                     <div sec:authorize="hasRole('ADMIN')">
-                        <a class="dropdown-item" href="/instructor/course/list">Show</a>
-                        <a class="dropdown-item" href="/instructor/course/create">Create new</a>
+                        <a class="dropdown-item" href="/instructor/course/list">Mine</a>
+                        <a class="dropdown-item" href="/instructor/course/create">Create</a>
                     </div>
                 </div>
             </div>
-            <a class="btn btn-outline-primary" href="#">My gallery</a>
+            <a sec:authorize="hasRole('USER')" class="btn btn-outline-primary" href="/student/course/payments">Payments</a>
+            <a class="btn btn-outline-primary" href="#">Gallery</a>
         </div>
     </div>
 </div>

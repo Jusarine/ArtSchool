@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Art School</title>
+    <div th:replace="fragments/styles :: styles"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="row mt-5">
+    <div class="col-3">
+        <div th:replace="fragments/user_menu :: user_menu"></div>
+    </div>
+    <div class="col-9">
+        <div class="ml-3 mr-5">
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Transaction</th>
+                    <th scope="col">Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="payment: ${payments}">
+                    <td th:text="${payment.id}"></td>
+                    <td><a th:text="${payment.product.name}" th:href="|/course/${payment.product.id}|"></a></td>
+                    <td th:text="${payment.total}"></td>
+                    <td th:text="${payment.transactionId}"></td>
+                    <td th:text="${payment.date}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

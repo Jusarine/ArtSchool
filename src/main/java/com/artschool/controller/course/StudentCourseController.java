@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 
@@ -48,5 +49,10 @@ public class StudentCourseController {
         courseService.unenrollFromCourse(student, courseService.findCourseById(id));
         model.addAttribute("user", userService.reinitializeStudent(student));
         return "redirect:/student/course/list";
+    }
+
+    @GetMapping("/payments")
+    public ModelAndView payments(@SessionAttribute(name = "user") Student student){
+        return new ModelAndView("/course/user_payments", "payments", paymentService.findPayments(student));
     }
 }
