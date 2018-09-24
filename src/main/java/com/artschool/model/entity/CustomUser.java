@@ -37,6 +37,9 @@ public abstract class CustomUser {
 
     private String status;
 
+    @Column(name = "reset_token")
+    private String resetToken;
+
     public CustomUser() {
     }
 
@@ -115,6 +118,14 @@ public abstract class CustomUser {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
     }
 
     @Override

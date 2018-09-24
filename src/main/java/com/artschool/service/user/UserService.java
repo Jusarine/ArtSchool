@@ -31,11 +31,17 @@ public interface UserService {
 
     CustomUser findById(long id);
 
+    CustomUser findByResetToken(String resetToken);
+
     Set<Instructor> findByName(String name);
 
     Student findStudentByEmail(String email);
 
     Instructor findInstructorByEmail(String email);
+
+    Student findStudentByResetToken(String resetToken);
+
+    Instructor findInstructorByResetToken(String resetToken);
 
     CustomUser findByEmail(String email);
 

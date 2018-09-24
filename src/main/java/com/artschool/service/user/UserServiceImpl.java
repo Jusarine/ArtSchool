@@ -128,6 +128,25 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
+    public Student findStudentByResetToken(String resetToken) {
+        return studentRepository.findStudentByResetToken(resetToken);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Instructor findInstructorByResetToken(String resetToken) {
+        return instructorRepository.findInstructorByResetToken(resetToken);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomUser findByResetToken(String resetToken){
+        CustomUser customUser = findStudentByResetToken(resetToken);
+        return customUser == null ? findInstructorByResetToken(resetToken) : customUser;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Set<Instructor> findByName(String name) {
         Set<Instructor> set = new HashSet<>();
         String[] words = name.split("[\\s]+");
