@@ -1,6 +1,7 @@
 package com.artschool.service.user;
 
 import com.artschool.model.entity.CustomUser;
+import com.artschool.model.entity.PasswordResetToken;
 import com.artschool.model.enumeration.Gender;
 import com.artschool.model.entity.Instructor;
 import com.artschool.model.entity.Student;
@@ -128,19 +129,19 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public Student findStudentByResetToken(String resetToken) {
+    public Student findStudentByResetToken(PasswordResetToken resetToken) {
         return studentRepository.findStudentByResetToken(resetToken);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Instructor findInstructorByResetToken(String resetToken) {
+    public Instructor findInstructorByResetToken(PasswordResetToken resetToken) {
         return instructorRepository.findInstructorByResetToken(resetToken);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public CustomUser findByResetToken(String resetToken){
+    public CustomUser findByResetToken(PasswordResetToken resetToken){
         CustomUser customUser = findStudentByResetToken(resetToken);
         return customUser == null ? findInstructorByResetToken(resetToken) : customUser;
     }

@@ -37,8 +37,8 @@ public abstract class CustomUser {
 
     private String status;
 
-    @Column(name = "reset_token")
-    private String resetToken;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE)
+    private PasswordResetToken resetToken;
 
     public CustomUser() {
     }
@@ -120,11 +120,11 @@ public abstract class CustomUser {
         this.status = status;
     }
 
-    public String getResetToken() {
+    public PasswordResetToken getResetToken() {
         return resetToken;
     }
 
-    public void setResetToken(String resetToken) {
+    public void setResetToken(PasswordResetToken resetToken) {
         this.resetToken = resetToken;
     }
 
