@@ -23,7 +23,13 @@
             </div>
         </div>
         <div class="col-9">
-            <div class="card-group mr-4">
+            <div th:if="${users.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
+                There are no instructors matching your request.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div th:unless="${users.empty}" class="card-group mr-4">
                 <div class="col-4 mb-4" th:each="u: ${users}">
                     <div class="card">
                         <div class="card-body">

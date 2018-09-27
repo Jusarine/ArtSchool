@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -72,13 +73,14 @@ public class LoginController {
     }
 
     @PostMapping("/new_user")
-    public String createUser(@ModelAttribute SignUpForm form, Model model){
+    public String createUser(@ModelAttribute SignUpForm form, Model model, RedirectAttributes redirectAttributes){
         Student student = userService.createStudent(form, passwordEncoder);
         if (student != null){
             securityService.login(form.getEmail(), form.getPassword());
             model.addAttribute("user", student);
             return "redirect:/profile";
         }
+        redirectAttributes.addAttribute("error", "User with this email already exists!");
         return "redirect:/login";
     }
 
@@ -88,17 +90,23 @@ public class LoginController {
     }
 
     @PostMapping("/forgot_password")
-    public String sendEmail(@RequestParam String email, HttpServletRequest req){
+    public String sendEmail(@RequestParam String email,
+                            RedirectAttributes redirectAttributes,
+                            HttpServletRequest req){
         CustomUser user = userService.findByEmail(email);
-        if (user == null) return "redirect:/login";
+        if (user == null) {
+            redirectAttributes.addAttribute("error", "There are not account associated with this email!");
+            return "redirect:/forgot_password";
+        }
 
         String token = UUID.randomUUID().toString();
-        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);
-        passwordTokenService.save(passwordResetToken);
+        user.setResetToken(new PasswordResetToken(token, user));
+        userService.saveOrUpdate(user);
 
         String appUrl = req.getRequestURL().toString().replace(req.getRequestURI(), req.getContextPath());
         constructResetTokenEmail(email, appUrl + "/reset_password?id=" + user.getId() + "&token=" + token);
 
+        redirectAttributes.addAttribute("success", "Check your email for a link to reset your password.");
         return "redirect:/login";
     }
 
@@ -110,15 +118,19 @@ public class LoginController {
     @PostMapping("/reset_password")
     public String resetPassword(@RequestParam long id,
                                 @RequestParam String token,
-                                @RequestParam String password){
+                                @RequestParam String password,
+                                RedirectAttributes redirectAttributes){
         PasswordResetToken passwordResetToken = passwordTokenService.findByToken(token);
-        if (passwordResetToken == null || passwordResetToken.isExpired() || passwordResetToken.getUser().getId() != id)
+        if (passwordResetToken == null || passwordResetToken.isExpired() || passwordResetToken.getUser().getId() != id) {
+            redirectAttributes.addAttribute("error", "Wrong reset token!");
             return "redirect:/login";
+        }
 
         CustomUser user = passwordResetToken.getUser();
         user.setPassword(passwordEncoder.encode(password));
         userService.saveOrUpdate(user);
 
+        redirectAttributes.addAttribute("success", "Password was successfully restored.");
         return "redirect:/login";
     }
 

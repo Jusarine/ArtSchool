@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
@@ -38,7 +39,9 @@ public class StudentCourseController {
 
     @PostMapping("/enroll/{id}")
     @ResponseBody
-    public void enroll(@PathVariable long id, @RequestParam String transactionId, @SessionAttribute(name = "user") Student student){
+    public void enroll(@PathVariable long id,
+                       @RequestParam String transactionId,
+                       @SessionAttribute(name = "user") Student student){
         Course course = courseService.findCourseById(id);
         paymentService.createPayment(new Payment(transactionId, student, course, course.getFee(), LocalDate.now()));
         courseService.enrollInCourse(student, course);
@@ -52,12 +55,16 @@ public class StudentCourseController {
     }
 
     @GetMapping("/restore/{id}")
-    public String restore(@PathVariable long id, @SessionAttribute(name = "user") Student student){
+    public String restore(@PathVariable long id,
+                          @SessionAttribute(name = "user") Student student,
+                          RedirectAttributes redirectAttributes){
         Course course = courseService.findCourseById(id);
         if (paymentService.findPayments(course) != null){
             courseService.enrollInCourse(student, course);
             return "redirect:/student/course/list";
         }
+        redirectAttributes.addAttribute("error", "You haven't made a payment for this course!" +
+                "If you want to enroll, please pay for it by PayPal.");
         return "redirect:/course/" + id;
     }
 

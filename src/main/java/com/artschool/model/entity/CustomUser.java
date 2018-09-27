@@ -37,7 +37,7 @@ public abstract class CustomUser {
 
     private String status;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE, orphanRemoval = true)
     private PasswordResetToken resetToken;
 
     public CustomUser() {

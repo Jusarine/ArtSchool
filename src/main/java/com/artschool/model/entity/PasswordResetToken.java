@@ -16,8 +16,8 @@ public class PasswordResetToken {
     @Column(nullable = false, unique = true)
     private String token;
 
-    @OneToOne(optional = false, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id")
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "user_id", nullable = false)
     private CustomUser user;
 
     private Date expiryDate;

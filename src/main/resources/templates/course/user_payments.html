@@ -12,7 +12,13 @@
         <div th:replace="fragments/user_menu :: user_menu"></div>
     </div>
     <div class="col-9">
-        <div class="ml-3 mr-5">
+        <div th:if="${payments.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
+            You haven't made any payments yet.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:unless="${payments.empty}" class="ml-3 mr-5">
             <table class="table">
                 <thead class="thead-light">
                 <tr>
