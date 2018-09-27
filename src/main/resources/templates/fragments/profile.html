@@ -20,13 +20,18 @@
                             <a class="x_editable" id="status" th:text="${#object.status}" data-pk="${#object.id}" data-type="text" data-url="/edit_status"></a>
                         </div>
                     </div>
+                    <div th:if="${{#object.role}} == 'ADMIN'">
+                        <p class="lead" th:text="${#object.bio}"></p>
+                    </div>
                     <hr class="my-4">
 
-                    <h4>Email:</h4>
-                    <p class="lead" th:text="${#object.email}"></p>
+                    <dl class="row">
+                        <dt class="col-5 h5">Email:</dt>
+                        <dd class="col-7 lead" th:text="${#object.email}"></dd>
 
-                    <h4>Phone Number:</h4>
-                    <p class="lead" th:text="${#object.phoneNumber}"></p>
+                        <dt class="col-5 h5">Phone Number:</dt>
+                        <dd class="col-7 lead" th:text="${#object.phoneNumber}"></dd>
+                    </dl>
                 </div>
             </div>
         </div>

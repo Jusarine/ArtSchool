@@ -31,8 +31,17 @@ public class ArtSchoolApplication {
             dayService.addDays(DayOfWeek.values());
             disciplineService.addDiscipline("CERAMICS", "DRAWING", "JEWELLERY", "MOSAICS", "PAINTING", "PRINTMAKING", "SCULPTURE");
 
-            Instructor instructor1 = userService.createInstructor(new Instructor("Emily", "Horton", Gender.FEMALE, "380508836472", "admin@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS"));
-            Instructor instructor2 = userService.createInstructor(new Instructor("Mark", "Reinold", Gender.MALE, "380978463742", "admin2@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS"));
+            Instructor instructor1 = userService.createInstructor(new Instructor("Emily", "Horton", Gender.FEMALE,
+                    "380508836472", "admin@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS",
+                    "Emily Horton received her degree in Fine Arts from Academy of Art University in San Francisco in 2008. " +
+                            "She is experienced in various fields including drawing and painting, sculpting, 2d and 3d animation and illustration. " +
+                            "As a teacher, she is confident with all of the age groups from toddlers to adults, providing personal approach and fun learning environment in her classes."));
+            Instructor instructor2 = userService.createInstructor(new Instructor("Mark", "Reinold", Gender.MALE,
+                    "380978463742", "admin2@gmail.com", "$2a$10$Xg.JmfKBVKJNR.GoM8nX8.POT3KJW5tE75ngItbj.s6vGTGDtyuXS",
+                    "Mark Reinold is a Florida born San Francisico illustrator specializing in traditional media like watercolor, ink, charcoal and acrylics. " +
+                            "He graduated with a BFA from the Academy of Art University and now works as an instructor and freelance illustrator. " +
+                            "Having taken an interest in art since a child, Mark pulls influences from classical art and the masters of 20th century American illustration, as well as influence from contemporary illustrators and concept artists. " +
+                            "His work spans from classical studies and demonstrations of realism to highly stylized storytelling and character illustrations."));
 
             Course course1 = courseService.createCourse(new Course("Pen and Ink Drawing",
                     disciplineService.getDisciplines("DRAWING"),

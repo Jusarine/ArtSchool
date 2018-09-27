@@ -8,7 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Instructor extends CustomUser{
+public class Instructor extends CustomUser {
+
+    @Column(columnDefinition = "LONGTEXT")
+    private String bio;
 
     private Integer rating;
 
@@ -18,9 +21,18 @@ public class Instructor extends CustomUser{
     public Instructor() {
     }
 
-    public Instructor(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password) {
+    public Instructor(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password, String bio) {
         super(firstName, lastName, gender, phoneNumber, email, password);
         super.setRole(UserRole.ADMIN);
+        this.bio = bio;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public Integer getRating() {
@@ -46,8 +58,9 @@ public class Instructor extends CustomUser{
     @Override
     public String toString() {
         return "Instructor{" +
-                "rating=" + rating +
-                "} " + super.toString();
+                "bio='" + bio + '\'' +
+                ", rating=" + rating +
+                '}';
     }
 
     @Override
@@ -55,6 +68,7 @@ public class Instructor extends CustomUser{
         if (this == o) return true;
         if (!super.equals(o)) return false;
         Instructor that = (Instructor) o;
+        if (bio != null ? !bio.equals(that.bio) : that.bio != null) return false;
         if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
         return true;
     }
@@ -62,6 +76,7 @@ public class Instructor extends CustomUser{
     @Override
     public int hashCode() {
         int hash = super.hashCode();
+        hash = 31 * hash + (bio != null ? bio.hashCode() : 0);
         hash = 31 * hash + (rating != null ? rating.hashCode() : 0);
         return hash;
     }

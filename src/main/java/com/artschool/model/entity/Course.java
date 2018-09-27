@@ -46,6 +46,7 @@ public class Course {
 
     private Long daysAmount;
 
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     @ManyToOne(optional = false)
