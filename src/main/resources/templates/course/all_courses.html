@@ -9,18 +9,7 @@
 
     <div class="row mt-5">
         <div class="col-3">
-            <div class="row">
-                <div class="mr-3">
-                    <div class="card mb-auto pl-4">
-                        <div class="card-body">
-                            <form class="form-inline" th:action="@{/course/search}" method="GET">
-                                <input class="form-control my-3" name="request" type="search" placeholder="Course name...">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div th:replace="fragments/search_course :: search_course"></div>
         </div>
         <div class="col-9">
             <div th:if="${courses.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">

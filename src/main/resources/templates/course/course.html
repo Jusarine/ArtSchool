@@ -9,79 +9,94 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
 
-    <div class="row mt-5 mx-5 px-5">
-        <div class="col-4">
-            <figure class="figure">
-                <img src="/images/course.png" class="figure-img img-fluid rounded">
-            </figure>
-        </div>
-        <div class="col-8">
-            <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
-                <a th:text="${param.error}"></a>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="row mt-5">
+        <div class="col-3">
+            <div sec:authorize="isAuthenticated()">
+                <div th:replace="fragments/user_menu :: user_menu"></div>
             </div>
-            <div class="jumbotron">
-                <h1 class="display-4" th:text="${course.name}"></h1>
-                <a class="lead" th:text="${course.description}"></a>
+            <div sec:authorize="!isAuthenticated()">
+                <div th:replace="fragments/search_course :: search_course"></div>
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="jumbotron ml-3 mr-5">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="mx-4">
+                            <figure class="figure">
+                                <img src="/images/course.png" class="figure-img img-fluid rounded">
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                            <a th:text="${param.error}"></a>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
 
-                <hr class="my-4">
-                <dl class="row">
-                    <dt class="col-3 lead">Audience:</dt>
-                    <dd class="col-9 lead" th:text="${course.audience}"></dd>
+                        <h1 class="display-4" th:text="${course.name}"></h1>
+                        <a class="lead" th:text="${course.description}"></a>
 
-                    <dt class="col-3 lead">Discipline:</dt>
-                    <dd class="col-9 lead">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item" th:each="discipline : ${course.disciplines}" th:text="${discipline.getCapitalizedName()}"></li>
-                        </ul>
-                    </dd>
+                        <hr class="my-4">
+                        <dl class="row">
+                            <dt class="col-3 lead">Audience:</dt>
+                            <dd class="col-9 lead" th:text="${course.audience}"></dd>
 
-                    <dt class="col-3 lead">Instructor:</dt>
-                    <dd class="col-9 lead" th:text="|${course.instructor.firstName} ${course.instructor.lastName}|"></dd>
+                            <dt class="col-3 lead">Discipline:</dt>
+                            <dd class="col-9 lead">
+                                <ul class="list-inline mb-0">
+                                    <li class="list-inline-item" th:each="discipline : ${course.disciplines}" th:text="${discipline.getCapitalizedName()}"></li>
+                                </ul>
+                            </dd>
 
-                    <dt class="col-3 lead">Fee:</dt>
-                    <dd class="col-9 lead" th:text="${course.fee} + ' $'"></dd>
-                </dl>
-                <hr class="my-4">
-                <dl class="row">
-                    <dt class="col-3 lead">Date:</dt>
-                    <dd class="col-9 lead" th:text="${course.date.getFormattedStartDate()} + ' - ' + ${course.date.getFormattedEndDate()}"></dd>
+                            <dt class="col-3 lead">Instructor:</dt>
+                            <dd class="col-9 lead" th:text="|${course.instructor.firstName} ${course.instructor.lastName}|"></dd>
 
-                    <dt class="col-3 lead">Time:</dt>
-                    <dd class="col-9 lead" th:text="${course.date.startTime} + ' - ' + ${course.date.endTime}"></dd>
+                            <dt class="col-3 lead">Fee:</dt>
+                            <dd class="col-9 lead" th:text="${course.fee} + ' $'"></dd>
+                        </dl>
+                        <hr class="my-4">
+                        <dl class="row">
+                            <dt class="col-3 lead">Date:</dt>
+                            <dd class="col-9 lead" th:text="${course.date.getFormattedStartDate()} + ' - ' + ${course.date.getFormattedEndDate()}"></dd>
 
-                    <dt class="col-3 lead">Days:</dt>
-                    <dd class="col-9 lead">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item" th:each="day : ${course.days}" th:text="${day.getCapitalizedName()}"></li>
-                        </ul>
-                    </dd>
+                            <dt class="col-3 lead">Time:</dt>
+                            <dd class="col-9 lead" th:text="${course.date.startTime} + ' - ' + ${course.date.endTime}"></dd>
 
-                    <dt class="col-3 lead">Duration:</dt>
-                    <dd class="col-9 lead" th:text="|${course.weeksAmount} weeks, ${course.daysAmount} days|"></dd>
-                </dl>
-                <hr class="my-4">
-                <dl class="row">
-                    <dt class="col-3 lead">Students:</dt>
-                    <dd class="col-9 lead">
-                        <ul class="list-inline">
-                            <li class="list-inline-item" th:each="student: ${course.students}" th:text="|${student.firstName} ${student.lastName}|"></li>
-                        </ul>
-                    </dd>
-                </dl>
-                <div sec:authorize="hasRole('USER')" th:if="${enrolled}">
-                    <a class="btn btn-danger btn-lg" th:href="|/student/course/unenroll/${course.id}|">Unenroll</a>
-                </div>
-                <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
-                    <a class="btn btn-secondary mb-3" th:href="|/student/course/restore/${course.id}|">Restore using transactions</a>
-                    <div id="paypal-button-container"></div>
-                    <div th:replace="fragments/payment :: paypal"></div>
-                </div>
-                <div sec:authorize="hasRole('ADMIN')" th:if="${author}">
-                    <a class="btn btn-warning" th:href="|/instructor/course/edit/${course.id}|">Edit</a>
-                    <a class="btn btn-danger" th:href="|/instructor/course/delete/${course.id}|">Delete</a>
+                            <dt class="col-3 lead">Days:</dt>
+                            <dd class="col-9 lead">
+                                <ul class="list-inline mb-0">
+                                    <li class="list-inline-item" th:each="day : ${course.days}" th:text="${day.getCapitalizedName()}"></li>
+                                </ul>
+                            </dd>
+
+                            <dt class="col-3 lead">Duration:</dt>
+                            <dd class="col-9 lead" th:text="|${course.weeksAmount} weeks, ${course.daysAmount} days|"></dd>
+                        </dl>
+                        <hr class="my-4">
+                        <dl class="row">
+                            <dt class="col-3 lead">Students:</dt>
+                            <dd class="col-9 lead">
+                                <ul class="list-inline">
+                                    <li class="list-inline-item" th:each="student: ${course.students}" th:text="|${student.firstName} ${student.lastName}|"></li>
+                                </ul>
+                            </dd>
+                        </dl>
+                        <div sec:authorize="hasRole('USER')" th:if="${enrolled}">
+                            <a class="btn btn-danger btn-lg" th:href="|/student/course/unenroll/${course.id}|">Unenroll</a>
+                        </div>
+                        <div sec:authorize="hasRole('USER')" th:unless="${enrolled}">
+                            <a class="btn btn-secondary mb-3" th:href="|/student/course/restore/${course.id}|">Restore using transactions</a>
+                            <div id="paypal-button-container"></div>
+                            <div th:replace="fragments/payment :: paypal"></div>
+                        </div>
+                        <div sec:authorize="hasRole('ADMIN')" th:if="${author}">
+                            <a class="btn btn-warning" th:href="|/instructor/course/edit/${course.id}|">Edit</a>
+                            <a class="btn btn-danger" th:href="|/instructor/course/delete/${course.id}|">Delete</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

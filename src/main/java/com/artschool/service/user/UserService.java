@@ -4,7 +4,8 @@ import com.artschool.model.entity.CustomUser;
 import com.artschool.model.entity.Instructor;
 import com.artschool.model.entity.PasswordResetToken;
 import com.artschool.model.entity.Student;
-import com.artschool.model.form.SignUpForm;
+import com.artschool.model.form.SignUpStudentForm;
+import com.artschool.model.form.SignUpInstructorForm;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -14,7 +15,9 @@ public interface UserService {
 
     Student createStudent(Student student);
 
-    Student createStudent(SignUpForm form, PasswordEncoder passwordEncoder);
+    Student createStudent(SignUpStudentForm form, PasswordEncoder passwordEncoder);
+
+    Instructor createInstructor(SignUpInstructorForm form, PasswordEncoder passwordEncoder);
 
     Instructor createInstructor(Instructor instructor);
 

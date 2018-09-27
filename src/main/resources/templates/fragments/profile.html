@@ -6,11 +6,13 @@
         <div class="jumbotron">
             <div class="row">
                 <div class="col-4">
-                    <figure class="figure">
-                        <img th:src="${{#object.gender}} == 'FEMALE' ? '/images/girl.png' : '/images/boy.png'" class="figure-img img-fluid rounded-circle" style="object-fit: cover; height: 200px;">
-                    </figure>
+                    <div class="mx-4">
+                        <figure class="figure">
+                            <img th:src="${{#object.gender}} == 'FEMALE' ? '/images/girl.png' : '/images/boy.png'" class="figure-img img-fluid rounded-circle">
+                        </figure>
+                    </div>
                 </div>
-                <div class="col-8 my-auto">
+                <div class="col-8">
                     <h1 class="display-4" th:text="|${#object.firstName} ${#object.lastName}|"></h1>
                     <div th:if="${another}">
                         <a class="lead" th:text="${#object.status}"></a>
@@ -21,7 +23,7 @@
                         </div>
                     </div>
                     <div th:if="${{#object.role}} == 'ADMIN'">
-                        <p class="lead" th:text="${#object.bio}"></p>
+                        <p class="lead mt-3" th:text="${#object.bio}"></p>
                     </div>
                     <hr class="my-4">
 

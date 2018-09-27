@@ -5,7 +5,8 @@ import com.artschool.model.entity.PasswordResetToken;
 import com.artschool.model.enumeration.Gender;
 import com.artschool.model.entity.Instructor;
 import com.artschool.model.entity.Student;
-import com.artschool.model.form.SignUpForm;
+import com.artschool.model.form.SignUpStudentForm;
+import com.artschool.model.form.SignUpInstructorForm;
 import com.artschool.repository.InstructorRepository;
 import com.artschool.repository.StudentRepository;
 import org.hibernate.Hibernate;
@@ -34,15 +35,15 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public Student createStudent(Student student) {
-        if (findByEmail(student.getEmail()) != null) return null;
+        if (findStudentByEmail(student.getEmail()) != null) return null;
         studentRepository.save(student);
         return student;
     }
 
     @Override
     @Transactional
-    public Student createStudent(SignUpForm form, PasswordEncoder passwordEncoder) {
-        if (findByEmail(form.getEmail()) != null) return null;
+    public Student createStudent(SignUpStudentForm form, PasswordEncoder passwordEncoder) {
+        if (findStudentByEmail(form.getEmail()) != null) return null;
         String encodedPassword = passwordEncoder.encode(form.getPassword());
         Student student = new Student(form.getFirstName(), form.getLastName(), Gender.valueOf(form.getGender()),
                 form.getPhoneNumber(), form.getEmail(), encodedPassword);
@@ -52,8 +53,19 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
+    public Instructor createInstructor(SignUpInstructorForm form, PasswordEncoder passwordEncoder) {
+        if (findInstructorByEmail(form.getEmail()) != null) return null;
+        String encodedPassword = passwordEncoder.encode(form.getPassword());
+        Instructor instructor = new Instructor(form.getFirstName(), form.getLastName(), Gender.valueOf(form.getGender()),
+                form.getPhoneNumber(), form.getEmail(), encodedPassword, form.getBio());
+        instructorRepository.save(instructor);
+        return instructor;
+    }
+
+    @Override
+    @Transactional
     public Instructor createInstructor(Instructor instructor) {
-        if(findByEmail(instructor.getEmail()) != null) return null;
+        if(findInstructorByEmail(instructor.getEmail()) != null) return null;
         instructorRepository.save(instructor);
         return instructor;
     }

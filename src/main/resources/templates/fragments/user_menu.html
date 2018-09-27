@@ -19,6 +19,14 @@
                     </div>
                 </div>
             </div>
+            <div sec:authorize="hasRole('ADMIN')" class="btn-group">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Instructors
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="/instructor/create">Create</a>
+                </div>
+            </div>
             <a sec:authorize="hasRole('USER')" class="btn btn-outline-primary" href="/student/course/payments">Payments</a>
             <a class="btn btn-outline-primary" href="#">Gallery</a>
         </div>

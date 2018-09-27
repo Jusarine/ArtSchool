@@ -4,7 +4,8 @@ import com.artschool.model.entity.CustomUser;
 import com.artschool.model.entity.Instructor;
 import com.artschool.model.entity.PasswordResetToken;
 import com.artschool.model.entity.Student;
-import com.artschool.model.form.SignUpForm;
+import com.artschool.model.form.SignUpStudentForm;
+import com.artschool.model.form.SignUpInstructorForm;
 import com.artschool.service.security.EmailService;
 import com.artschool.service.security.PasswordTokenService;
 import com.artschool.service.security.SecurityService;
@@ -73,15 +74,30 @@ public class LoginController {
     }
 
     @PostMapping("/new_user")
-    public String createUser(@ModelAttribute SignUpForm form, Model model, RedirectAttributes redirectAttributes){
+    public String createUser(@ModelAttribute SignUpStudentForm form, Model model, RedirectAttributes redirectAttributes){
         Student student = userService.createStudent(form, passwordEncoder);
         if (student != null){
             securityService.login(form.getEmail(), form.getPassword());
             model.addAttribute("user", student);
             return "redirect:/profile";
         }
-        redirectAttributes.addAttribute("error", "User with this email already exists!");
+        redirectAttributes.addAttribute("error", "Student with this email already exists!");
         return "redirect:/login";
+    }
+
+    @GetMapping("/instructor/create")
+    public String createInstructor(){
+        return "/user/create_instructor";
+    }
+
+    @PostMapping("/instructor/create")
+    public String showCreateInstructorPage(@ModelAttribute SignUpInstructorForm form, RedirectAttributes redirectAttributes){
+        Instructor instructor = userService.createInstructor(form, passwordEncoder);
+        if (instructor == null) {
+            redirectAttributes.addAttribute("error", "Instructor with this email already exists!");
+            return "redirect:/instructor/create";
+        }
+        return "redirect:/profile";
     }
 
     @GetMapping("/forgot_password")

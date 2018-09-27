@@ -1,6 +1,6 @@
 package com.artschool.model.form;
 
-public class SignUpForm {
+public class SignUpStudentForm {
 
     private String firstName;
 
@@ -14,7 +14,7 @@ public class SignUpForm {
 
     private String password;
 
-    public SignUpForm() {
+    public SignUpStudentForm() {
     }
 
     public String getFirstName() {
