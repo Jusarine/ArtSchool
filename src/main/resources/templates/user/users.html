@@ -9,9 +9,7 @@
 
     <div class="row mt-5">
         <div class="col-3">
-            <div class="row">
-                <div th:replace="fragments/search_instructor :: search_instructor"></div>
-            </div>
+            <div th:replace="fragments/search_instructor :: search_instructor"></div>
         </div>
         <div class="col-9">
             <div th:if="${users.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">

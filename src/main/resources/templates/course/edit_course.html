@@ -100,7 +100,6 @@
                                 <div class="col-9">
                                     <select id="days" name="days" class="selectpicker form-control" multiple title="Day..." data-live-search="true" data-style="btn-white" required>
                                         <option th:each="day : ${days}" th:value="${day.name}" th:text="${day.getCapitalizedName()}" th:selected="${course.days.contains(day) ?: 'selected'}"></option>
-
                                     </select>
                                 </div>
                             </div>

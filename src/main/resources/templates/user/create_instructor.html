@@ -24,7 +24,7 @@
                         <div class="col-4">
                             <div class="mx-4">
                                 <figure class="figure">
-                                    <img src="/images/boy.png" class="figure-img img-fluid rounded-circle">
+                                    <img src="/images/boy.png" id="image" name="image" class="figure-img img-fluid rounded-circle">
                                 </figure>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                     </label>
                                     <div class="col-9 my-auto">
                                         <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" name="gender" value="MALE" class="custom-control-input" id="male" required>
+                                            <input type="radio" name="gender" value="MALE" class="custom-control-input" id="male" checked required>
                                             <label class="custom-control-label" for="male">Male</label>
                                         </div>
                                         <div class="custom-control custom-radio custom-control-inline">
@@ -98,14 +98,16 @@
                                     </div>
                                 </div>
                                 <button class="btn btn-primary" id="sign_up" type="submit">Submit</button>
-                                <a class="btn btn-light" href="/profile">Cancel</a>
+                                <a class="btn btn-light" href="/instructors">Cancel</a>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 
+    <script src="/js/change_gender_images.js"></script>
     <script src="/js/form_validation.js"></script>
 </body>
 </html>
