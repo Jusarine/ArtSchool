@@ -12,6 +12,8 @@ public interface InstructorRepository extends JpaRepository<Instructor, Long>{
 
     Instructor findInstructorByResetToken(PasswordResetToken resetToken);
 
+    Instructor findInstructorByFirstNameAndLastName(String firstName, String lastName);
+
     Set<Instructor> findInstructorsByFirstNameContaining(String firstName);
 
     Set<Instructor> findInstructorsByLastNameContaining(String lastName);

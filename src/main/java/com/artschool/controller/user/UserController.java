@@ -33,7 +33,7 @@ public class UserController {
 
     @GetMapping("/search/instructor")
     public ModelAndView search(@RequestParam String request){
-        return new ModelAndView("/user/users", "users", userService.findByName(request));
+        return new ModelAndView("/user/users", "users", userService.findInstructorsByName(request));
     }
 
     @GetMapping("/instructors")

@@ -41,13 +41,15 @@ public interface UserService {
 
     CustomUser findByResetToken(PasswordResetToken resetToken);
 
-    Set<Instructor> findByName(String name);
+    Set<Instructor> findInstructorsByName(String name);
 
     Student findStudentByEmail(String email);
 
     Instructor findInstructorByEmail(String email);
 
     CustomUser findByEmail(String email);
+
+    Instructor findInstructorByName(String name);
 
     List<Student> findStudents();
 

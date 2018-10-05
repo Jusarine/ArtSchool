@@ -1,6 +1,7 @@
 package com.artschool.service.course;
 
 import com.artschool.model.entity.*;
+import com.artschool.model.enumeration.Audience;
 import com.artschool.model.form.CourseForm;
 
 import java.util.List;
@@ -31,6 +32,12 @@ public interface CourseService {
     Course findCourseById(long id);
 
     Set<Course> findCoursesByName(String name);
+
+    Set<Course> findCoursesByDiscipline(Discipline discipline);
+
+    Set<Course> findCoursesByAudience(Audience audience);
+
+    Set<Course> findCoursesByInstructor(Instructor instructor);
 
     List<Course> findCourses();
 }

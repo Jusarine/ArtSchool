@@ -1,6 +1,7 @@
 package com.artschool.service.course;
 
 import com.artschool.model.entity.*;
+import com.artschool.model.enumeration.Audience;
 import com.artschool.model.form.CourseForm;
 import com.artschool.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,24 @@ public class CourseServiceImpl implements CourseService{
     @Transactional(readOnly = true)
     public Set<Course> findCoursesByName(String name) {
         return courseRepository.findCoursesByNameContaining(name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> findCoursesByDiscipline(Discipline discipline) {
+        return courseRepository.findCoursesByDisciplines(discipline);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> findCoursesByAudience(Audience audience) {
+        return courseRepository.findCoursesByAudience(audience);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> findCoursesByInstructor(Instructor instructor) {
+        return courseRepository.findCoursesByInstructor(instructor);
     }
 
     @Override

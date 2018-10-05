@@ -2,16 +2,51 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="search_course">
-    <div class="row">
-        <div class="mr-3">
-            <div class="card mb-auto pl-4">
-                <div class="card-body">
-                    <form class="form-inline" th:action="@{/course/search}" method="GET">
-                        <input class="form-control my-3" name="request" type="search" placeholder="Course name...">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+    <div class="card mb-auto">
+        <form th:action="@{/course/search}" method="GET">
+            <div class="card-header">
+                <div class="my-3">
+                    <h3>Search course</h3>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Name</span>
+                        </div>
+                        <input type="text" class="form-control" id="request" name="request" title="Course name">
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="discipline">
+                        <strong>Discipline</strong>
+                    </label>
+                    <select id="discipline" name="discipline" class="form-control" title="Discipline" >
+                        <option selected></option>
+                        <option th:each="discipline : ${disciplines}" th:value="${discipline.name}" th:text="${discipline.getCapitalizedName()}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="discipline">
+                        <strong>Audience</strong>
+                    </label>
+                    <select id="audience" name="audience" class="form-control" title="Audience...">
+                        <option selected></option>
+                        <option th:each="audience : ${T(com.artschool.model.enumeration.Audience).values()}" th:value="${{audience}}" th:text="${audience}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="discipline">
+                        <strong>Instructor</strong>
+                    </label>
+                    <select id="instructor" name="instructor" class="form-control" title="Instructor">
+                        <option selected></option>
+                        <option th:each="instructor : ${instructors}" th:value="|${instructor.firstName} ${instructor.lastName}|" th:text="|${instructor.firstName} ${instructor.lastName}|"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-secondary btn-block my-3" type="submit">Search</button>
+            </div>
+        </form>
     </div>
 </div>

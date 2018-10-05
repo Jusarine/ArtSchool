@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Instructor> findByName(String name) {
+    public Set<Instructor> findInstructorsByName(String name) {
         Set<Instructor> set = new HashSet<>();
         String[] words = name.split("[\\s]+");
         if (words.length == 0){
@@ -175,6 +175,13 @@ public class UserServiceImpl implements UserService{
             set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[1], words[0]));
         }
         return set;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Instructor findInstructorByName(String name) {
+        String[] words = name.split("[\\s]+");
+        return instructorRepository.findInstructorByFirstNameAndLastName(words[0], words[1]);
     }
 
     @Override
