@@ -7,12 +7,7 @@
             <div class="card-header">
                 <div class="my-3">
                     <h3>Search course</h3>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Name</span>
-                        </div>
-                        <input type="text" class="form-control" id="request" name="request" title="Course name">
-                    </div>
+                    <input type="text" class="form-control mb-3" id="request" name="request" placeholder="Name" title="Course name">
                 </div>
             </div>
             <div class="card-body">
@@ -21,7 +16,7 @@
                         <strong>Discipline</strong>
                     </label>
                     <select id="discipline" name="discipline" class="form-control" title="Discipline" >
-                        <option selected></option>
+                        <option selected>...</option>
                         <option th:each="discipline : ${disciplines}" th:value="${discipline.name}" th:text="${discipline.getCapitalizedName()}"></option>
                     </select>
                 </div>
@@ -30,7 +25,7 @@
                         <strong>Audience</strong>
                     </label>
                     <select id="audience" name="audience" class="form-control" title="Audience...">
-                        <option selected></option>
+                        <option selected>...</option>
                         <option th:each="audience : ${T(com.artschool.model.enumeration.Audience).values()}" th:value="${{audience}}" th:text="${audience}"></option>
                     </select>
                 </div>
@@ -39,7 +34,7 @@
                         <strong>Instructor</strong>
                     </label>
                     <select id="instructor" name="instructor" class="form-control" title="Instructor">
-                        <option selected></option>
+                        <option selected>...</option>
                         <option th:each="instructor : ${instructors}" th:value="|${instructor.firstName} ${instructor.lastName}|" th:text="|${instructor.firstName} ${instructor.lastName}|"></option>
                     </select>
                 </div>

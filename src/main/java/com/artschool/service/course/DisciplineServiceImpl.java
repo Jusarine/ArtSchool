@@ -34,13 +34,13 @@ public class DisciplineServiceImpl implements DisciplineService{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Discipline getDiscipline(String discipline){
         return disciplineRepository.findDisciplineByName(discipline);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Discipline> getDisciplines(String... disciplines){
         List<Discipline> list = new ArrayList<>();
         for (String discipline : disciplines) {

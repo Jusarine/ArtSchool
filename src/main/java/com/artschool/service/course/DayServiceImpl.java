@@ -35,13 +35,13 @@ public class DayServiceImpl implements DayService{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Day getDay(DayOfWeek day){
         return dayRepository.findDayByName(day);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Day> getDays(DayOfWeek... days){
         List<Day> list = new ArrayList<>();
         for (DayOfWeek day : days) {

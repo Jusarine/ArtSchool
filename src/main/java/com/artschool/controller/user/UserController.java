@@ -24,7 +24,8 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}")
-    public ModelAndView profileById(@SessionAttribute(name = "user", required = false) CustomUser customUser, @PathVariable long id){
+    public ModelAndView profileById(@PathVariable long id,
+                                    @SessionAttribute(name = "user", required = false) CustomUser customUser){
         ModelAndView modelAndView = new ModelAndView("/user/profile_by_id");
         if (customUser == null || customUser.getId() != id) modelAndView.addObject("another", true);
         modelAndView.addObject("member", userService.findById(id));
@@ -42,8 +43,8 @@ public class UserController {
     }
 
     @PostMapping("/edit_status")
-    public @ResponseBody String editStatus(@SessionAttribute(name = "user") CustomUser customUser,
-                                     @RequestParam("value") String status){
+    public @ResponseBody String editStatus(@RequestParam("value") String status,
+                                           @SessionAttribute(name = "user") CustomUser customUser){
         userService.editStatus(customUser, status);
         return status;
     }
