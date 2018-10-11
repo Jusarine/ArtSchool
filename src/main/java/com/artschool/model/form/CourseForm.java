@@ -13,6 +13,8 @@ public class CourseForm {
 
     private Audience audience;
 
+    private Integer availableSpaces;
+
     private Integer fee;
 
     private String date;
@@ -50,6 +52,14 @@ public class CourseForm {
 
     public void setAudience(Audience audience) {
         this.audience = audience;
+    }
+
+    public Integer getAvailableSpaces() {
+        return availableSpaces;
+    }
+
+    public void setAvailableSpaces(Integer availableSpaces) {
+        this.availableSpaces = availableSpaces;
     }
 
     public Integer getFee() {

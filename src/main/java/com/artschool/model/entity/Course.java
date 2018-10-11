@@ -29,6 +29,8 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private Audience audience;
 
+    private Integer availableSpaces;
+
     private Integer fee;
 
     @OneToOne(cascade = CascadeType.MERGE)
@@ -66,10 +68,11 @@ public class Course {
     public Course() {
     }
 
-    public Course(String name, List<Discipline> disciplines, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
+    public Course(String name, List<Discipline> disciplines, Audience audience, Integer availableSpaces, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
         this.name = name;
         this.disciplines = disciplines;
         this.audience = audience;
+        this.availableSpaces = availableSpaces;
         this.fee = fee;
         this.date = date;
         this.days = days;
@@ -78,11 +81,12 @@ public class Course {
         this.instructor = instructor;
     }
 
-    public Course(long id, String name, List<Discipline> disciplines, Audience audience, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
+    public Course(long id, String name, List<Discipline> disciplines, Audience audience, Integer availableSpaces, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
         this.id = id;
         this.name = name;
         this.disciplines = disciplines;
         this.audience = audience;
+        this.availableSpaces = availableSpaces;
         this.fee = fee;
         this.date = date;
         this.days = days;
@@ -117,6 +121,22 @@ public class Course {
 
     public void setAudience(Audience audience) {
         this.audience = audience;
+    }
+
+    public Integer getAvailableSpaces() {
+        return availableSpaces;
+    }
+
+    public void setAvailableSpaces(Integer availableSpaces) {
+        this.availableSpaces = availableSpaces;
+    }
+
+    public void incrementAvailableSpaces() {
+        availableSpaces++;
+    }
+
+    public void decrementAvailableSpaces() {
+        availableSpaces--;
     }
 
     public Integer getFee() {
@@ -249,6 +269,7 @@ public class Course {
         if (id == that.id) return false;
         if(name != null ? !name.equals(that.name) : that.name != null) return false;
         if(audience != null ? !audience.equals(that.audience) : that.audience != null) return false;
+        if(availableSpaces != null ? !availableSpaces.equals(that.availableSpaces) : that.availableSpaces != null) return false;
         if(fee != null ? !fee.equals(that.fee) : that.fee != null) return false;
         if(description != null ? !description.equals(that.description) : that.description != null) return false;
 
@@ -260,6 +281,7 @@ public class Course {
         int hash = (int) id;
         hash = 31 * hash + (name != null ? name.hashCode() : 0);
         hash = 31 * hash + (audience != null ? audience.hashCode() : 0);
+        hash = 31 * hash + (availableSpaces != null ? availableSpaces.hashCode() : 0);
         hash = 31 * hash + (fee != null ? fee.hashCode() : 0);
         hash = 31 * hash + (description != null ? description.hashCode() : 0);
         return hash;

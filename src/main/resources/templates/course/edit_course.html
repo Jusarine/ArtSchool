@@ -30,7 +30,7 @@
                                     <a class="lead">Name:</a>
                                 </label>
                                 <div class="col-9">
-                                    <input type="text" class="form-control" id="name" name="name" th:value="${course.name}" required>
+                                    <input type="text" class="form-control" id="name" name="name" th:value="${course.name}" placeholder="Name" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -54,6 +54,14 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                                <label for="availableSpaces" class="col-3 col-form-label">
+                                    <a class="lead">Spaces:</a>
+                                </label>
+                                <div class="col-9">
+                                    <input type="number" class="form-control" id="availableSpaces" name="availableSpaces" th:value="${course.availableSpaces}" min="0" placeholder="Available spaces" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
                                 <label for="fee" class="col-3 col-form-label">
                                     <a class="lead">Fee:</a>
                                 </label>
@@ -62,7 +70,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">$</span>
                                         </div>
-                                        <input type="number" class="form-control" id="fee" name="fee" th:value="${course.fee}" required>
+                                        <input type="number" class="form-control" id="fee" name="fee" th:value="${course.fee}" placeholder="Fee" min="0" required>
                                     </div>
                                 </div>
                             </div>
@@ -79,17 +87,15 @@
                                     <a class="lead">Time:</a>
                                 </label>
                                 <div class="col-9">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="input-group clockpicker">
-                                                <input type="text" id="start_time" name="startTime" class="form-control" value="19:00" title="Start time" th:value="${course.date.startTime}" required>
-                                            </div>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">from</span>
                                         </div>
-                                        <div class="col">
-                                            <div class="input-group clockpicker">
-                                                <input type="text" id="end_time" name="endTime" class="form-control" value="21:00" title="End time" th:value="${course.date.endTime}" required>
-                                            </div>
+                                        <input id="start_time" name="startTime" type="text" class="input-group clockpicker form-control" th:value="${course.date.startTime}" title="Start time" required>
+                                        <div class="input-group-append input-group-prepend">
+                                            <span class="input-group-text">to</span>
                                         </div>
+                                        <input id="end_time" name="endTime" type="text" class="input-group clockpicker form-control" th:value="${course.date.endTime}" title="End time" required>
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +115,7 @@
                                 </label>
                                 <div class="col-9">
                                     <div class="input-group">
-                                        <textarea class="form-control" id="description" name="description" th:text="${course.description}" rows="7" aria-label="With textarea" required></textarea>
+                                        <textarea class="form-control" id="description" name="description" th:text="${course.description}" rows="7" placeholder="Description" required></textarea>
                                     </div>
                                 </div>
                             </div>

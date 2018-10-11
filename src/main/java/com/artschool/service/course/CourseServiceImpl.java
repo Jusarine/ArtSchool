@@ -42,8 +42,8 @@ public class CourseServiceImpl implements CourseService{
     @Transactional
     public void createCourse(CourseForm form, Instructor instructor) {
         Course course = new Course(form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
-                form.getAudience(), form.getFee(), dateService.createDate(form), dayService.getDays(form.getDays()),
-                form.getDescription(), instructor);
+                form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form),
+                dayService.getDays(form.getDays()), form.getDescription(), instructor);
         course.getInstructor().addCourse(course);
         courseRepository.save(course);
     }
@@ -59,7 +59,7 @@ public class CourseServiceImpl implements CourseService{
     @Transactional
     public void updateCourse(long courseId, CourseForm form) {
         Course course = new Course(courseId, form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
-                form.getAudience(), form.getFee(), dateService.createDate(form), dayService.getDays(form.getDays()),
+                form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form), dayService.getDays(form.getDays()),
                 form.getDescription(), findCourseById(courseId).getInstructor());
         courseRepository.save(course);
     }
@@ -73,6 +73,7 @@ public class CourseServiceImpl implements CourseService{
     @Override
     @Transactional
     public void enrollInCourse(Student student, Course course) {
+        course.decrementAvailableSpaces();
         course.addStudent(student);
         student.addCourse(course);
         courseRepository.save(course);
@@ -81,6 +82,7 @@ public class CourseServiceImpl implements CourseService{
     @Override
     @Transactional
     public void unenrollFromCourse(Student student, Course course) {
+        course.incrementAvailableSpaces();
         course.removeStudent(student);
         student.removeCourse(course);
         courseRepository.save(course);
