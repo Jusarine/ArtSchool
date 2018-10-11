@@ -136,6 +136,42 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional(readOnly = true)
+    public Set<Course> findCoursesByFeeBefore(Integer toFee) {
+        return courseRepository.findCoursesByFeeLessThanEqual(toFee);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> findCoursesByFeeAfter(Integer fromFee) {
+        return courseRepository.findCoursesByFeeGreaterThanEqual(fromFee);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> findCoursesByFeeBetween(Integer fromFee, Integer toFee) {
+        return courseRepository.findCoursesByFeeBetween(fromFee, toFee);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Integer findMinCourseFee() {
+        return courseRepository.findMinCourseFee();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Integer findMaxCourseFee() {
+        return courseRepository.findMaxCourseFee();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> findCoursesByDay(Day day) {
+        return courseRepository.findCoursesByDays(day);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Course> findCourses() {
         return courseRepository.findAll();
     }

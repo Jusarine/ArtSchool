@@ -8,6 +8,7 @@ import com.artschool.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,20 +21,24 @@ public class SearchServiceImpl implements SearchService {
 
     private final DisciplineService disciplineService;
 
+    private final DayService dayService;
+
     private boolean retain = false;
 
-    public SearchServiceImpl(CourseService courseService, UserService userService, DisciplineService disciplineService) {
+    public SearchServiceImpl(CourseService courseService, UserService userService, DisciplineService disciplineService, DayService dayService) {
         this.courseService = courseService;
         this.userService = userService;
         this.disciplineService = disciplineService;
+        this.dayService = dayService;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Set<Course> findCourses(SearchCourseForm form){
         retain = false;
-        return findAll(findByInstructor(form.getInstructor(), findByAudience(form.getAudience(),
-                findByDiscipline(form.getDiscipline(), findByRequest(form.getRequest(), new HashSet<>())))));
+        return findAll(findByDay(form.getDay(), findByFee(form.getFromFee(), form.getToFee(),
+                findByInstructor(form.getInstructor(), findByAudience(form.getAudience(),
+                        findByDiscipline(form.getDiscipline(), findByRequest(form.getRequest(), new HashSet<>())))))));
     }
 
     @Override
@@ -70,6 +75,22 @@ public class SearchServiceImpl implements SearchService {
         if (instructor != null && !"".equals(instructor)){
             retainOrAdd(result, courseService.findCoursesByInstructor(userService.findInstructorByName(instructor)));
         }
+        return result;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> findByFee(Integer fromFee, Integer toFee, Set<Course> result){
+        if (fromFee != null && toFee != null) retainOrAdd(result, courseService.findCoursesByFeeBetween(fromFee, toFee));
+        else if (toFee != null) retainOrAdd(result, courseService.findCoursesByFeeBefore(toFee));
+        else if (fromFee != null) retainOrAdd(result, courseService.findCoursesByFeeAfter(fromFee));
+        return result;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> findByDay(DayOfWeek day, Set<Course> result){
+        if (day != null) retainOrAdd(result, courseService.findCoursesByDay(dayService.getDay(day)));
         return result;
     }
 

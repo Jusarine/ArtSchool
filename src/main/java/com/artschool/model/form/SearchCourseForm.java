@@ -2,6 +2,8 @@ package com.artschool.model.form;
 
 import com.artschool.model.enumeration.Audience;
 
+import java.time.DayOfWeek;
+
 public class SearchCourseForm {
 
     private String request;
@@ -11,6 +13,12 @@ public class SearchCourseForm {
     private Audience audience;
 
     private String instructor;
+
+    private Integer fromFee;
+
+    private Integer toFee;
+
+    private DayOfWeek day;
 
     public SearchCourseForm() {
     }
@@ -47,4 +55,27 @@ public class SearchCourseForm {
         this.instructor = instructor;
     }
 
+    public Integer getFromFee() {
+        return fromFee;
+    }
+
+    public void setFromFee(Integer fromFee) {
+        this.fromFee = fromFee;
+    }
+
+    public Integer getToFee() {
+        return toFee;
+    }
+
+    public void setToFee(Integer toFee) {
+        this.toFee = toFee;
+    }
+
+    public DayOfWeek getDay() {
+        return day;
+    }
+
+    public void setDay(DayOfWeek day) {
+        this.day = day;
+    }
 }

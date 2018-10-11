@@ -3,6 +3,7 @@ package com.artschool.controller.course;
 import com.artschool.model.entity.*;
 import com.artschool.model.form.SearchCourseForm;
 import com.artschool.service.course.CourseService;
+import com.artschool.service.course.DayService;
 import com.artschool.service.course.DisciplineService;
 import com.artschool.service.course.SearchService;
 import com.artschool.service.user.UserService;
@@ -24,20 +25,22 @@ public class CourseController {
 
     private final SearchService searchService;
 
+    private final DayService dayService;
+
     @Autowired
-    public CourseController(CourseService courseService, DisciplineService disciplineService, UserService userService, SearchService searchService) {
+    public CourseController(CourseService courseService, DisciplineService disciplineService, UserService userService, SearchService searchService, DayService dayService) {
         this.courseService = courseService;
         this.disciplineService = disciplineService;
         this.userService = userService;
         this.searchService = searchService;
+        this.dayService = dayService;
     }
 
     @GetMapping("/search")
     public ModelAndView search(@ModelAttribute SearchCourseForm form){
         ModelAndView modelAndView = new ModelAndView("/course/all_courses");
         modelAndView.addObject("courses", searchService.findCourses(form));
-        modelAndView.addObject("disciplines", disciplineService.findDisciplines());
-        modelAndView.addObject("instructors", userService.findInstructors());
+        initSearchParameters(modelAndView);
         return modelAndView;
     }
 
@@ -46,6 +49,7 @@ public class CourseController {
                             @SessionAttribute(name = "user", required = false) CustomUser customUser){
         Course course = courseService.findCourseById(id);
         ModelAndView modelAndView = new ModelAndView("/course/course", "course", course);
+        initSearchParameters(modelAndView);
         if (customUser instanceof Student) {
             modelAndView.addObject("enrolled", courseService.isEnrolled((Student) customUser, course));
         }
@@ -53,5 +57,13 @@ public class CourseController {
             modelAndView.addObject("author", courseService.isAuthor((Instructor) customUser, course));
         }
         return modelAndView;
+    }
+
+    private void initSearchParameters(ModelAndView modelAndView){
+        modelAndView.addObject("disciplines", disciplineService.findDisciplines());
+        modelAndView.addObject("instructors", userService.findInstructors());
+        modelAndView.addObject("days", dayService.findDays());
+        modelAndView.addObject("fromFee", courseService.findMinCourseFee());
+        modelAndView.addObject("toFee", courseService.findMaxCourseFee());
     }
 }

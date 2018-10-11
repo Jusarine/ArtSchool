@@ -39,5 +39,17 @@ public interface CourseService {
 
     Set<Course> findCoursesByInstructor(Instructor instructor);
 
+    Set<Course> findCoursesByFeeBefore(Integer toFee);
+
+    Set<Course> findCoursesByFeeAfter(Integer fromFee);
+
+    Set<Course> findCoursesByFeeBetween(Integer fromFee, Integer toFee);
+
+    Integer findMinCourseFee();
+
+    Integer findMaxCourseFee();
+
+    Set<Course> findCoursesByDay(Day day);
+
     List<Course> findCourses();
 }

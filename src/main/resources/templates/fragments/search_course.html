@@ -7,7 +7,12 @@
             <div class="card-header">
                 <div class="my-3">
                     <h3>Search course</h3>
-                    <input type="text" class="form-control mb-3" id="request" name="request" placeholder="Name" title="Course name">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Name</span>
+                        </div>
+                        <input type="text" class="form-control" th:value="${param?.request}" id="request" name="request" title="Course name">
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -15,27 +20,51 @@
                     <label for="discipline">
                         <strong>Discipline</strong>
                     </label>
-                    <select id="discipline" name="discipline" class="form-control" title="Discipline" >
-                        <option selected>...</option>
-                        <option th:each="discipline : ${disciplines}" th:value="${discipline.name}" th:text="${discipline.getCapitalizedName()}"></option>
+                    <select id="discipline" name="discipline" class="form-control">
+                        <option value="" selected>...</option>
+                        <option th:each="discipline : ${disciplines}" th:value="${discipline.name}" th:text="${discipline.getCapitalizedName()}" th:selected="${discipline.name} == ${{param?.discipline}}"></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="discipline">
+                    <label for="audience">
                         <strong>Audience</strong>
                     </label>
-                    <select id="audience" name="audience" class="form-control" title="Audience...">
-                        <option selected>...</option>
-                        <option th:each="audience : ${T(com.artschool.model.enumeration.Audience).values()}" th:value="${{audience}}" th:text="${audience}"></option>
+                    <select id="audience" name="audience" class="form-control">
+                        <option value="" selected>...</option>
+                        <option th:each="audience : ${T(com.artschool.model.enumeration.Audience).values()}" th:value="${{audience}}" th:text="${audience}" th:selected="${{audience}} == ${{param?.audience}}"></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="discipline">
+                    <label for="instructor">
                         <strong>Instructor</strong>
                     </label>
-                    <select id="instructor" name="instructor" class="form-control" title="Instructor">
-                        <option selected>...</option>
-                        <option th:each="instructor : ${instructors}" th:value="|${instructor.firstName} ${instructor.lastName}|" th:text="|${instructor.firstName} ${instructor.lastName}|"></option>
+                    <select id="instructor" name="instructor" class="form-control">
+                        <option value="" selected>...</option>
+                        <option th:each="instructor : ${instructors}" th:value="|${instructor.firstName} ${instructor.lastName}|" th:text="|${instructor.firstName} ${instructor.lastName}|" th:selected="|${instructor.firstName} ${instructor.lastName}| == ${{param?.instructor}}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fee">
+                        <strong>Fee ($)</strong>
+                    </label>
+                    <div class="input-group" id="fee">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">from</span>
+                        </div>
+                        <input id="fromFee" name="fromFee" type="number" th:value="${param?.fromFee}" th:placeholder="${fromFee}" class="form-control" title="Form fee">
+                        <div class="input-group-append input-group-prepend">
+                            <span class="input-group-text">to</span>
+                        </div>
+                        <input id="toFee" name="toFee" type="number" th:value="${param?.toFee}" th:placeholder="${toFee}" class="form-control" title="To fee">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="day">
+                        <strong>Day</strong>
+                    </label>
+                    <select id="day" name="day" class="form-control">
+                        <option value="" selected>...</option>
+                        <option th:each="day : ${days}" th:value="${day.name}" th:text="${day.getCapitalizedName()}" th:selected="${{day.name}} == ${{param?.day}}"></option>
                     </select>
                 </div>
             </div>

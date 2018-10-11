@@ -3,11 +3,16 @@
 
 <div th:fragment="search_instructor">
     <div class="card mb-auto">
-        <div class="card-header">
+        <div class="card-header border-0">
             <form class="my-3" th:action="@{/search/instructor}" method="GET">
                 <h3>Search instructor</h3>
-                <input type="text" class="form-control mb-3" id="request" name="request" placeholder="Name" title="Instructor name">
-                <button class="btn btn-secondary btn-block my-3" type="submit">Search</button>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Name</span>
+                    </div>
+                    <input type="text" class="form-control" th:value="${param?.request}" id="request" name="request" title="Instructor name">
+                    <button class="btn btn-secondary btn-block my-3" type="submit">Search</button>
+                </div>
             </form>
         </div>
     </div>
