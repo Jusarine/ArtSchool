@@ -1,10 +1,7 @@
 package com.artschool.service.user;
 
-import com.artschool.model.entity.CustomUser;
-import com.artschool.model.entity.PasswordResetToken;
+import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Gender;
-import com.artschool.model.entity.Instructor;
-import com.artschool.model.entity.Student;
 import com.artschool.model.form.SignUpStudentForm;
 import com.artschool.model.form.SignUpInstructorForm;
 import com.artschool.repository.InstructorRepository;
@@ -160,6 +157,25 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
+    public Set<Student> findStudentsByName(String name) {
+        Set<Student> set = new HashSet<>();
+        String[] words = name.split("[\\s]+");
+        if (words.length == 0){
+            set.addAll(studentRepository.findAll());
+        }
+        else if (words.length == 1){
+            set.addAll(studentRepository.findStudentsByFirstNameContaining(words[0]));
+            set.addAll(studentRepository.findStudentsByLastNameContaining(words[0]));
+        }
+        else if (words.length == 2){
+            set.addAll(studentRepository.findStudentsByFirstNameContainingAndLastNameContaining(words[0], words[1]));
+            set.addAll(studentRepository.findStudentsByFirstNameContainingAndLastNameContaining(words[1], words[0]));
+        }
+        return set;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Set<Instructor> findInstructorsByName(String name) {
         Set<Instructor> set = new HashSet<>();
         String[] words = name.split("[\\s]+");
@@ -175,6 +191,13 @@ public class UserServiceImpl implements UserService{
             set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[1], words[0]));
         }
         return set;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Student findStudentByName(String name) {
+        String[] words = name.split("[\\s]+");
+        return studentRepository.findStudentByFirstNameAndLastName(words[0], words[1]);
     }
 
     @Override

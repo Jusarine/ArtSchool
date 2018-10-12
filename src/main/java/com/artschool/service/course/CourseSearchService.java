@@ -7,7 +7,7 @@ import com.artschool.model.form.SearchCourseForm;
 import java.time.DayOfWeek;
 import java.util.Set;
 
-public interface SearchService {
+public interface CourseSearchService {
 
     Set<Course> findCourses(SearchCourseForm form);
 

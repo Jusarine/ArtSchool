@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class SearchServiceImpl implements SearchService {
+public class CourseSearchServiceImpl implements CourseSearchService {
 
     private final CourseService courseService;
 
@@ -25,7 +25,7 @@ public class SearchServiceImpl implements SearchService {
 
     private boolean retain = false;
 
-    public SearchServiceImpl(CourseService courseService, UserService userService, DisciplineService disciplineService, DayService dayService) {
+    public CourseSearchServiceImpl(CourseService courseService, UserService userService, DisciplineService disciplineService, DayService dayService) {
         this.courseService = courseService;
         this.userService = userService;
         this.disciplineService = disciplineService;
@@ -53,9 +53,11 @@ public class SearchServiceImpl implements SearchService {
     @Override
     @Transactional(readOnly = true)
     public Set<Course> findByDiscipline(String discipline, Set<Course> result){
-        Discipline d = disciplineService.getDiscipline(discipline);
-        if (d != null){
-            retainOrAdd(result, courseService.findCoursesByDiscipline(d));
+        if (discipline != null){
+            Discipline d = disciplineService.getDiscipline(discipline);
+            if (d != null){
+                retainOrAdd(result, courseService.findCoursesByDiscipline(d));
+            }
         }
         return result;
     }

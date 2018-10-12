@@ -11,8 +11,11 @@
         <div sec:authorize="isAuthenticated()">
             <div th:replace="fragments/user_menu :: user_menu"></div>
         </div>
-        <div sec:authorize="!isAuthenticated()">
+        <div th:if="${{member.role}} == 'ADMIN'">
             <div th:replace="fragments/search_instructor :: search_instructor"></div>
+        </div>
+        <div th:if="${{member.role}} == 'USER'">
+            <div th:replace="fragments/search_student :: search_student"></div>
         </div>
     </div>
     <div class="col-9">

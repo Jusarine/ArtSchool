@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="users" class="col-4 mb-4" th:each="u: ${#object}">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-5">
+                    <figure class="figure">
+                        <img th:src="${{u.gender}} == 'FEMALE' ? '/images/girl.png' : '/images/boy.png'" class="figure-img img-fluid rounded-circle">
+                    </figure>
+                </div>
+                <div class="col-7 my-auto">
+                    <div class="row ml-1">
+                        <a class="card-text" th:text="|${u.firstName} ${u.lastName}|"></a>
+                    </div>
+                    <div class="row ml-1">
+                        <a th:href="|/profile/${u.id}|" class="btn btn-primary btn-sm my-2">About</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

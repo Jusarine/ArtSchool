@@ -52,7 +52,9 @@
                             </dd>
 
                             <dt class="col-3 lead">Instructor:</dt>
-                            <dd class="col-9 lead" th:text="|${course.instructor.firstName} ${course.instructor.lastName}|"></dd>
+                            <dd class="col-9 lead">
+                                <a class="btn btn-light btn-sm" th:href="'/profile/' + ${course.instructor.id}">View</a>
+                            </dd>
 
                             <dt class="col-3 lead">Fee:</dt>
                             <dd class="col-9 lead" th:text="${course.fee} + ' $'"></dd>
@@ -82,9 +84,7 @@
 
                             <dt class="col-3 lead">Students:</dt>
                             <dd class="col-9 lead">
-                                <ul class="list-inline">
-                                    <li class="list-inline-item" th:each="student: ${course.students}" th:text="|${student.firstName} ${student.lastName}|"></li>
-                                </ul>
+                                <a class="btn btn-light btn-sm" th:href="'/search/student?course=' + ${course.id}">View</a>
                             </dd>
                         </dl>
                         <div sec:authorize="hasRole('USER')" th:if="${enrolled}">

@@ -1,6 +1,8 @@
 package com.artschool.controller.user;
 
 import com.artschool.model.entity.CustomUser;
+import com.artschool.service.course.CourseService;
+import com.artschool.service.user.UserSearchService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +15,15 @@ public class UserController {
 
     private final UserService userService;
 
+    private final CourseService courseService;
+
+    private final UserSearchService userSearchService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, CourseService courseService, UserSearchService userSearchService) {
         this.userService = userService;
+        this.courseService = courseService;
+        this.userSearchService = userSearchService;
     }
 
     @GetMapping("/profile")
@@ -33,13 +41,20 @@ public class UserController {
     }
 
     @GetMapping("/search/instructor")
-    public ModelAndView search(@RequestParam String request){
-        return new ModelAndView("/user/users", "users", userService.findInstructorsByName(request));
+    public ModelAndView searchInstructor(@RequestParam(required = false) String request){
+        ModelAndView modelAndView = new ModelAndView("/user/users");
+        if (request == null)  modelAndView.addObject("instructors", userService.findInstructors());
+        else modelAndView.addObject("instructors", userService.findInstructorsByName(request));
+        return modelAndView;
     }
 
-    @GetMapping("/instructors")
-    public ModelAndView instructors(){
-        return new ModelAndView("/user/users", "users", userService.findInstructors());
+    @GetMapping("/search/student")
+    public ModelAndView searchStudent(@RequestParam(required = false) String request,
+                                      @RequestParam(required = false) Integer course){
+        ModelAndView modelAndView = new ModelAndView("/user/users");
+        modelAndView.addObject("courses", courseService.findCourses());
+        modelAndView.addObject("students", userSearchService.findStudents(request, course));
+        return modelAndView;
     }
 
     @PostMapping("/edit_status")

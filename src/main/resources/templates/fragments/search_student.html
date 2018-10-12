@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="search_student">
+    <div class="card mb-auto">
+        <form th:action="@{/search/student}" method="GET">
+            <div class="card-header">
+                <div class="my-3">
+                    <h3>Search student</h3>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Name</span>
+                        </div>
+                        <input type="text" class="form-control" th:value="${param?.request}" id="request" name="request" title="Student name">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="course">
+                        <strong>Course</strong>
+                    </label>
+                    <select id="course" name="course" class="form-control">
+                        <option value="" selected>...</option>
+                        <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.name}" th:selected="${course.id} == ${{param?.course}}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-secondary btn-block my-3" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</div>

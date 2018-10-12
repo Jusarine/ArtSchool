@@ -1,9 +1,6 @@
 package com.artschool.service.user;
 
-import com.artschool.model.entity.CustomUser;
-import com.artschool.model.entity.Instructor;
-import com.artschool.model.entity.PasswordResetToken;
-import com.artschool.model.entity.Student;
+import com.artschool.model.entity.*;
 import com.artschool.model.form.SignUpStudentForm;
 import com.artschool.model.form.SignUpInstructorForm;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +38,8 @@ public interface UserService {
 
     CustomUser findByResetToken(PasswordResetToken resetToken);
 
+    Set<Student> findStudentsByName(String name);
+
     Set<Instructor> findInstructorsByName(String name);
 
     Student findStudentByEmail(String email);
@@ -48,6 +47,8 @@ public interface UserService {
     Instructor findInstructorByEmail(String email);
 
     CustomUser findByEmail(String email);
+
+    Student findStudentByName(String name);
 
     Instructor findInstructorByName(String name);
 

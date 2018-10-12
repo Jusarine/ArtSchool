@@ -9,34 +9,31 @@
 
     <div class="row mt-5">
         <div class="col-3">
-            <div th:replace="fragments/search_instructor :: search_instructor"></div>
+            <div th:if="${instructors}">
+                <div th:replace="fragments/search_instructor :: search_instructor"></div>
+            </div>
+            <div th:if="${students}">
+                <div th:replace="fragments/search_student :: search_student"></div>
+            </div>
         </div>
         <div class="col-9">
-            <div th:if="${users.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
+            <div th:if="${instructors?.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
                 There are no instructors matching your request.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div th:unless="${users.empty}" class="card-group mr-4">
-                <div class="col-4 mb-4" th:each="u: ${users}">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-5">
-                                    <figure class="figure">
-                                        <img th:src="${{u.gender}} == 'FEMALE' ? '/images/girl.png' : '/images/boy.png'" class="figure-img img-fluid rounded-circle">
-                                    </figure>
-                                </div>
-                                <div class="col-7 my-auto">
-                                    <a class="card-text" th:text="${u.firstName}"></a>
-                                    <a class="card-text" th:text="${u.lastName}"></a>
-                                    <a th:href="|/profile/${u.id}|" class="btn btn-primary btn-sm my-2">About</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div th:if="${students?.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
+                There are no students matching your request.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div th:if="${instructors}" class="card-group mr-4" th:object="${instructors}">
+                <div th:replace="fragments/users :: users"></div>
+            </div>
+            <div th:if="${students}" class="card-group mr-4" th:object="${students}">
+                <div th:replace="fragments/users :: users"></div>
             </div>
         </div>
     </div>

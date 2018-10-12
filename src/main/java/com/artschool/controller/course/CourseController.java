@@ -5,7 +5,7 @@ import com.artschool.model.form.SearchCourseForm;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.course.DayService;
 import com.artschool.service.course.DisciplineService;
-import com.artschool.service.course.SearchService;
+import com.artschool.service.course.CourseSearchService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,23 +23,23 @@ public class CourseController {
 
     private final UserService userService;
 
-    private final SearchService searchService;
+    private final CourseSearchService courseSearchService;
 
     private final DayService dayService;
 
     @Autowired
-    public CourseController(CourseService courseService, DisciplineService disciplineService, UserService userService, SearchService searchService, DayService dayService) {
+    public CourseController(CourseService courseService, DisciplineService disciplineService, UserService userService, CourseSearchService courseSearchService, DayService dayService) {
         this.courseService = courseService;
         this.disciplineService = disciplineService;
         this.userService = userService;
-        this.searchService = searchService;
+        this.courseSearchService = courseSearchService;
         this.dayService = dayService;
     }
 
     @GetMapping("/search")
     public ModelAndView search(@ModelAttribute SearchCourseForm form){
         ModelAndView modelAndView = new ModelAndView("/course/all_courses");
-        modelAndView.addObject("courses", searchService.findCourses(form));
+        modelAndView.addObject("courses", courseSearchService.findCourses(form));
         initSearchParameters(modelAndView);
         return modelAndView;
     }
