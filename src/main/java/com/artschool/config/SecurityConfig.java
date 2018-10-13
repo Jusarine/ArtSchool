@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -49,13 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/instructor/**")
                     .hasRole("ADMIN")
                 .antMatchers("/profile")
-                .hasAnyRole("USER", "ADMIN")
-                .and()
-        .exceptionHandling()
-                .accessDeniedPage("/unauthorized")
+                    .hasAnyRole("USER", "ADMIN")
                 .and()
         .formLogin()
-                .permitAll()
                 .loginPage("/login")
                 .loginProcessingUrl("/j_spring_security_check")
                 .defaultSuccessUrl("/authorized", true)
@@ -64,8 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("j_password")
                 .and()
         .logout()
-                .permitAll()
-                .logoutUrl("/logout")
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true);
     }

@@ -20,7 +20,10 @@
             <a class="nav-item nav-link text-warning" sec:authorize="!isAuthenticated()" href="/login">Sign in</a>
             <div class="nav-item dropdown" sec:authorize="isAuthenticated()">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <a th:text="${user.firstName}"></a>
+                    <div th:if="!${user}">
+                        <script src="/js/logout.js"></script>
+                    </div>
+                    <a th:text="${user?.firstName}"></a>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                     <a class="btn btn-white btn-block text-body" href="/profile">Profile</a>

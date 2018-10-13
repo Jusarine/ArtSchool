@@ -13,7 +13,7 @@
         <div th:replace="fragments/user_menu :: user_menu"></div>
     </div>
     <div class="col-9">
-        <div th:object="${user}">
+        <div th:if="${user}" th:object="${user}">
             <div th:replace="fragments/profile :: profile"></div>
         </div>
     </div>

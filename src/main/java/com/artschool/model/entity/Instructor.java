@@ -13,8 +13,6 @@ public class Instructor extends CustomUser {
     @Column(columnDefinition = "LONGTEXT")
     private String bio;
 
-    private Integer rating;
-
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.MERGE)
     private Set<Course> courses = new HashSet<>();
 
@@ -35,14 +33,6 @@ public class Instructor extends CustomUser {
         this.bio = bio;
     }
 
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
     public Set<Course> getCourses() {
         return courses;
     }
@@ -59,7 +49,6 @@ public class Instructor extends CustomUser {
     public String toString() {
         return "Instructor{" +
                 "bio='" + bio + '\'' +
-                ", rating=" + rating +
                 '}';
     }
 
@@ -69,7 +58,6 @@ public class Instructor extends CustomUser {
         if (!super.equals(o)) return false;
         Instructor that = (Instructor) o;
         if (bio != null ? !bio.equals(that.bio) : that.bio != null) return false;
-        if (rating != null ? !rating.equals(that.rating) : that.rating != null) return false;
         return true;
     }
 
@@ -77,7 +65,6 @@ public class Instructor extends CustomUser {
     public int hashCode() {
         int hash = super.hashCode();
         hash = 31 * hash + (bio != null ? bio.hashCode() : 0);
-        hash = 31 * hash + (rating != null ? rating.hashCode() : 0);
         return hash;
     }
 }

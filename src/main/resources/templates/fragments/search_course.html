@@ -51,11 +51,11 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">from</span>
                         </div>
-                        <input id="fromFee" name="fromFee" type="number" th:value="${param?.fromFee}" th:placeholder="${fromFee}" class="form-control" title="Form fee">
+                        <input id="fromFee" name="fromFee" type="number" th:value="${param?.fromFee}" th:placeholder="${fromFee}" min="0" max="500" class="form-control" title="Form fee">
                         <div class="input-group-append input-group-prepend">
                             <span class="input-group-text">to</span>
                         </div>
-                        <input id="toFee" name="toFee" type="number" th:value="${param?.toFee}" th:placeholder="${toFee}" class="form-control" title="To fee">
+                        <input id="toFee" name="toFee" type="number" th:value="${param?.toFee}" th:placeholder="${toFee}" min="0" max="500" class="form-control" title="To fee">
                     </div>
                 </div>
                 <div class="form-group">

@@ -19,7 +19,7 @@
                     </div>
                     <div th:unless="${another}">
                         <div class="lead">
-                            <a class="x_editable" id="status" th:text="${#object.status}" data-pk="${#object.id}" data-type="text" data-url="/edit_status"></a>
+                            <a class="x_editable" id="status" th:text="${#object.status}" th:data-pk="${#object.id}" data-type="text" data-url="/edit_status"></a>
                         </div>
                     </div>
                     <div th:if="${{#object.role}} == 'ADMIN'">
