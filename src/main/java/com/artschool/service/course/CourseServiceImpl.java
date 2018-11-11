@@ -4,6 +4,7 @@ import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Audience;
 import com.artschool.model.form.CourseForm;
 import com.artschool.repository.CourseRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,6 +111,18 @@ public class CourseServiceImpl implements CourseService{
     @Transactional(readOnly = true)
     public Course findCourseById(long id) {
         return courseRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Course findCourseByIdAndInit(long id) {
+        Course course = findCourseById(id);
+        if (course != null) {
+            Hibernate.initialize(course.getDisciplines());
+            Hibernate.initialize(course.getDays());
+            Hibernate.initialize(course.getStudents());
+        }
+        return course;
     }
 
     @Override

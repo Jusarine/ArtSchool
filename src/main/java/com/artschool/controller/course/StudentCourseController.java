@@ -42,14 +42,14 @@ public class StudentCourseController {
     public void enroll(@PathVariable long id,
                        @RequestParam String transactionId,
                        @SessionAttribute(name = "user") Student student){
-        Course course = courseService.findCourseById(id);
+        Course course = courseService.findCourseByIdAndInit(id);
         paymentService.createPayment(new Payment(transactionId, student, course, course.getFee(), LocalDate.now()));
         courseService.enrollInCourse(student, course);
     }
 
     @GetMapping("/unenroll/{id}")
     public String unenroll(@PathVariable long id, @SessionAttribute(name = "user") Student student, Model model){
-        courseService.unenrollFromCourse(student, courseService.findCourseById(id));
+        courseService.unenrollFromCourse(student, courseService.findCourseByIdAndInit(id));
         model.addAttribute("user", userService.reinitializeStudent(student));
         return "redirect:/student/course/list";
     }
@@ -63,7 +63,7 @@ public class StudentCourseController {
             courseService.enrollInCourse(student, course);
             return "redirect:/student/course/list";
         }
-        redirectAttributes.addAttribute("error", "You haven't made a payment for this course!" +
+        redirectAttributes.addAttribute("error", "You haven't made a payment for this course! " +
                 "If you want to enroll, please pay for it by PayPal.");
         return "redirect:/course/" + id;
     }

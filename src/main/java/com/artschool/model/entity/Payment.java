@@ -97,7 +97,7 @@ public class Payment {
         if (o == null || getClass() != o.getClass()) return false;
         Payment that = (Payment) o;
 
-        if (id == that.id) return false;
+        if (id != that.id) return false;
         if(transactionId != null ? !transactionId.equals(that.transactionId) : that.transactionId != null) return false;
         if(total != null ? !total.equals(that.total) : that.total != null) return false;
         if(date != null ? !date.equals(that.date) : that.date != null) return false;

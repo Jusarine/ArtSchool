@@ -41,7 +41,7 @@ public class InstructorCourseController {
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable long id){
         ModelAndView modelAndView = new ModelAndView("/course/edit_course");
-        modelAndView.addObject("course", courseService.findCourseById(id));
+        modelAndView.addObject("course", courseService.findCourseByIdAndInit(id));
         modelAndView.addObject("days", dayService.findDays());
         modelAndView.addObject("disciplines", disciplineService.findDisciplines());
         return modelAndView;

@@ -69,7 +69,7 @@ public class Day {
         if (o == null || getClass() != o.getClass()) return false;
         Day that = (Day) o;
 
-        if (id == that.id) return false;
+        if (id != that.id) return false;
         if(name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;

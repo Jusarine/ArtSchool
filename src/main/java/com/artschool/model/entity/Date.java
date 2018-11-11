@@ -129,7 +129,7 @@ public class Date {
         if (o == null || getClass() != o.getClass()) return false;
         Date that = (Date) o;
 
-        if (id == that.id) return false;
+        if (id != that.id) return false;
         if(startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
         if(endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
         if(startTime != null ? !startTime.equals(that.startTime) : that.startTime != null) return false;

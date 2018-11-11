@@ -44,7 +44,13 @@ public interface UserService {
 
     Student findStudentByEmail(String email);
 
+    Student findStudentByEmailAndInit(String email);
+
     Instructor findInstructorByEmail(String email);
+
+    Instructor findInstructorByEmailAndInit(String email);
+
+    CustomUser findUserByEmailAndInit(String email);
 
     CustomUser findByEmail(String email);
 

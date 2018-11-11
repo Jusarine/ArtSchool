@@ -65,7 +65,6 @@ public class Student extends CustomUser {
         if (this == o) return true;
         if (!(o instanceof Student)) return false;
         if (!super.equals(o)) return false;
-        Student that = (Student) o;
         return true;
     }
 

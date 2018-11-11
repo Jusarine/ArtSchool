@@ -47,7 +47,7 @@ public class CourseController {
     @GetMapping("/{id}")
     public ModelAndView get(@PathVariable long id,
                             @SessionAttribute(name = "user", required = false) CustomUser customUser){
-        Course course = courseService.findCourseById(id);
+        Course course = courseService.findCourseByIdAndInit(id);
         ModelAndView modelAndView = new ModelAndView("/course/course", "course", course);
         initSearchParameters(modelAndView);
         if (customUser instanceof Student) {

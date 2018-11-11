@@ -71,7 +71,7 @@ public class Discipline {
         if (o == null || getClass() != o.getClass()) return false;
         Discipline that = (Discipline) o;
 
-        if (id == that.id) return false;
+        if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
 
         return true;

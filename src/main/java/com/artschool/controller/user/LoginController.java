@@ -59,17 +59,8 @@ public class LoginController {
 
     @GetMapping("/authorized")
     public String authorize(Model model, Principal principal){
-
-        Student student = userService.findStudentByEmail(principal.getName());
-        if (student != null){
-            Hibernate.initialize(student.getCourses());
-            model.addAttribute("user", student);
-        }
-        Instructor instructor = userService.findInstructorByEmail(principal.getName());
-        if (instructor != null){
-            Hibernate.initialize(instructor.getCourses());
-            model.addAttribute("user", instructor);
-        }
+        CustomUser user = userService.findUserByEmailAndInit(principal.getName());
+        model.addAttribute("user", user);
         return "redirect:/profile";
     }
 

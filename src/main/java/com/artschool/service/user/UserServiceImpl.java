@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
     private final InstructorRepository instructorRepository;
 
     @Autowired
-    public UserServiceImpl(StudentRepository studentRepository, InstructorRepository instructorRepository/*, PasswordEncoder passwordEncoder*/) {
+    public UserServiceImpl(StudentRepository studentRepository, InstructorRepository instructorRepository) {
         this.studentRepository = studentRepository;
         this.instructorRepository = instructorRepository;
     }
@@ -125,8 +125,35 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
+    public Student findStudentByEmailAndInit(String email){
+        Student student = findStudentByEmail(email);
+        if (student != null) {
+            Hibernate.initialize(student.getCourses());
+        }
+        return student;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Instructor findInstructorByEmail(String email){
         return instructorRepository.findInstructorByEmail(email);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Instructor findInstructorByEmailAndInit(String email){
+        Instructor instructor = findInstructorByEmail(email);
+        if (instructor != null) {
+            Hibernate.initialize(instructor.getCourses());
+        }
+        return instructor;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomUser findUserByEmailAndInit(String email){
+        Student student = findStudentByEmailAndInit(email);
+        return student == null ? findInstructorByEmailAndInit(email) : student;
     }
 
     @Override
