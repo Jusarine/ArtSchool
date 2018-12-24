@@ -14,7 +14,7 @@ public class Date {
 
     @Id
     @Column(name = "date_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long id;
 
     private LocalDate startDate;
