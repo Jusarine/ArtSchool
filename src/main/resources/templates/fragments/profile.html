@@ -14,13 +14,13 @@
                 </div>
                 <div class="col-8">
                     <h1 class="display-4" th:text="|${#object.firstName} ${#object.lastName}|"></h1>
-                    <div th:if="${another}">
-                        <a class="lead" th:text="${#object.status}"></a>
-                    </div>
-                    <div th:unless="${another}">
+                    <div th:if="${owner}">
                         <div class="lead">
                             <a class="x_editable" id="status" th:text="${#object.status}" th:data-pk="${#object.id}" data-type="text" data-url="/edit_status"></a>
                         </div>
+                    </div>
+                    <div th:unless="${owner}">
+                        <a class="lead" th:text="${#object.status}"></a>
                     </div>
                     <div th:if="${{#object.role}} == 'ADMIN'">
                         <p class="lead mt-3" th:text="${#object.bio}"></p>

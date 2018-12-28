@@ -1,8 +1,6 @@
 package com.artschool.service.course;
 
-import com.artschool.model.entity.Course;
 import com.artschool.model.entity.Payment;
-import com.artschool.model.entity.Student;
 import com.artschool.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,19 +20,26 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public void createPayment(Payment payment){
+    public void createPayment(Payment payment) {
         paymentRepository.save(payment);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Payment> findPayments(Student student){
-        return paymentRepository.findPaymentsByPayer(student);
+    public List<Payment> findPayments(String payerEmail) {
+        return paymentRepository.findPaymentsByPayerEmail(payerEmail);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Payment findPayments(Course product){
-        return paymentRepository.findPaymentByProduct(product);
+    public List<Payment> findPayments(long productId) {
+        return paymentRepository.findPaymentsByProductId(productId);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Payment> findPayments(String payerEmail, long productId) {
+        return paymentRepository.findPaymentsByPayerEmailAndProductId(payerEmail, productId);
+    }
+
 }

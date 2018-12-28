@@ -48,7 +48,7 @@ public class ArtSchoolApplication {
                     Audience.TEENS,
                     20,
                     60,
-                    dateService.createDate(new Date("Sep 5, 2018 - Dec 5, 2018", "12:00", "14:00")),
+                    dateService.createDate(new Date("Sep 5, 2019 - Dec 5, 2019", "12:00", "14:00")),
                     dayService.getDays(DayOfWeek.MONDAY, DayOfWeek.THURSDAY),
                     "This class is for beginners where we will learn the basic techniques of pen and ink drawing. We will be focusing on strokes, building depth, tone and value. Various exercises are used as well as learning how to properly use the equipment.",
                     instructor1));
@@ -57,7 +57,7 @@ public class ArtSchoolApplication {
                     Audience.ADULTS,
                     25,
                     40,
-                    dateService.createDate(new Date("Sep 25, 2018 - Nov 5, 2018", "19:00", "21:00")),
+                    dateService.createDate(new Date("Sep 25, 2019 - Nov 5, 2019", "19:00", "21:00")),
                     dayService.getDays(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY),
                     "Bring your supplies and come ready to paint! In this workshop, instructor will give group and individualized instruction including, color mixing, composition, atmospheric perspective and other things to bring your landscape to life.",
                     instructor1));
@@ -66,7 +66,7 @@ public class ArtSchoolApplication {
                     Audience.KIDS,
                     15,
                     50,
-                    dateService.createDate(new Date("Nov 1, 2018 - Dec 1, 2018", "16:00", "18:00")),
+                    dateService.createDate(new Date("Nov 1, 2019 - Dec 1, 2019", "16:00", "18:00")),
                     dayService.getDays(DayOfWeek.SATURDAY),
                     "Learn the art of expressive painting and rethink the process of creating art. Let you creativity guide you.  Follow your instinct and explore different mediums while enjoying this unique process.",
                     instructor2));

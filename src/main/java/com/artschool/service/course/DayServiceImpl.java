@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class DayServiceImpl implements DayService{
+public class DayServiceImpl implements DayService {
 
     private final DayRepository dayRepository;
 
@@ -22,13 +22,13 @@ public class DayServiceImpl implements DayService{
 
     @Override
     @Transactional
-    public void addDay(DayOfWeek day){
+    public void addDay(DayOfWeek day) {
         dayRepository.save(new Day(day));
     }
 
     @Override
     @Transactional
-    public void addDays(DayOfWeek... days){
+    public void addDays(DayOfWeek... days) {
         for (DayOfWeek d : days) {
             addDay(d);
         }
@@ -36,13 +36,13 @@ public class DayServiceImpl implements DayService{
 
     @Override
     @Transactional(readOnly = true)
-    public Day getDay(DayOfWeek day){
+    public Day getDay(DayOfWeek day) {
         return dayRepository.findDayByName(day);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Day> getDays(DayOfWeek... days){
+    public List<Day> getDays(DayOfWeek... days) {
         List<Day> list = new ArrayList<>();
         for (DayOfWeek day : days) {
             list.add(dayRepository.findDayByName(day));
@@ -52,7 +52,7 @@ public class DayServiceImpl implements DayService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Day> findDays(){
+    public List<Day> findDays() {
         return dayRepository.findAll();
     }
 }

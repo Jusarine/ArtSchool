@@ -18,7 +18,8 @@ public class SecurityServiceImpl implements SecurityService {
     private final UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityServiceImpl(AuthenticationManager authenticationManager, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+    public SecurityServiceImpl(AuthenticationManager authenticationManager,
+                               @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
     }

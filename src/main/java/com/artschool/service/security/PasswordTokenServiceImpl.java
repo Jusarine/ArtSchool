@@ -18,13 +18,13 @@ public class PasswordTokenServiceImpl implements PasswordTokenService {
 
     @Override
     @Transactional
-    public void save(PasswordResetToken resetToken){
+    public void save(PasswordResetToken resetToken) {
         passwordTokenRepository.save(resetToken);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public PasswordResetToken findByToken(String token){
+    public PasswordResetToken findByToken(String token) {
         return passwordTokenRepository.findPasswordResetTokenByToken(token);
     }
 }

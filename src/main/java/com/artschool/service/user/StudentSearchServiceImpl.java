@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class UserSearchServiceImpl implements UserSearchService {
+public class StudentSearchServiceImpl implements StudentSearchService {
 
     private final UserService userService;
 
@@ -18,21 +18,21 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     private boolean retain = false;
 
-    public UserSearchServiceImpl(UserService userService, CourseService courseService) {
+    public StudentSearchServiceImpl(UserService userService, CourseService courseService) {
         this.userService = userService;
         this.courseService = courseService;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Student> findStudents(String request, Integer course){
+    public Set<Student> findStudents(String request, Integer course) {
         retain = false;
         return findAll(findByCourse(course, findByRequest(request, new HashSet<>())));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Student> findByRequest(String request, Set<Student> result){
+    public Set<Student> findByRequest(String request, Set<Student> result) {
         if (request != null && !"".equals(request)){
             retainOrAdd(result, userService.findStudentsByName(request));
         }
@@ -41,7 +41,7 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Student> findByCourse(Integer course, Set<Student> result){
+    public Set<Student> findByCourse(Integer course, Set<Student> result) {
         if (course != null){
             Course c = courseService.findCourseById(course);
             if (c != null){
@@ -53,12 +53,12 @@ public class UserSearchServiceImpl implements UserSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Student> findAll(Set<Student> result){
+    public Set<Student> findAll(Set<Student> result) {
         if (!retain) result.addAll(userService.findStudents());
         return result;
     }
 
-    private void retainOrAdd(Set<Student> to, Set<Student> from){
+    private void retainOrAdd(Set<Student> to, Set<Student> from) {
         if (retain) to.retainAll(from);
         else {
             to.addAll(from);

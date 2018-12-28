@@ -19,14 +19,14 @@ public class DateServiceImpl implements DateService{
 
     @Override
     @Transactional
-    public Date createDate(Date date){
+    public Date createDate(Date date) {
         dateRepository.save(date);
         return date;
     }
 
     @Override
     @Transactional
-    public Date createDate(CourseForm form){
+    public Date createDate(CourseForm form) {
         Date date = new Date(form.getDate(), form.getStartTime(), form.getEndTime());
         dateRepository.save(date);
         return date;

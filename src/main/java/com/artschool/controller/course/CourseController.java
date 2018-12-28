@@ -12,9 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/course")
-@SessionAttributes("user")
 public class CourseController {
 
     private final CourseService courseService;
@@ -28,7 +29,8 @@ public class CourseController {
     private final DayService dayService;
 
     @Autowired
-    public CourseController(CourseService courseService, DisciplineService disciplineService, UserService userService, CourseSearchService courseSearchService, DayService dayService) {
+    public CourseController(CourseService courseService, DisciplineService disciplineService, UserService userService,
+                            CourseSearchService courseSearchService, DayService dayService) {
         this.courseService = courseService;
         this.disciplineService = disciplineService;
         this.userService = userService;
@@ -37,7 +39,7 @@ public class CourseController {
     }
 
     @GetMapping("/search")
-    public ModelAndView search(@ModelAttribute SearchCourseForm form){
+    public ModelAndView search(@ModelAttribute SearchCourseForm form) {
         ModelAndView modelAndView = new ModelAndView("/course/all_courses");
         modelAndView.addObject("courses", courseSearchService.findCourses(form));
         initSearchParameters(modelAndView);
@@ -45,11 +47,13 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView get(@PathVariable long id,
-                            @SessionAttribute(name = "user", required = false) CustomUser customUser){
+    public ModelAndView get(@PathVariable long id, Principal principal) {
         Course course = courseService.findCourseByIdAndInit(id);
         ModelAndView modelAndView = new ModelAndView("/course/course", "course", course);
         initSearchParameters(modelAndView);
+        if (principal == null) return modelAndView;
+
+        CustomUser customUser = userService.findByEmail(principal.getName());
         if (customUser instanceof Student) {
             modelAndView.addObject("enrolled", courseService.isEnrolled((Student) customUser, course));
         }
@@ -59,7 +63,7 @@ public class CourseController {
         return modelAndView;
     }
 
-    private void initSearchParameters(ModelAndView modelAndView){
+    private void initSearchParameters(ModelAndView modelAndView) {
         modelAndView.addObject("disciplines", disciplineService.findDisciplines());
         modelAndView.addObject("instructors", userService.findInstructors());
         modelAndView.addObject("days", dayService.findDays());

@@ -6,16 +6,15 @@ import com.artschool.service.course.PaymentService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.time.LocalDate;
 
 @Controller
 @RequestMapping("/student/course")
-@SessionAttributes("user")
 public class StudentCourseController {
 
     private final CourseService courseService;
@@ -25,42 +24,40 @@ public class StudentCourseController {
     private final PaymentService paymentService;
 
     @Autowired
-    public StudentCourseController(CourseService courseService, UserService userService, PaymentService paymentService) {
+    public StudentCourseController(CourseService courseService, UserService userService,
+                                   PaymentService paymentService) {
         this.courseService = courseService;
         this.userService = userService;
         this.paymentService = paymentService;
     }
 
     @GetMapping("/list")
-    public String userCourses(){
-        return "/course/user_courses";
+    public ModelAndView userCourses(Principal principal) {
+        return new ModelAndView("/course/user_courses", "courses",
+                userService.getStudentCourses(principal.getName()));
     }
-
 
     @PostMapping("/enroll/{id}")
     @ResponseBody
-    public void enroll(@PathVariable long id,
-                       @RequestParam String transactionId,
-                       @SessionAttribute(name = "user") Student student){
-        Course course = courseService.findCourseByIdAndInit(id);
+    public void enroll(@PathVariable long id, @RequestParam String transactionId, Principal principal) {
+        Course course = courseService.findCourseById(id);
+        Student student = userService.findStudentByEmail(principal.getName());
         paymentService.createPayment(new Payment(transactionId, student, course, course.getFee(), LocalDate.now()));
-        courseService.enrollInCourse(student, course);
+        courseService.enrollInCourse(principal.getName(), id);
     }
 
     @GetMapping("/unenroll/{id}")
-    public String unenroll(@PathVariable long id, @SessionAttribute(name = "user") Student student, Model model){
-        courseService.unenrollFromCourse(student, courseService.findCourseByIdAndInit(id));
-        model.addAttribute("user", userService.reinitializeStudent(student));
+    public String unenroll(@PathVariable long id, Principal principal) {
+        courseService.unenrollFromCourse(principal.getName(), id);
         return "redirect:/student/course/list";
     }
 
     @GetMapping("/restore/{id}")
     public String restore(@PathVariable long id,
-                          @SessionAttribute(name = "user") Student student,
-                          RedirectAttributes redirectAttributes){
-        Course course = courseService.findCourseById(id);
-        if (paymentService.findPayments(course) != null){
-            courseService.enrollInCourse(student, course);
+                          Principal principal,
+                          RedirectAttributes redirectAttributes) {
+        if (paymentService.findPayments(principal.getName(), id) != null){
+            courseService.enrollInCourse(principal.getName(), id);
             return "redirect:/student/course/list";
         }
         redirectAttributes.addAttribute("error", "You haven't made a payment for this course! " +
@@ -69,7 +66,8 @@ public class StudentCourseController {
     }
 
     @GetMapping("/payments")
-    public ModelAndView payments(@SessionAttribute(name = "user") Student student){
-        return new ModelAndView("/course/user_payments", "payments", paymentService.findPayments(student));
+    public ModelAndView payments(Principal principal) {
+        return new ModelAndView("/course/user_payments", "payments",
+                paymentService.findPayments(principal.getName()));
     }
 }

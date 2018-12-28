@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final StudentRepository studentRepository;
 
@@ -53,8 +53,9 @@ public class UserServiceImpl implements UserService{
     public Instructor createInstructor(SignUpInstructorForm form, PasswordEncoder passwordEncoder) {
         if (findInstructorByEmail(form.getEmail()) != null) return null;
         String encodedPassword = passwordEncoder.encode(form.getPassword());
-        Instructor instructor = new Instructor(form.getFirstName(), form.getLastName(), Gender.valueOf(form.getGender()),
-                form.getPhoneNumber(), form.getEmail(), encodedPassword, form.getBio());
+        Instructor instructor = new Instructor(form.getFirstName(), form.getLastName(),
+                Gender.valueOf(form.getGender()), form.getPhoneNumber(), form.getEmail(), encodedPassword,
+                form.getBio());
         instructorRepository.save(instructor);
         return instructor;
     }
@@ -69,24 +70,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public Student reinitializeStudent(Student student){
-        Student s = findStudentById(student.getId());
-        Hibernate.initialize(s.getCourses());
-        return s;
-    }
-
-    @Override
-    @Transactional
-    public Instructor reinitializeInstructor(Instructor instructor){
-        Instructor i = findInstructorById(instructor.getId());
-        Hibernate.initialize(i.getCourses());
-        return i;
-    }
-
-    @Override
-    @Transactional
-    public void editStatus(CustomUser customUser, String status){
+    public void editStatus(String userEmail, String status) {
         if (status.equals("")) status = null;
+        CustomUser customUser = findByEmail(userEmail);
         customUser.setStatus(status);
         saveOrUpdate(customUser);
     }
@@ -100,32 +86,48 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public Student findStudentById(long id){
+    public Set<Course> getStudentCourses(String studentEmail) {
+        Student student = findStudentByEmail(studentEmail);
+        Hibernate.initialize(student.getCourses());
+        return student.getCourses();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Set<Course> getInstructorCourses(String instructorEmail) {
+        Instructor instructor = findInstructorByEmail(instructorEmail);
+        Hibernate.initialize(instructor.getCourses());
+        return instructor.getCourses();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Student findStudentById(long id) {
         return studentRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Instructor findInstructorById(long id){
+    public Instructor findInstructorById(long id) {
         return instructorRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public CustomUser findById(long id){
+    public CustomUser findById(long id) {
         CustomUser customUser = findStudentById(id);
         return customUser == null ? findInstructorById(id) : customUser;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Student findStudentByEmail(String email){
+    public Student findStudentByEmail(String email) {
         return studentRepository.findStudentByEmail(email);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Student findStudentByEmailAndInit(String email){
+    public Student findStudentByEmailAndInit(String email) {
         Student student = findStudentByEmail(email);
         if (student != null) {
             Hibernate.initialize(student.getCourses());
@@ -135,13 +137,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public Instructor findInstructorByEmail(String email){
+    public Instructor findInstructorByEmail(String email) {
         return instructorRepository.findInstructorByEmail(email);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Instructor findInstructorByEmailAndInit(String email){
+    public Instructor findInstructorByEmailAndInit(String email) {
         Instructor instructor = findInstructorByEmail(email);
         if (instructor != null) {
             Hibernate.initialize(instructor.getCourses());
@@ -151,14 +153,14 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public CustomUser findUserByEmailAndInit(String email){
+    public CustomUser findUserByEmailAndInit(String email) {
         Student student = findStudentByEmailAndInit(email);
         return student == null ? findInstructorByEmailAndInit(email) : student;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public CustomUser findByEmail(String email){
+    public CustomUser findByEmail(String email) {
         CustomUser customUser = findStudentByEmail(email);
         return customUser == null ? findInstructorByEmail(email) : customUser;
     }
@@ -177,7 +179,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public CustomUser findByResetToken(PasswordResetToken resetToken){
+    public CustomUser findByResetToken(PasswordResetToken resetToken) {
         CustomUser customUser = findStudentByResetToken(resetToken);
         return customUser == null ? findInstructorByResetToken(resetToken) : customUser;
     }
@@ -220,8 +222,10 @@ public class UserServiceImpl implements UserService{
             set.addAll(instructorRepository.findInstructorsByLastNameContaining(words[0]));
         }
         else if (words.length == 2){
-            set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[0], words[1]));
-            set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[1], words[0]));
+            set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[0],
+                    words[1]));
+            set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[1],
+                    words[0]));
         }
         else {
             for (String word : words) {
@@ -248,13 +252,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Student> findStudents(){
+    public List<Student> findStudents() {
         return studentRepository.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Instructor> findInstructors(){
+    public List<Instructor> findInstructors() {
         return instructorRepository.findAll();
     }
 }

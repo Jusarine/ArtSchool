@@ -10,21 +10,17 @@ import com.artschool.service.security.EmailService;
 import com.artschool.service.security.PasswordTokenService;
 import com.artschool.service.security.SecurityService;
 import com.artschool.service.user.UserService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.util.UUID;
 
 @Controller
-@SessionAttributes("user")
 public class LoginController {
 
     private final UserService userService;
@@ -48,28 +44,20 @@ public class LoginController {
     }
 
     @GetMapping("/")
-    public String index(){
+    public String index() {
         return "index";
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "/user/login";
     }
 
-    @GetMapping("/authorized")
-    public String authorize(Model model, Principal principal){
-        CustomUser user = userService.findUserByEmailAndInit(principal.getName());
-        model.addAttribute("user", user);
-        return "redirect:/profile";
-    }
-
     @PostMapping("/new_user")
-    public String createUser(@ModelAttribute SignUpStudentForm form, Model model, RedirectAttributes redirectAttributes){
+    public String createUser(@ModelAttribute SignUpStudentForm form, RedirectAttributes redirectAttributes) {
         Student student = userService.createStudent(form, passwordEncoder);
         if (student != null){
             securityService.login(form.getEmail(), form.getPassword());
-            model.addAttribute("user", student);
             return "redirect:/profile";
         }
         redirectAttributes.addAttribute("error", "Student with this email already exists!");
@@ -77,12 +65,13 @@ public class LoginController {
     }
 
     @GetMapping("/instructor/create")
-    public String createInstructor(){
+    public String createInstructor() {
         return "/user/create_instructor";
     }
 
     @PostMapping("/instructor/create")
-    public String showCreateInstructorPage(@ModelAttribute SignUpInstructorForm form, RedirectAttributes redirectAttributes){
+    public String showCreateInstructorPage(@ModelAttribute SignUpInstructorForm form,
+                                           RedirectAttributes redirectAttributes) {
         Instructor instructor = userService.createInstructor(form, passwordEncoder);
         if (instructor == null) {
             redirectAttributes.addAttribute("error", "Instructor with this email already exists!");
@@ -92,14 +81,14 @@ public class LoginController {
     }
 
     @GetMapping("/forgot_password")
-    public String showForgotPasswordPage(){
+    public String showForgotPasswordPage() {
         return "/user/forgot_password";
     }
 
     @PostMapping("/forgot_password")
     public String sendEmail(@RequestParam String email,
                             RedirectAttributes redirectAttributes,
-                            HttpServletRequest req){
+                            HttpServletRequest req) {
         CustomUser user = userService.findByEmail(email);
         if (user == null) {
             redirectAttributes.addAttribute("error", "There are not account associated with this email!");
@@ -118,7 +107,7 @@ public class LoginController {
     }
 
     @GetMapping("/reset_password")
-    public String showResetPasswordPage(){
+    public String showResetPasswordPage() {
         return "/user/reset_password";
     }
 
@@ -126,14 +115,14 @@ public class LoginController {
     public String resetPassword(@RequestParam long id,
                                 @RequestParam String token,
                                 @RequestParam String password,
-                                RedirectAttributes redirectAttributes){
-        PasswordResetToken passwordResetToken = passwordTokenService.findByToken(token);
-        if (passwordResetToken == null || passwordResetToken.isExpired() || passwordResetToken.getUser().getId() != id) {
+                                RedirectAttributes redirectAttributes) {
+        PasswordResetToken resetToken = passwordTokenService.findByToken(token);
+        if (resetToken == null || resetToken.isExpired() || resetToken.getUser().getId() != id) {
             redirectAttributes.addAttribute("error", "Wrong reset token!");
             return "redirect:/login";
         }
 
-        CustomUser user = passwordResetToken.getUser();
+        CustomUser user = resetToken.getUser();
         user.setPassword(passwordEncoder.encode(password));
         userService.saveOrUpdate(user);
 
@@ -141,7 +130,7 @@ public class LoginController {
         return "redirect:/login";
     }
 
-    private void constructResetTokenEmail(String recipient, String resetLink){
+    private void constructResetTokenEmail(String recipient, String resetLink) {
         SimpleMailMessage passwordResetEmail = new SimpleMailMessage();
         passwordResetEmail.setTo(recipient);
         passwordResetEmail.setSubject("ArtSchool - Password Reset Request");

@@ -4,7 +4,7 @@ import com.artschool.model.entity.Student;
 
 import java.util.Set;
 
-public interface UserSearchService {
+public interface StudentSearchService {
 
     Set<Student> findStudents(String request, Integer course);
 

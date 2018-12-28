@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class DisciplineServiceImpl implements DisciplineService{
+public class DisciplineServiceImpl implements DisciplineService {
 
     private final DisciplineRepository disciplineRepository;
 
@@ -21,13 +21,13 @@ public class DisciplineServiceImpl implements DisciplineService{
 
     @Override
     @Transactional
-    public void addDiscipline(String discipline){
+    public void addDiscipline(String discipline) {
         disciplineRepository.save(new Discipline(discipline));
     }
 
     @Override
     @Transactional
-    public void addDiscipline(String... disciplines){
+    public void addDiscipline(String... disciplines) {
         for (String d : disciplines) {
             addDiscipline(d);
         }
@@ -35,13 +35,13 @@ public class DisciplineServiceImpl implements DisciplineService{
 
     @Override
     @Transactional(readOnly = true)
-    public Discipline getDiscipline(String discipline){
+    public Discipline getDiscipline(String discipline) {
         return disciplineRepository.findDisciplineByName(discipline);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Discipline> getDisciplines(String... disciplines){
+    public List<Discipline> getDisciplines(String... disciplines) {
         List<Discipline> list = new ArrayList<>();
         for (String discipline : disciplines) {
             list.add(disciplineRepository.findDisciplineByName(discipline));
@@ -51,7 +51,7 @@ public class DisciplineServiceImpl implements DisciplineService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Discipline> findDisciplines(){
+    public List<Discipline> findDisciplines() {
         return disciplineRepository.findAll();
     }
 }

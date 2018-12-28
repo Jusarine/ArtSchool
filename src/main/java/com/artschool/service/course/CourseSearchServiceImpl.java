@@ -25,7 +25,8 @@ public class CourseSearchServiceImpl implements CourseSearchService {
 
     private boolean retain = false;
 
-    public CourseSearchServiceImpl(CourseService courseService, UserService userService, DisciplineService disciplineService, DayService dayService) {
+    public CourseSearchServiceImpl(CourseService courseService, UserService userService,
+                                   DisciplineService disciplineService, DayService dayService) {
         this.courseService = courseService;
         this.userService = userService;
         this.disciplineService = disciplineService;
@@ -34,7 +35,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findCourses(SearchCourseForm form){
+    public Set<Course> findCourses(SearchCourseForm form) {
         retain = false;
         return findAll(findByDay(form.getDay(), findByFee(form.getFromFee(), form.getToFee(),
                 findByInstructor(form.getInstructor(), findByAudience(form.getAudience(),
@@ -43,7 +44,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findByRequest(String request, Set<Course> result){
+    public Set<Course> findByRequest(String request, Set<Course> result) {
         if (request != null && !"".equals(request)){
             retainOrAdd(result, courseService.findCoursesByName(request));
         }
@@ -52,7 +53,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findByDiscipline(String discipline, Set<Course> result){
+    public Set<Course> findByDiscipline(String discipline, Set<Course> result) {
         if (discipline != null){
             Discipline d = disciplineService.getDiscipline(discipline);
             if (d != null){
@@ -64,7 +65,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findByAudience(Audience audience, Set<Course> result){
+    public Set<Course> findByAudience(Audience audience, Set<Course> result) {
         if (audience != null){
             retainOrAdd(result, courseService.findCoursesByAudience(audience));
         }
@@ -73,7 +74,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findByInstructor(String instructor, Set<Course> result){
+    public Set<Course> findByInstructor(String instructor, Set<Course> result) {
         if (instructor != null && !"".equals(instructor)){
             retainOrAdd(result, courseService.findCoursesByInstructor(userService.findInstructorByName(instructor)));
         }
@@ -82,7 +83,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findByFee(Integer fromFee, Integer toFee, Set<Course> result){
+    public Set<Course> findByFee(Integer fromFee, Integer toFee, Set<Course> result) {
         if (fromFee != null && toFee != null) retainOrAdd(result, courseService.findCoursesByFeeBetween(fromFee, toFee));
         else if (toFee != null) retainOrAdd(result, courseService.findCoursesByFeeBefore(toFee));
         else if (fromFee != null) retainOrAdd(result, courseService.findCoursesByFeeAfter(fromFee));
@@ -91,19 +92,19 @@ public class CourseSearchServiceImpl implements CourseSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findByDay(DayOfWeek day, Set<Course> result){
+    public Set<Course> findByDay(DayOfWeek day, Set<Course> result) {
         if (day != null) retainOrAdd(result, courseService.findCoursesByDay(dayService.getDay(day)));
         return result;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findAll(Set<Course> result){
+    public Set<Course> findAll(Set<Course> result) {
         if (!retain) result.addAll(courseService.findCourses());
         return result;
     }
 
-    private void retainOrAdd(Set<Course> to, Set<Course> from){
+    private void retainOrAdd(Set<Course> to, Set<Course> from) {
         if (retain) to.retainAll(from);
         else {
             to.addAll(from);

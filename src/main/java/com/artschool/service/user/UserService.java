@@ -18,13 +18,13 @@ public interface UserService {
 
     Instructor createInstructor(Instructor instructor);
 
-    Student reinitializeStudent(Student student);
-
-    Instructor reinitializeInstructor(Instructor instructor);
-
-    void editStatus(CustomUser customUser, String composition);
+    void editStatus(String userEmail, String status);
 
     void saveOrUpdate(CustomUser customUser);
+
+    Set<Course> getStudentCourses(String studentEmail);
+
+    Set<Course> getInstructorCourses(String instructorEmail);
 
     Student findStudentById(long id);
 

@@ -11,7 +11,7 @@ public interface CourseService {
 
     Course createCourse(Course course);
 
-    void createCourse(CourseForm form, Instructor instructor);
+    void createCourse(CourseForm form, String instructorEmail);
 
     Course updateCourse(Course course);
 
@@ -19,9 +19,9 @@ public interface CourseService {
 
     void saveOrUpdate(Course course);
 
-    void enrollInCourse(Student student, Course course);
+    void enrollInCourse(String studentEmail, long courseId);
 
-    void unenrollFromCourse(Student student, Course course);
+    void unenrollFromCourse(String studentEmail, long courseId);
 
     boolean isEnrolled(Student student, Course course);
 

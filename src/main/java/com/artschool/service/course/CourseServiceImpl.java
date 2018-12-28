@@ -4,6 +4,8 @@ import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Audience;
 import com.artschool.model.form.CourseForm;
 import com.artschool.repository.CourseRepository;
+import com.artschool.repository.InstructorRepository;
+import com.artschool.repository.StudentRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,13 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class CourseServiceImpl implements CourseService{
+public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
+
+    private final StudentRepository studentRepository;
+
+    private final InstructorRepository instructorRepository;
 
     private final DayService dayService;
 
@@ -24,8 +30,12 @@ public class CourseServiceImpl implements CourseService{
     private final DisciplineService disciplineService;
 
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository, DayService dayService, DateService dateService, DisciplineService disciplineService) {
+    public CourseServiceImpl(CourseRepository courseRepository, StudentRepository studentRepository,
+                             InstructorRepository instructorRepository, DayService dayService, DateService dateService,
+                             DisciplineService disciplineService) {
         this.courseRepository = courseRepository;
+        this.studentRepository = studentRepository;
+        this.instructorRepository = instructorRepository;
         this.dayService = dayService;
         this.dateService = dateService;
         this.disciplineService = disciplineService;
@@ -41,10 +51,11 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public void createCourse(CourseForm form, Instructor instructor) {
+    public void createCourse(CourseForm form, String instructorEmail) {
         Course course = new Course(form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
                 form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form),
-                dayService.getDays(form.getDays()), form.getDescription(), instructor);
+                dayService.getDays(form.getDays()), form.getDescription(),
+                instructorRepository.findInstructorByEmail(instructorEmail));
         course.getInstructor().addCourse(course);
         courseRepository.save(course);
     }
@@ -60,8 +71,8 @@ public class CourseServiceImpl implements CourseService{
     @Transactional
     public void updateCourse(long courseId, CourseForm form) {
         Course course = new Course(courseId, form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
-                form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form), dayService.getDays(form.getDays()),
-                form.getDescription(), findCourseById(courseId).getInstructor());
+                form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form),
+                dayService.getDays(form.getDays()), form.getDescription(), findCourseById(courseId).getInstructor());
         courseRepository.save(course);
     }
 
@@ -73,7 +84,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public void enrollInCourse(Student student, Course course) {
+    public void enrollInCourse(String studentEmail, long courseId) {
+        Course course = findCourseById(courseId);
+        Student student = studentRepository.findStudentByEmail(studentEmail);
         course.decrementAvailableSpaces();
         course.addStudent(student);
         student.addCourse(course);
@@ -82,7 +95,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public void unenrollFromCourse(Student student, Course course) {
+    public void unenrollFromCourse(String studentEmail, long courseId) {
+        Course course = findCourseById(courseId);
+        Student student = studentRepository.findStudentByEmail(studentEmail);
         course.incrementAvailableSpaces();
         course.removeStudent(student);
         student.removeCourse(course);
