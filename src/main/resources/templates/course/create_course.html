@@ -7,21 +7,21 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
 
-    <div class="row mt-5">
-        <div class="col-3">
+    <div class="row mt-4">
+        <div class="col-md-3">
             <div th:replace="fragments/user_menu :: user_menu"></div>
         </div>
-        <div class="col-9">
-            <div class="jumbotron ml-3 mr-5">
+        <div class="col-md-9">
+            <div class="jumbotron ml-3 mr-3">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-sm-4">
                         <div class="mx-4">
                             <figure class="figure">
                                 <img src="/images/course.png" class="figure-img img-fluid rounded">
                             </figure>
                         </div>
                     </div>
-                    <div class="col-8">
+                    <div class="col-sm-8">
                         <h1 class="display-4">Create course</h1>
                         <form class="needs-validation form-horizontal mt-4" novalidate action="/instructor/course/save" method="POST">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

@@ -7,8 +7,8 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
 
-    <div class="row mt-5">
-        <div class="col-3">
+    <div class="row mt-4">
+        <div class="col-md-3">
             <div th:if="${instructors}">
                 <div th:replace="fragments/search_instructor :: search_instructor"></div>
             </div>
@@ -16,7 +16,7 @@
                 <div th:replace="fragments/search_student :: search_student"></div>
             </div>
         </div>
-        <div class="col-9">
+        <div class="col-md-9">
             <div th:if="${instructors?.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
                 There are no instructors matching your request.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -29,10 +29,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div th:if="${instructors}" class="card-group mr-4" th:object="${instructors}">
+            <div th:if="${instructors}" class="card-group" th:object="${instructors}">
                 <div th:replace="fragments/users :: users"></div>
             </div>
-            <div th:if="${students}" class="card-group mr-4" th:object="${students}">
+            <div th:if="${students}" class="card-group" th:object="${students}">
                 <div th:replace="fragments/users :: users"></div>
             </div>
         </div>

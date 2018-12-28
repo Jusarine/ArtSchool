@@ -7,12 +7,12 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
 
-    <div class="row mt-5">
-        <div class="col-3">
+    <div class="row mt-4">
+        <div class="col-md-3">
             <div th:replace="fragments/search_course :: search_course"></div>
         </div>
-        <div class="col-9">
-            <div th:if="${courses.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
+        <div class="col-md-9">
+            <div th:if="${courses.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-3" role="alert">
                 There are no courses matching your request.
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

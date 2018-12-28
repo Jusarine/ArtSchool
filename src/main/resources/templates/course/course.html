@@ -9,8 +9,8 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
 
-    <div class="row mt-5">
-        <div class="col-3">
+    <div class="row mt-4">
+        <div class="col-md-3">
             <div sec:authorize="isAuthenticated()">
                 <div th:replace="fragments/user_menu :: user_menu"></div>
             </div>
@@ -18,17 +18,17 @@
                 <div th:replace="fragments/search_course :: search_course"></div>
             </div>
         </div>
-        <div class="col-9">
-            <div class="jumbotron ml-3 mr-5">
+        <div class="col-md-9">
+            <div class="jumbotron ml-3 mr-3">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-sm-4">
                         <div class="mx-4">
                             <figure class="figure">
                                 <img src="/images/course.png" class="figure-img img-fluid rounded">
                             </figure>
                         </div>
                     </div>
-                    <div class="col-8">
+                    <div class="col-sm-8">
                         <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
                             <a th:text="${param.error}"></a>
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
