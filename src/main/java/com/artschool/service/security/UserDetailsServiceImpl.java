@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         CustomUser customUser = userService.findByEmail(email);
         if (customUser == null)
-                    throw new UsernameNotFoundException("User with email " + email + " not found");
+                    throw new UsernameNotFoundException("User with email " + email + " not found!");
 
         Set<GrantedAuthority> roles = new HashSet<>();
         roles.add(new SimpleGrantedAuthority(customUser.getRole().toString()));

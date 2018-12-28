@@ -198,6 +198,12 @@ public class UserServiceImpl implements UserService{
             set.addAll(studentRepository.findStudentsByFirstNameContainingAndLastNameContaining(words[0], words[1]));
             set.addAll(studentRepository.findStudentsByFirstNameContainingAndLastNameContaining(words[1], words[0]));
         }
+        else {
+            for (String word : words) {
+                set.addAll(studentRepository.findStudentsByFirstNameContaining(word));
+                set.addAll(studentRepository.findStudentsByLastNameContaining(word));
+            }
+        }
         return set;
     }
 
@@ -216,6 +222,12 @@ public class UserServiceImpl implements UserService{
         else if (words.length == 2){
             set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[0], words[1]));
             set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[1], words[0]));
+        }
+        else {
+            for (String word : words) {
+                set.addAll(instructorRepository.findInstructorsByFirstNameContaining(word));
+                set.addAll(instructorRepository.findInstructorsByLastNameContaining(word));
+            }
         }
         return set;
     }

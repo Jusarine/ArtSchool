@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 public class Instructor extends CustomUser {
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String bio;
 
     @OneToMany(mappedBy = "instructor", cascade = CascadeType.MERGE)
