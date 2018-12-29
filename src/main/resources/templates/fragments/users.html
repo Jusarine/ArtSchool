@@ -5,12 +5,12 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-5">
-                    <figure class="figure">
-                        <img th:src="${{u.gender}} == 'FEMALE' ? '/images/girl.png' : '/images/boy.png'" class="figure-img img-fluid rounded-circle">
+                <div class="col-6">
+                    <figure class="figure m-auto">
+                        <img th:src="|/get_photo/${u.id}|" class="figure-img img-fluid rounded-circle" style="object-fit: cover; height:120px; width:120px;">
                     </figure>
                 </div>
-                <div class="col-7 my-auto">
+                <div class="col-6 my-auto">
                     <div class="row ml-1">
                         <a class="card-text" th:text="|${u.firstName} ${u.lastName}|"></a>
                     </div>

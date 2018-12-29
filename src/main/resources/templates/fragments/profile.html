@@ -8,8 +8,22 @@
                 <div class="col-sm-4">
                     <div class="mx-4">
                         <figure class="figure">
-                            <img th:src="${{#object.gender}} == 'FEMALE' ? '/images/girl.png' : '/images/boy.png'" class="figure-img img-fluid rounded-circle">
+                            <img th:src="|/get_photo/${#object.id}|" class="figure-img img-fluid rounded-circle">
                         </figure>
+                        <div th:if="${owner}">
+                            <form th:action="|/upload_photo/${#object.id}|" enctype="multipart/form-data" method="POST">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="photo" id="photo">
+                                        <label class="custom-file-label" for="photo">...</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon">Upload</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-8">
