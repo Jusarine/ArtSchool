@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Art School</title>
+    <title th:text="${instructors} ? 'Instructors - ArtSchool' : 'Students - ArtSchool'"></title>
     <div th:replace="fragments/styles :: styles"></div>
 </head>
 <body>
