@@ -15,7 +15,7 @@
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="photo" id="photo">
+                                        <input type="file" class="custom-file-input" name="photo" id="photo" accept="image/*" required>
                                         <label class="custom-file-label" for="photo">...</label>
                                     </div>
                                     <div class="input-group-append">

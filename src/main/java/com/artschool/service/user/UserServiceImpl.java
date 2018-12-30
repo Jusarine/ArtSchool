@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -260,5 +261,14 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public List<Instructor> findInstructors() {
         return instructorRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public List<CustomUser> findUsers() {
+        List<CustomUser> users = new ArrayList<>();
+        users.addAll(studentRepository.findAll());
+        users.addAll(instructorRepository.findAll());
+        return users;
     }
 }

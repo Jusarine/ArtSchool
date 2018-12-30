@@ -42,6 +42,8 @@ public interface UserService {
 
     Set<Instructor> findInstructorsByName(String name);
 
+    List<CustomUser> findUsers();
+
     Student findStudentByEmail(String email);
 
     Student findStudentByEmailAndInit(String email);

@@ -3,10 +3,7 @@ package com.artschool;
 import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Audience;
 import com.artschool.model.enumeration.Gender;
-import com.artschool.service.course.CourseService;
-import com.artschool.service.course.DateService;
-import com.artschool.service.course.DayService;
-import com.artschool.service.course.DisciplineService;
+import com.artschool.service.course.*;
 import com.artschool.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,7 +22,7 @@ public class ArtSchoolApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(final UserService userService, final CourseService courseService, final DayService dayService, final DateService dateService, final DisciplineService disciplineService) {
+    public CommandLineRunner demo(final UserService userService, final CourseService courseService, final DayService dayService, final DateService dateService, final DisciplineService disciplineService, final PhotoService photoService) {
         return strings -> {
 
             dayService.addDays(DayOfWeek.values());
@@ -82,6 +79,10 @@ public class ArtSchoolApplication {
             courseService.saveOrUpdate(course1);
             courseService.saveOrUpdate(course2);
             courseService.saveOrUpdate(course3);
+
+            photoService.createPhoto(new Photo(instructor1, course1));
+            photoService.createPhoto(new Photo(student1, course2));
+
         };
     }
 }

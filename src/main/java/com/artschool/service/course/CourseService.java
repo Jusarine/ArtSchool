@@ -33,6 +33,8 @@ public interface CourseService {
 
     Course findCourseByIdAndInit(long id);
 
+    Course findCourseByName(String name);
+
     Set<Course> findCoursesByName(String name);
 
     Set<Course> findCoursesByDiscipline(Discipline discipline);

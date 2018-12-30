@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="photos">
+    <div class="card-group">
+        <div class="col-sm-4 mb-4" th:each="photo: ${#object}">
+            <div class="card">
+                <img class="card-img-top" th:src="|/gallery/get_photo/${photo.id}|" style="object-fit: cover; height: 230px;">
+                <div class="card-body">
+                    <h5 class="card-title text-truncate" th:text="${photo.course.name}"></h5>
+                    <p class="card-text" th:text="|added by ${photo.author.firstName} ${photo.author.lastName}|" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

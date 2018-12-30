@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -41,7 +42,7 @@ public abstract class CustomUser {
     private String status;
 
     @OneToMany(mappedBy = "author")
-    private Set<Photo> photos;
+    private Set<Photo> photos = new HashSet<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE, orphanRemoval = true)
     private PasswordResetToken resetToken;

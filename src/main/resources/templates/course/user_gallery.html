@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My courses - ArtSchool</title>
+    <div th:replace="fragments/styles :: styles"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        <div th:replace="fragments/user_menu :: user_menu"></div>
+    </div>
+    <div class="col-md-9">
+        <div th:if="${photos?.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-3" role="alert">
+            You haven't load any photos yet.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:unless="${photos?.empty}" th:object="${photos}">
+            <div th:replace="fragments/photos :: photos"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

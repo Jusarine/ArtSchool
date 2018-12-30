@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<div th:fragment="search_photo">
+    <div class="card mb-4">
+        <form th:action="@{/gallery}" method="GET">
+            <div class="card-header">
+                <div class="my-3">
+                    <h3>Search photo</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="courseId">
+                        <strong>Course</strong>
+                    </label>
+                    <select id="courseId" name="courseId" class="form-control">
+                        <option value="" selected>...</option>
+                        <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.name}" th:selected="${course.id} == ${{param?.courseId}}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="authorId">
+                        <strong>Author</strong>
+                    </label>
+                    <select id="authorId" name="authorId" class="form-control">
+                        <option value="" selected>...</option>
+                        <option th:each="author : ${authors}" th:value="${author.id}" th:text="|${author.firstName} ${author.lastName}|" th:selected="${author.id} == ${{param?.authorId}}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-secondary btn-block my-3" type="submit">Search</button>
+                <div sec:authorize="isAuthenticated()">
+                    <a class="btn btn-warning btn-block my-3" href="/gallery/add_photo">Add photo</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
