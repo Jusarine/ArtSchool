@@ -1,6 +1,8 @@
 package com.artschool.model.entity;
 
 import com.artschool.model.enumeration.Audience;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.time.DayOfWeek;
@@ -16,7 +18,7 @@ public class Course {
     @GeneratedValue
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @ManyToMany(cascade = CascadeType.MERGE)
@@ -65,10 +67,14 @@ public class Course {
     @OneToMany(mappedBy = "product", cascade = CascadeType.MERGE)
     private Set<Payment> payments = new HashSet<>();
 
+    @OneToMany(mappedBy = "course")
+    private Set<Photo> photos = new HashSet<>();
+
     public Course() {
     }
 
-    public Course(String name, List<Discipline> disciplines, Audience audience, Integer availableSpaces, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
+    public Course(String name, List<Discipline> disciplines, Audience audience, Integer availableSpaces, Integer fee,
+                  Date date, List<Day> days, String description, Instructor instructor) {
         this.name = name;
         this.disciplines = disciplines;
         this.audience = audience;
@@ -81,7 +87,8 @@ public class Course {
         this.instructor = instructor;
     }
 
-    public Course(long id, String name, List<Discipline> disciplines, Audience audience, Integer availableSpaces, Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
+    public Course(long id, String name, List<Discipline> disciplines, Audience audience, Integer availableSpaces,
+                  Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
         this.id = id;
         this.name = name;
         this.disciplines = disciplines;
@@ -151,7 +158,7 @@ public class Course {
         return date;
     }
 
-    private List<DayOfWeek> getDaysOfWeek(){
+    private List<DayOfWeek> getDaysOfWeek() {
         List<DayOfWeek> daysOfWeek = new ArrayList<>();
         for (Day day : days) {
             daysOfWeek.add(day.getName());
@@ -171,7 +178,7 @@ public class Course {
         this.days = days;
     }
 
-    public void addDay(Day day){
+    public void addDay(Day day) {
         days.add(day);
     }
 
@@ -196,8 +203,10 @@ public class Course {
     }
 
     private void setDaysAndWeeksAmount(){
-        List<LocalDate> allDaysBetweenDates = date.getStartDate().datesUntil(date.getEndDate()).collect(Collectors.toList());
-        this.daysAmount = allDaysBetweenDates.stream().filter(day -> getDaysOfWeek().contains(day.getDayOfWeek())).count();
+        List<LocalDate> allDaysBetweenDates = date.getStartDate().datesUntil(date.getEndDate())
+                .collect(Collectors.toList());
+        this.daysAmount = allDaysBetweenDates.stream().filter(day -> getDaysOfWeek().contains(day.getDayOfWeek()))
+                .count();
         this.weeksAmount = Math.round(allDaysBetweenDates.size() / 7.);
     }
 
@@ -225,11 +234,11 @@ public class Course {
         this.students = students;
     }
 
-    public void addStudent(Student student){
+    public void addStudent(Student student) {
         students.add(student);
     }
 
-    public void removeStudent(Student student){
+    public void removeStudent(Student student) {
         students.remove(student);
     }
 
@@ -241,12 +250,24 @@ public class Course {
         this.payments = payments;
     }
 
-    public void addPayment(Payment payment){
+    public void addPayment(Payment payment) {
         payments.add(payment);
     }
 
-    public void removePayment(Payment payment){
+    public void removePayment(Payment payment) {
         payments.remove(payment);
+    }
+
+    public Set<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
+    }
+
+    public void addPhoto(Photo photo) {
+        photos.add(photo);
     }
 
     @Override
@@ -263,27 +284,30 @@ public class Course {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Course)) return false;
         Course that = (Course) o;
 
-        if (id != that.id) return false;
-        if(name != null ? !name.equals(that.name) : that.name != null) return false;
-        if(audience != null ? !audience.equals(that.audience) : that.audience != null) return false;
-        if(availableSpaces != null ? !availableSpaces.equals(that.availableSpaces) : that.availableSpaces != null) return false;
-        if(fee != null ? !fee.equals(that.fee) : that.fee != null) return false;
-        if(description != null ? !description.equals(that.description) : that.description != null) return false;
-
-        return true;
+        return new EqualsBuilder()
+                .append(name, that.name)
+                .append(audience, that.audience)
+                .append(availableSpaces, that.availableSpaces)
+                .append(fee, that.fee)
+                .append(date, that.date)
+                .append(description, that.description)
+                .append(instructor, that.instructor)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = (int) id;
-        hash = 31 * hash + (name != null ? name.hashCode() : 0);
-        hash = 31 * hash + (audience != null ? audience.hashCode() : 0);
-        hash = 31 * hash + (availableSpaces != null ? availableSpaces.hashCode() : 0);
-        hash = 31 * hash + (fee != null ? fee.hashCode() : 0);
-        hash = 31 * hash + (description != null ? description.hashCode() : 0);
-        return hash;
+        return new HashCodeBuilder()
+                .append(name)
+                .append(audience)
+                .append(availableSpaces)
+                .append(fee)
+                .append(date)
+                .append(description)
+                .append(instructor)
+                .toHashCode();
     }
 }

@@ -1,5 +1,8 @@
 package com.artschool.model.entity;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,5 +74,27 @@ public class PasswordResetToken {
 
     public boolean isExpired(){
         return new Date().after(this.expiryDate);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PasswordResetToken)) return false;
+        PasswordResetToken that = (PasswordResetToken) o;
+
+        return new EqualsBuilder()
+                .append(token, that.token)
+                .append(user, that.user)
+                .append(expiryDate, that.expiryDate)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(token)
+                .append(user)
+                .append(expiryDate)
+                .toHashCode();
     }
 }

@@ -2,6 +2,8 @@ package com.artschool.model.entity;
 
 import com.artschool.model.enumeration.Gender;
 import com.artschool.model.enumeration.UserRole;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,7 +21,8 @@ public class Instructor extends CustomUser {
     public Instructor() {
     }
 
-    public Instructor(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password, String bio) {
+    public Instructor(String firstName, String lastName, Gender gender, String phoneNumber, String email,
+                      String password, String bio) {
         super(firstName, lastName, gender, phoneNumber, email, password);
         super.setRole(UserRole.ADMIN);
         this.bio = bio;
@@ -41,7 +44,7 @@ public class Instructor extends CustomUser {
         this.courses = courses;
     }
 
-    public void addCourse(Course course){
+    public void addCourse(Course course) {
         courses.add(course);
     }
 
@@ -55,16 +58,20 @@ public class Instructor extends CustomUser {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!super.equals(o)) return false;
+        if (!(o instanceof Instructor)) return false;
         Instructor that = (Instructor) o;
-        if (bio != null ? !bio.equals(that.bio) : that.bio != null) return false;
-        return true;
+
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(bio, that.bio)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = super.hashCode();
-        hash = 31 * hash + (bio != null ? bio.hashCode() : 0);
-        return hash;
+        return new HashCodeBuilder()
+                .appendSuper(super.hashCode())
+                .append(bio)
+                .toHashCode();
     }
 }

@@ -1,5 +1,8 @@
 package com.artschool.model.entity;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -49,12 +52,12 @@ public class Date {
         this.endTime = endTime;
     }
 
-    private void parseTimeRange(String startTime, String endTime){
+    private void parseTimeRange(String startTime, String endTime) {
         this.startTime = LocalTime.parse(startTime, timeFormatter);
         this.endTime = LocalTime.parse(endTime, timeFormatter);
     }
 
-    private void parseDateRange(String dateRange){
+    private void parseDateRange(String dateRange) {
         String[] dates = dateRange.split(RANGE_DELIMITER);
         this.startDate = LocalDate.parse(dates[0], dateFormatter);
         this.endDate = LocalDate.parse(dates[1], dateFormatter);
@@ -126,25 +129,24 @@ public class Date {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Date)) return false;
         Date that = (Date) o;
 
-        if (id != that.id) return false;
-        if(startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
-        if(endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
-        if(startTime != null ? !startTime.equals(that.startTime) : that.startTime != null) return false;
-        if(endTime != null ? !endTime.equals(that.endTime) : that.endTime != null) return false;
-
-        return true;
+        return new EqualsBuilder()
+                .append(startDate, that.startDate)
+                .append(endDate, that.endDate)
+                .append(startTime, that.startTime)
+                .append(endTime, that.endTime)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = (int) id;
-        hash = 31 * hash + (startDate != null ? startDate.hashCode() : 0);
-        hash = 31 * hash + (endDate != null ? endDate.hashCode() : 0);
-        hash = 31 * hash + (startTime != null ? startTime.hashCode() : 0);
-        hash = 31 * hash + (endTime != null ? endTime.hashCode() : 0);
-        return hash;
+        return new HashCodeBuilder()
+                .append(startDate)
+                .append(endDate)
+                .append(startTime)
+                .append(endTime)
+                .toHashCode();
     }
 }

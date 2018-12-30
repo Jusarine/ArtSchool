@@ -2,8 +2,11 @@ package com.artschool.model.entity;
 
 import com.artschool.model.enumeration.Gender;
 import com.artschool.model.enumeration.UserRole;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -36,6 +39,9 @@ public abstract class CustomUser {
     private String password;
 
     private String status;
+
+    @OneToMany(mappedBy = "author")
+    private Set<Photo> photos;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE, orphanRemoval = true)
     private PasswordResetToken resetToken;
@@ -120,6 +126,18 @@ public abstract class CustomUser {
         this.status = status;
     }
 
+    public Set<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(Set<Photo> photos) {
+        this.photos = photos;
+    }
+
+    public void addPhoto(Photo photo) {
+        photos.add(photo);
+    }
+
     public PasswordResetToken getResetToken() {
         return resetToken;
     }
@@ -147,30 +165,27 @@ public abstract class CustomUser {
         if (!(o instanceof CustomUser)) return false;
         CustomUser that = (CustomUser) o;
 
-        if (id != that.id) return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
-        if (gender != null ? !gender.equals(that.gender) : that.gender != null) return false;
-        if (role != null ? !role.equals(that.role) : that.role != null) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
-        if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
-
-        return true;
+        return new EqualsBuilder()
+                .append(firstName, that.firstName)
+                .append(lastName, that.lastName)
+                .append(gender, that.gender)
+                .append(role, that.role)
+                .append(phoneNumber, that.phoneNumber)
+                .append(password, that.password)
+                .append(status, that.status)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = (int) id;
-        hash = 31 * hash + (firstName != null ? firstName.hashCode() : 0);
-        hash = 31 * hash + (lastName != null ? lastName.hashCode() : 0);
-        hash = 31 * hash + (gender != null ? gender.hashCode() : 0);
-        hash = 31 * hash + (role != null ? role.hashCode() : 0);
-        hash = 31 * hash + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        hash = 31 * hash + (email != null ? email.hashCode() : 0);
-        hash = 31 * hash + (password != null ? password.hashCode() : 0);
-        hash = 31 * hash + (status != null ? status.hashCode() : 0);
-        return hash;
+        return new HashCodeBuilder()
+                .append(firstName)
+                .append(lastName)
+                .append(gender)
+                .append(role)
+                .append(phoneNumber)
+                .append(password)
+                .append(status)
+                .toHashCode();
     }
 }

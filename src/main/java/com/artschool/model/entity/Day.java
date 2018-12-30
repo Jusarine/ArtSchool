@@ -1,5 +1,8 @@
 package com.artschool.model.entity;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.util.HashSet;
@@ -35,7 +38,7 @@ public class Day {
         this.name = name;
     }
 
-    public String getCapitalizedName(){
+    public String getCapitalizedName() {
         return name.toString().substring(0, 1).toUpperCase() + name.toString().substring(1).toLowerCase();
     }
 
@@ -47,11 +50,11 @@ public class Day {
         this.courses = courses;
     }
 
-    public void addCourse(Course course){
+    public void addCourse(Course course) {
         courses.add(course);
     }
 
-    public void removeCourse(Course course){
+    public void removeCourse(Course course) {
         courses.remove(course);
     }
 
@@ -66,20 +69,15 @@ public class Day {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Day)) return false;
         Day that = (Day) o;
 
-        if (id != that.id) return false;
-        if(name != null ? !name.equals(that.name) : that.name != null) return false;
-
-        return true;
+        return new EqualsBuilder().append(name, that.name).isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = (int) id;
-        hash = 31 * hash + (name != null ? name.hashCode() : 0);
-        return hash;
+        return new HashCodeBuilder().append(name).toHashCode();
     }
 
 }

@@ -1,5 +1,8 @@
 package com.artschool.model.entity;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -94,24 +97,26 @@ public class Payment {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Payment that = (Payment) o;
+        if (!(o instanceof Payment)) return false;
+        Payment payment = (Payment) o;
 
-        if (id != that.id) return false;
-        if(transactionId != null ? !transactionId.equals(that.transactionId) : that.transactionId != null) return false;
-        if(total != null ? !total.equals(that.total) : that.total != null) return false;
-        if(date != null ? !date.equals(that.date) : that.date != null) return false;
-
-        return true;
+        return new EqualsBuilder()
+                .append(transactionId, payment.transactionId)
+                .append(payer, payment.payer)
+                .append(product, payment.product)
+                .append(total, payment.total)
+                .append(date, payment.date)
+                .isEquals();
     }
 
     @Override
     public int hashCode() {
-        int hash = (int) id;
-        hash = 31 * hash + (transactionId != null ? transactionId.hashCode() : 0);
-        hash = 31 * hash + (total != null ? total.hashCode() : 0);
-        hash = 31 * hash + (date != null ? date.hashCode() : 0);
-
-        return hash;
+        return new HashCodeBuilder()
+                .append(transactionId)
+                .append(payer)
+                .append(product)
+                .append(total)
+                .append(date)
+                .toHashCode();
     }
 }

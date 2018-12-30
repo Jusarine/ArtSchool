@@ -31,11 +31,11 @@ public class Student extends CustomUser {
         this.courses = courses;
     }
 
-    public void addCourse(Course course){
+    public void addCourse(Course course) {
         courses.add(course);
     }
 
-    public void removeCourse(Course course){
+    public void removeCourse(Course course) {
         courses.remove(course);
     }
 
@@ -47,11 +47,11 @@ public class Student extends CustomUser {
         this.payments = payments;
     }
 
-    public void addPayment(Payment payment){
+    public void addPayment(Payment payment) {
         payments.add(payment);
     }
 
-    public void removePayment(Payment payment){
+    public void removePayment(Payment payment) {
         payments.remove(payment);
     }
 
@@ -64,8 +64,7 @@ public class Student extends CustomUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Student)) return false;
-        if (!super.equals(o)) return false;
-        return true;
+        return super.equals(o);
     }
 
     @Override
