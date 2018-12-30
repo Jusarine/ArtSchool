@@ -1,5 +1,6 @@
 package com.artschool.controller.course;
 
+import com.artschool.model.entity.Course;
 import com.artschool.model.form.CourseForm;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.course.DayService;
@@ -7,8 +8,10 @@ import com.artschool.service.course.DisciplineService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
@@ -49,8 +52,14 @@ public class InstructorCourseController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable long id, @ModelAttribute CourseForm form) {
-        courseService.updateCourse(id, form);
+    public String update(@PathVariable long id,
+                         @ModelAttribute CourseForm form,
+                         RedirectAttributes redirectAttributes) {
+        Course course = courseService.updateCourse(id, form);
+        if (course == null) {
+            redirectAttributes.addAttribute("error", "Course with this name already exists!");
+            return "redirect:/instructor/course/edit/" + id;
+        }
         return "redirect:/instructor/course/list";
     }
 
@@ -63,8 +72,12 @@ public class InstructorCourseController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute CourseForm form, Principal principal) {
-        courseService.createCourse(form, principal.getName());
+    public String save(@ModelAttribute CourseForm form, Principal principal, RedirectAttributes redirectAttributes) {
+        Course course = courseService.createCourse(form, principal.getName());
+        if (course == null) {
+            redirectAttributes.addAttribute("error", "Course with this name already exists!");
+            return "redirect:/instructor/course/create";
+        }
         return "redirect:/instructor/course/list";
     }
 

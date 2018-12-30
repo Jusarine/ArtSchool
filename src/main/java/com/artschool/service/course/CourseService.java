@@ -11,11 +11,11 @@ public interface CourseService {
 
     Course createCourse(Course course);
 
-    void createCourse(CourseForm form, String instructorEmail);
+    Course createCourse(CourseForm form, String instructorEmail);
 
     Course updateCourse(Course course);
 
-    void updateCourse(long courseId, CourseForm form);
+    Course updateCourse(long courseId, CourseForm form);
 
     void saveOrUpdate(Course course);
 

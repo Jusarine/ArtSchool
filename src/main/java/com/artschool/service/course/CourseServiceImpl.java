@@ -44,6 +44,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Course createCourse(Course course) {
+        if (courseRepository.findCourseByName(course.getName()) != null) return null;
         course.getInstructor().addCourse(course);
         courseRepository.save(course);
         return course;
@@ -51,29 +52,36 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
-    public void createCourse(CourseForm form, String instructorEmail) {
+    public Course createCourse(CourseForm form, String instructorEmail) {
+        if (courseRepository.findCourseByName(form.getName()) != null) return null;
         Course course = new Course(form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
                 form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form),
                 dayService.getDays(form.getDays()), form.getDescription(),
                 instructorRepository.findInstructorByEmail(instructorEmail));
         course.getInstructor().addCourse(course);
         courseRepository.save(course);
+        return course;
     }
 
     @Override
     @Transactional
     public Course updateCourse(Course course) {
+        Course found = courseRepository.findCourseByName(course.getName());
+        if (found != null && !(found.getId() == course.getId())) return null;
         courseRepository.save(course);
         return course;
     }
 
     @Override
     @Transactional
-    public void updateCourse(long courseId, CourseForm form) {
+    public Course updateCourse(long courseId, CourseForm form) {
+        Course found = courseRepository.findCourseByName(form.getName());
+        if (found != null && !(found.getId() == courseId)) return null;
         Course course = new Course(courseId, form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
                 form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form),
                 dayService.getDays(form.getDays()), form.getDescription(), findCourseById(courseId).getInstructor());
         courseRepository.save(course);
+        return course;
     }
 
     @Override
