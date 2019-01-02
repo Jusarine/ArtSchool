@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
+    Set<Photo> findPhotosByNameContaining(String photoName);
+
     Set<Photo> findPhotosByAuthorId(long authorId);
 
     Set<Photo> findPhotosByCourseId(long courseId);

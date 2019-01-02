@@ -7,8 +7,12 @@
             <div class="card">
                 <img class="card-img-top" th:src="|/gallery/get_photo/${photo.id}|" style="object-fit: cover; height: 230px;">
                 <div class="card-body">
-                    <h5 class="card-title text-truncate" th:text="${photo.course.name}"></h5>
-                    <p class="card-text" th:text="|added by ${photo.author.firstName} ${photo.author.lastName}|" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;"></p>
+                    <h5 class="card-title text-truncate" th:text="${photo.name}"></h5>
+                    <p class="card-text text-truncate mb-0" th:text="|from ${photo.course.name}|"></p>
+                    <p class="card-text text-truncate" th:text="|by ${photo.author.firstName} ${photo.author.lastName}|"></p>
+                </div>
+                <div class="card-footer text-muted text-truncate">
+                    <p class="mb-0" th:text="${photo.date}"></p>
                 </div>
             </div>
         </div>

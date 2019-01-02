@@ -14,6 +14,8 @@ public class Photo {
     @GeneratedValue
     private long id;
 
+    private String name;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "author_id")
     private CustomUser author;
@@ -27,7 +29,8 @@ public class Photo {
     public Photo() {
     }
 
-    public Photo(CustomUser author, Course course) {
+    public Photo(String name, CustomUser author, Course course) {
+        this.name = name;
         this.author = author;
         this.course = course;
         date = LocalDate.now();
@@ -35,6 +38,14 @@ public class Photo {
 
     public long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public CustomUser getAuthor() {

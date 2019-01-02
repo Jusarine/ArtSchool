@@ -80,8 +80,8 @@ public class ArtSchoolApplication {
             courseService.saveOrUpdate(course2);
             courseService.saveOrUpdate(course3);
 
-            photoService.createPhoto(new Photo(instructor1, course1));
-            photoService.createPhoto(new Photo(student1, course2));
+            photoService.createPhoto(new Photo("Ink drawing of an owl", instructor1, course1));
+            photoService.createPhoto(new Photo("Autumn mountains", student1, course2));
 
         };
     }

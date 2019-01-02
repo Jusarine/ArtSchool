@@ -9,11 +9,13 @@ public interface PhotoService {
 
     Photo createPhoto(Photo photo);
 
-    Photo createPhoto(String authorEmail, String courseName);
+    Photo createPhoto(String name, String authorEmail, String courseName);
 
     Set<Photo> findPhotosByAuthorEmail(String authorEmail);
 
     Set<Photo> findPhotos(SearchPhotoForm form);
+
+    Set<Photo> findByName(String photoName, Set<Photo> result);
 
     Set<Photo> findByAuthorId(Long authorId, Set<Photo> result);
 

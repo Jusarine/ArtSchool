@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <div th:fragment="search_photo">
     <div class="card mb-4">
@@ -7,6 +7,12 @@
             <div class="card-header">
                 <div class="my-3">
                     <h3>Search photo</h3>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Name</span>
+                        </div>
+                        <input type="text" class="form-control" th:value="${param?.name}" id="name" name="name" title="Photo name">
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -31,9 +37,6 @@
             </div>
             <div class="card-footer">
                 <button class="btn btn-secondary btn-block my-3" type="submit">Search</button>
-                <div sec:authorize="isAuthenticated()">
-                    <a class="btn btn-warning btn-block my-3" href="/gallery/add_photo">Add photo</a>
-                </div>
             </div>
         </form>
     </div>

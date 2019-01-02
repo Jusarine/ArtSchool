@@ -38,8 +38,8 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     @Transactional
-    public Photo createPhoto(String authorEmail, String courseName) {
-        Photo photo = new Photo(userService.findByEmail(authorEmail), courseService.findCourseByName(courseName));
+    public Photo createPhoto(String name, String authorEmail, String courseName) {
+        Photo photo = new Photo(name, userService.findByEmail(authorEmail), courseService.findCourseByName(courseName));
         photo.getAuthor().addPhoto(photo);
         photo.getCourse().addPhoto(photo);
         photoRepository.save(photo);
@@ -56,7 +56,21 @@ public class PhotoServiceImpl implements PhotoService {
     @Transactional(readOnly = true)
     public Set<Photo> findPhotos(SearchPhotoForm form) {
         retain = false;
-        return findAll(findByCourseId(form.getCourseId(), findByAuthorId(form.getAuthorId(), new HashSet<>())));
+        return findAll(findByCourseId(form.getCourseId(), findByAuthorId(form.getAuthorId(),
+                findByName(form.getName(), new HashSet<>()))));
+    }
+
+    @Override
+    @Transactional
+    public Set<Photo> findByName(String photoName, Set<Photo> result) {
+        if (photoName != null && !photoName.isEmpty()) {
+            Set<Photo> set = new HashSet<>();
+            for (String namePart : photoName.split(" ")) {
+                set.addAll(photoRepository.findPhotosByNameContaining(namePart));
+            }
+            retainOrAdd(result, set);
+        }
+        return result;
     }
 
     @Override

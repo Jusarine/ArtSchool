@@ -1,4 +1,4 @@
-package com.artschool.controller.course;
+package com.artschool.controller.gallery;
 
 import com.artschool.model.entity.Photo;
 import com.artschool.model.form.SearchPhotoForm;
@@ -43,7 +43,7 @@ public class GalleryController {
         model.addAttribute("authors", userService.findUsers());
         model.addAttribute("courses", courseService.findCourses());
         model.addAttribute("photos", photoService.findPhotos(form));
-        return "/course/gallery";
+        return "/gallery/gallery";
     }
 
     @GetMapping("/user")
@@ -52,20 +52,21 @@ public class GalleryController {
         model.addAttribute("authors", userService.findUsers());
         model.addAttribute("courses", courseService.findCourses());
         model.addAttribute("photos", photoService.findPhotosByAuthorEmail(principal.getName()));
-        return "/course/user_gallery";
+        return "/gallery/user_gallery";
     }
 
     @GetMapping("/add_photo")
     public String showAddPhotoPage(Model model) {
         model.addAttribute("courses", courseService.findCourses());
-        return "/course/add_photo";
+        return "/gallery/add_photo";
     }
 
     @PostMapping("/upload_photo")
-    public String addPhoto(@RequestParam String course,
+    public String addPhoto(@RequestParam String name,
+                           @RequestParam String course,
                            @RequestParam MultipartFile photo,
                            Principal principal) throws IOException {
-        Photo p = photoService.createPhoto(principal.getName(), course);
+        Photo p = photoService.createPhoto(name, principal.getName(), course);
         Files.write(Paths.get("images/photos/" + p.getId() + ".png"), photo.getBytes());
         return "redirect:/gallery/user";
     }
