@@ -6,18 +6,16 @@ import com.artschool.model.entity.PasswordResetToken;
 import com.artschool.model.entity.Student;
 import com.artschool.model.form.SignUpStudentForm;
 import com.artschool.model.form.SignUpInstructorForm;
-import com.artschool.service.security.EmailService;
+import com.artschool.service.security.PasswordResetService;
 import com.artschool.service.security.SecurityService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 @Controller
 public class LoginController {
@@ -28,15 +26,15 @@ public class LoginController {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final EmailService emailService;
+    private final PasswordResetService passwordResetService;
 
     @Autowired
     public LoginController(UserService userService, SecurityService securityService, PasswordEncoder passwordEncoder,
-                           EmailService emailService) {
+                           PasswordResetService passwordResetService) {
         this.userService = userService;
         this.securityService = securityService;
         this.passwordEncoder = passwordEncoder;
-        this.emailService = emailService;
+        this.passwordResetService = passwordResetService;
     }
 
     @GetMapping("/")
@@ -91,12 +89,11 @@ public class LoginController {
             return "redirect:/forgot_password";
         }
 
-        String token = UUID.randomUUID().toString();
+        String token = passwordResetService.generateToken();
         user.setPasswordResetToken(new PasswordResetToken(token));
         userService.saveOrUpdate(user);
 
-        String appUrl = req.getRequestURL().toString().replace(req.getRequestURI(), req.getContextPath());
-        constructResetTokenEmail(email, appUrl + "/reset_password?id=" + user.getId() + "&token=" + token);
+        passwordResetService.sendEmail(user, token, req);
 
         redirectAttributes.addAttribute("success", "Check your email for a link to reset your password.");
         return "redirect:/login";
@@ -124,13 +121,5 @@ public class LoginController {
 
         redirectAttributes.addAttribute("success", "Password was successfully restored.");
         return "redirect:/login";
-    }
-
-    private void constructResetTokenEmail(String recipient, String resetLink) {
-        SimpleMailMessage passwordResetEmail = new SimpleMailMessage();
-        passwordResetEmail.setTo(recipient);
-        passwordResetEmail.setSubject("ArtSchool - Password Reset Request");
-        passwordResetEmail.setText("To reset your password, click the link below:\n" + resetLink);
-        emailService.sendEmail(passwordResetEmail);
     }
 }
