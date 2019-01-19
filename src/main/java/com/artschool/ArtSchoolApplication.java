@@ -4,6 +4,7 @@ import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Audience;
 import com.artschool.model.enumeration.Gender;
 import com.artschool.service.course.*;
+import com.artschool.service.gallery.PhotoService;
 import com.artschool.service.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

@@ -1,13 +1,10 @@
 package com.artschool.controller.user;
 
-import com.artschool.model.enumeration.Gender;
 import com.artschool.service.course.CourseService;
+import com.artschool.service.gallery.LoadPhotoService;
 import com.artschool.service.user.StudentSearchService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 
 @Controller
@@ -29,11 +23,14 @@ public class UserController {
 
     private final StudentSearchService studentSearchService;
 
+    private final LoadPhotoService loadPhotoService;
+
     @Autowired
-    public UserController(UserService userService, CourseService courseService, StudentSearchService studentSearchService) {
+    public UserController(UserService userService, CourseService courseService, StudentSearchService studentSearchService, LoadPhotoService loadPhotoService) {
         this.userService = userService;
         this.courseService = courseService;
         this.studentSearchService = studentSearchService;
+        this.loadPhotoService = loadPhotoService;
     }
 
     @GetMapping("/profile")
@@ -78,23 +75,13 @@ public class UserController {
 
     @PostMapping("/upload_photo/{id}")
     public String uploadUserPhoto(@PathVariable long id, @RequestParam MultipartFile photo) throws IOException {
-        Files.write(Paths.get("images/users/" + id + ".png"), photo.getBytes());
+        loadPhotoService.writeUserPhoto(id, photo);
         return "redirect:/profile";
     }
 
     @GetMapping("/get_photo/{id}")
     public ResponseEntity<byte[]> getUserPhoto(@PathVariable long id) throws IOException {
-        Path path = Paths.get("images/users/" + id + ".png");
-        if (Files.notExists(path)) {
-            if (userService.findById(id).getGender().equals(Gender.FEMALE))
-                path = Paths.get("src/main/resources/static/images/girl.png");
-            else
-                path = Paths.get("src/main/resources/static/images/boy.png");
-        }
-        byte[] photo = Files.readAllBytes(path);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_PNG);
-        return new ResponseEntity<>(photo, headers, HttpStatus.OK);
+        return loadPhotoService.readUserPhoto(id);
     }
 
 }

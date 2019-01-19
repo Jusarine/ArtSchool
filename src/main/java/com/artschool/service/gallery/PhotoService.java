@@ -1,4 +1,4 @@
-package com.artschool.service.course;
+package com.artschool.service.gallery;
 
 import com.artschool.model.entity.Photo;
 import com.artschool.model.form.SearchPhotoForm;
