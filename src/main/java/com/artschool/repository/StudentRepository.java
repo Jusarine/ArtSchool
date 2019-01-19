@@ -1,16 +1,13 @@
 package com.artschool.repository;
 
-import com.artschool.model.entity.PasswordResetToken;
 import com.artschool.model.entity.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Set;
 
-public interface StudentRepository extends JpaRepository<Student, Long>{
+public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Student findStudentByEmail(String email);
-
-    Student findStudentByResetToken(PasswordResetToken resetToken);
 
     Student findStudentByFirstNameAndLastName(String firstName, String lastName);
 

@@ -4,6 +4,7 @@ import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Gender;
 import com.artschool.model.form.SignUpStudentForm;
 import com.artschool.model.form.SignUpInstructorForm;
+import com.artschool.repository.CustomUserRepository;
 import com.artschool.repository.InstructorRepository;
 import com.artschool.repository.StudentRepository;
 import org.hibernate.Hibernate;
@@ -12,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,10 +24,14 @@ public class UserServiceImpl implements UserService {
 
     private final InstructorRepository instructorRepository;
 
+    private final CustomUserRepository customUserRepository;
+
     @Autowired
-    public UserServiceImpl(StudentRepository studentRepository, InstructorRepository instructorRepository) {
+    public UserServiceImpl(StudentRepository studentRepository, InstructorRepository instructorRepository,
+                           CustomUserRepository customUserRepository) {
         this.studentRepository = studentRepository;
         this.instructorRepository = instructorRepository;
+        this.customUserRepository = customUserRepository;
     }
 
     @Override
@@ -103,21 +107,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Student findStudentById(long id) {
-        return studentRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Instructor findInstructorById(long id) {
-        return instructorRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public CustomUser findById(long id) {
-        CustomUser customUser = findStudentById(id);
-        return customUser == null ? findInstructorById(id) : customUser;
+        return customUserRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -128,61 +119,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Student findStudentByEmailAndInit(String email) {
-        Student student = findStudentByEmail(email);
-        if (student != null) {
-            Hibernate.initialize(student.getCourses());
-        }
-        return student;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public Instructor findInstructorByEmail(String email) {
         return instructorRepository.findInstructorByEmail(email);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Instructor findInstructorByEmailAndInit(String email) {
-        Instructor instructor = findInstructorByEmail(email);
-        if (instructor != null) {
-            Hibernate.initialize(instructor.getCourses());
-        }
-        return instructor;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public CustomUser findUserByEmailAndInit(String email) {
-        Student student = findStudentByEmailAndInit(email);
-        return student == null ? findInstructorByEmailAndInit(email) : student;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
     public CustomUser findByEmail(String email) {
-        CustomUser customUser = findStudentByEmail(email);
-        return customUser == null ? findInstructorByEmail(email) : customUser;
+        return customUserRepository.findByEmail(email);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Student findStudentByResetToken(PasswordResetToken resetToken) {
-        return studentRepository.findStudentByResetToken(resetToken);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Instructor findInstructorByResetToken(PasswordResetToken resetToken) {
-        return instructorRepository.findInstructorByResetToken(resetToken);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public CustomUser findByResetToken(PasswordResetToken resetToken) {
-        CustomUser customUser = findStudentByResetToken(resetToken);
-        return customUser == null ? findInstructorByResetToken(resetToken) : customUser;
+    public CustomUser findByResetToken(String resetToken) {
+        return customUserRepository.findByPasswordResetToken_Token(resetToken);
     }
 
     @Override
@@ -190,14 +140,14 @@ public class UserServiceImpl implements UserService {
     public Set<Student> findStudentsByName(String name) {
         Set<Student> set = new HashSet<>();
         String[] words = name.split("[\\s]+");
-        if (words.length == 0){
+        if (words.length == 0) {
             set.addAll(studentRepository.findAll());
         }
-        else if (words.length == 1){
+        else if (words.length == 1) {
             set.addAll(studentRepository.findStudentsByFirstNameContaining(words[0]));
             set.addAll(studentRepository.findStudentsByLastNameContaining(words[0]));
         }
-        else if (words.length == 2){
+        else if (words.length == 2) {
             set.addAll(studentRepository.findStudentsByFirstNameContainingAndLastNameContaining(words[0], words[1]));
             set.addAll(studentRepository.findStudentsByFirstNameContainingAndLastNameContaining(words[1], words[0]));
         }
@@ -215,14 +165,14 @@ public class UserServiceImpl implements UserService {
     public Set<Instructor> findInstructorsByName(String name) {
         Set<Instructor> set = new HashSet<>();
         String[] words = name.split("[\\s]+");
-        if (words.length == 0){
+        if (words.length == 0) {
             set.addAll(instructorRepository.findAll());
         }
-        else if (words.length == 1){
+        else if (words.length == 1) {
             set.addAll(instructorRepository.findInstructorsByFirstNameContaining(words[0]));
             set.addAll(instructorRepository.findInstructorsByLastNameContaining(words[0]));
         }
-        else if (words.length == 2){
+        else if (words.length == 2) {
             set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[0],
                     words[1]));
             set.addAll(instructorRepository.findInstructorsByFirstNameContainingAndLastNameContaining(words[1],
@@ -266,9 +216,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<CustomUser> findUsers() {
-        List<CustomUser> users = new ArrayList<>();
-        users.addAll(studentRepository.findAll());
-        users.addAll(instructorRepository.findAll());
-        return users;
+        return customUserRepository.findAll();
     }
 }

@@ -56,7 +56,7 @@ public class StudentCourseController {
     public String restore(@PathVariable long id,
                           Principal principal,
                           RedirectAttributes redirectAttributes) {
-        if (paymentService.findPayments(principal.getName(), id) != null){
+        if (paymentService.findPayments(principal.getName(), id) != null) {
             courseService.enrollInCourse(principal.getName(), id);
             return "redirect:/student/course/list";
         }

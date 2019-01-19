@@ -26,17 +26,9 @@ public interface UserService {
 
     Set<Course> getInstructorCourses(String instructorEmail);
 
-    Student findStudentById(long id);
-
-    Instructor findInstructorById(long id);
-
     CustomUser findById(long id);
 
-    Student findStudentByResetToken(PasswordResetToken resetToken);
-
-    Instructor findInstructorByResetToken(PasswordResetToken resetToken);
-
-    CustomUser findByResetToken(PasswordResetToken resetToken);
+    CustomUser findByResetToken(String resetToken);
 
     Set<Student> findStudentsByName(String name);
 
@@ -46,13 +38,7 @@ public interface UserService {
 
     Student findStudentByEmail(String email);
 
-    Student findStudentByEmailAndInit(String email);
-
     Instructor findInstructorByEmail(String email);
-
-    Instructor findInstructorByEmailAndInit(String email);
-
-    CustomUser findUserByEmailAndInit(String email);
 
     CustomUser findByEmail(String email);
 

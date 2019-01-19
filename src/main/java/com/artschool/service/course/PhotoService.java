@@ -11,7 +11,7 @@ public interface PhotoService {
 
     Photo createPhoto(String name, String authorEmail, String courseName);
 
-    Set<Photo> findPhotosByAuthorEmail(String authorEmail);
+    Set<Photo> findByAuthorEmail(String authorEmail);
 
     Set<Photo> findPhotos(SearchPhotoForm form);
 

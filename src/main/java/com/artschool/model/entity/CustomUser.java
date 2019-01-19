@@ -19,10 +19,10 @@ public abstract class CustomUser {
     @Column(name = "user_id")
     private long id;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(nullable = false)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(nullable = false)
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -31,7 +31,6 @@ public abstract class CustomUser {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(nullable = false, unique = true)
@@ -44,13 +43,14 @@ public abstract class CustomUser {
     @OneToMany(mappedBy = "author")
     private Set<Photo> photos = new HashSet<>();
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.MERGE, orphanRemoval = true)
-    private PasswordResetToken resetToken;
+    @Embedded
+    private PasswordResetToken passwordResetToken;
 
     public CustomUser() {
     }
 
-    public CustomUser(String firstName, String lastName, Gender gender, String phoneNumber, String email, String password) {
+    public CustomUser(String firstName, String lastName, Gender gender, String phoneNumber, String email,
+                      String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
@@ -139,12 +139,12 @@ public abstract class CustomUser {
         photos.add(photo);
     }
 
-    public PasswordResetToken getResetToken() {
-        return resetToken;
+    public PasswordResetToken getPasswordResetToken() {
+        return passwordResetToken;
     }
 
-    public void setResetToken(PasswordResetToken resetToken) {
-        this.resetToken = resetToken;
+    public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
     }
 
     @Override

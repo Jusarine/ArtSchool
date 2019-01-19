@@ -48,7 +48,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Photo> findPhotosByAuthorEmail(String authorEmail) {
+    public Set<Photo> findByAuthorEmail(String authorEmail) {
         return photoRepository.findPhotosByAuthorEmail(authorEmail);
     }
 
@@ -76,7 +76,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     @Transactional(readOnly = true)
     public Set<Photo> findByAuthorId(Long authorId, Set<Photo> result) {
-        if (authorId != null){
+        if (authorId != null) {
             retainOrAdd(result, photoRepository.findPhotosByAuthorId(authorId));
         }
         return result;
@@ -85,7 +85,7 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     @Transactional(readOnly = true)
     public Set<Photo> findByCourseId(Long courseId, Set<Photo> result) {
-        if (courseId != null){
+        if (courseId != null) {
             retainOrAdd(result, photoRepository.findPhotosByCourseId(courseId));
         }
         return result;

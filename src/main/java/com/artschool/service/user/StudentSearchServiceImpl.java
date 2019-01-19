@@ -33,7 +33,7 @@ public class StudentSearchServiceImpl implements StudentSearchService {
     @Override
     @Transactional(readOnly = true)
     public Set<Student> findByRequest(String request, Set<Student> result) {
-        if (request != null && !"".equals(request)){
+        if (request != null && !"".equals(request)) {
             retainOrAdd(result, userService.findStudentsByName(request));
         }
         return result;
@@ -42,9 +42,9 @@ public class StudentSearchServiceImpl implements StudentSearchService {
     @Override
     @Transactional(readOnly = true)
     public Set<Student> findByCourse(Integer course, Set<Student> result) {
-        if (course != null){
+        if (course != null) {
             Course c = courseService.findCourseById(course);
-            if (c != null){
+            if (c != null) {
                 retainOrAdd(result, c.getStudents());
             }
         }

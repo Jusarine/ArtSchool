@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 @Entity
 public class Course {
 
+    private static final double DAYS_IN_WEEK = 7;
+
     @Id
     @Column(name = "course_id")
     @GeneratedValue
@@ -50,7 +52,7 @@ public class Course {
 
     private Long daysAmount;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String description;
 
     @ManyToOne(optional = false)
@@ -182,7 +184,7 @@ public class Course {
         days.add(day);
     }
 
-    public void removeDay(Day day){
+    public void removeDay(Day day) {
         days.remove(day);
     }
 
@@ -202,12 +204,12 @@ public class Course {
         this.daysAmount = daysAmount;
     }
 
-    private void setDaysAndWeeksAmount(){
+    private void setDaysAndWeeksAmount() {
         List<LocalDate> allDaysBetweenDates = date.getStartDate().datesUntil(date.getEndDate())
                 .collect(Collectors.toList());
         this.daysAmount = allDaysBetweenDates.stream().filter(day -> getDaysOfWeek().contains(day.getDayOfWeek()))
                 .count();
-        this.weeksAmount = Math.round(allDaysBetweenDates.size() / 7.);
+        this.weeksAmount = Math.round(allDaysBetweenDates.size() / DAYS_IN_WEEK);
     }
 
     public String getDescription() {

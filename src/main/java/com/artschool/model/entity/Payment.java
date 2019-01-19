@@ -14,7 +14,7 @@ public class Payment {
     @GeneratedValue
     private long id;
 
-    @Column(name = "transaction_id", nullable = false)
+    @Column(nullable = false)
     private String transactionId;
 
     @ManyToOne(optional = false)

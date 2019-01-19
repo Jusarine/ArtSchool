@@ -45,7 +45,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
     @Override
     @Transactional(readOnly = true)
     public Set<Course> findByRequest(String request, Set<Course> result) {
-        if (request != null && !"".equals(request)){
+        if (request != null && !"".equals(request)) {
             retainOrAdd(result, courseService.findCoursesByName(request));
         }
         return result;
@@ -54,9 +54,9 @@ public class CourseSearchServiceImpl implements CourseSearchService {
     @Override
     @Transactional(readOnly = true)
     public Set<Course> findByDiscipline(String discipline, Set<Course> result) {
-        if (discipline != null){
+        if (discipline != null) {
             Discipline d = disciplineService.getDiscipline(discipline);
-            if (d != null){
+            if (d != null) {
                 retainOrAdd(result, courseService.findCoursesByDiscipline(d));
             }
         }
@@ -66,7 +66,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
     @Override
     @Transactional(readOnly = true)
     public Set<Course> findByAudience(Audience audience, Set<Course> result) {
-        if (audience != null){
+        if (audience != null) {
             retainOrAdd(result, courseService.findCoursesByAudience(audience));
         }
         return result;
@@ -75,7 +75,7 @@ public class CourseSearchServiceImpl implements CourseSearchService {
     @Override
     @Transactional(readOnly = true)
     public Set<Course> findByInstructor(String instructor, Set<Course> result) {
-        if (instructor != null && !"".equals(instructor)){
+        if (instructor != null && !"".equals(instructor)) {
             retainOrAdd(result, courseService.findCoursesByInstructor(userService.findInstructorByName(instructor)));
         }
         return result;

@@ -67,7 +67,7 @@ public class Date {
         return id;
     }
 
-    public String getFormattedStartDate(){
+    public String getFormattedStartDate() {
         return dateFormatter.format(startDate);
     }
 
@@ -79,7 +79,7 @@ public class Date {
         this.startDate = startDate;
     }
 
-    public String getFormattedEndDate(){
+    public String getFormattedEndDate() {
         return dateFormatter.format(endDate);
     }
 

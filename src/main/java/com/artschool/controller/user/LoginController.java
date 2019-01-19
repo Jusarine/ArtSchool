@@ -7,7 +7,6 @@ import com.artschool.model.entity.Student;
 import com.artschool.model.form.SignUpStudentForm;
 import com.artschool.model.form.SignUpInstructorForm;
 import com.artschool.service.security.EmailService;
-import com.artschool.service.security.PasswordTokenService;
 import com.artschool.service.security.SecurityService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +30,13 @@ public class LoginController {
 
     private final EmailService emailService;
 
-    private final PasswordTokenService passwordTokenService;
-
     @Autowired
     public LoginController(UserService userService, SecurityService securityService, PasswordEncoder passwordEncoder,
-                           EmailService emailService, PasswordTokenService passwordTokenService) {
+                           EmailService emailService) {
         this.userService = userService;
         this.securityService = securityService;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
-        this.passwordTokenService = passwordTokenService;
     }
 
     @GetMapping("/")
@@ -56,7 +52,7 @@ public class LoginController {
     @PostMapping("/new_user")
     public String createUser(@ModelAttribute SignUpStudentForm form, RedirectAttributes redirectAttributes) {
         Student student = userService.createStudent(form, passwordEncoder);
-        if (student != null){
+        if (student != null) {
             securityService.login(form.getEmail(), form.getPassword());
             return "redirect:/profile";
         }
@@ -96,7 +92,7 @@ public class LoginController {
         }
 
         String token = UUID.randomUUID().toString();
-        user.setResetToken(new PasswordResetToken(token, user));
+        user.setPasswordResetToken(new PasswordResetToken(token));
         userService.saveOrUpdate(user);
 
         String appUrl = req.getRequestURL().toString().replace(req.getRequestURI(), req.getContextPath());
@@ -116,13 +112,13 @@ public class LoginController {
                                 @RequestParam String token,
                                 @RequestParam String password,
                                 RedirectAttributes redirectAttributes) {
-        PasswordResetToken resetToken = passwordTokenService.findByToken(token);
-        if (resetToken == null || resetToken.isExpired() || resetToken.getUser().getId() != id) {
-            redirectAttributes.addAttribute("error", "Wrong reset token!");
+        CustomUser user = userService.findByResetToken(token);
+        PasswordResetToken resetToken = user.getPasswordResetToken();
+        if (resetToken == null || resetToken.isExpired() || user.getId() != id) {
+            redirectAttributes.addAttribute("error", "Wrong password reset token!");
             return "redirect:/login";
         }
 
-        CustomUser user = resetToken.getUser();
         user.setPassword(passwordEncoder.encode(password));
         userService.saveOrUpdate(user);
 

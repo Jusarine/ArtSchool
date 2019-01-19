@@ -51,7 +51,7 @@ public class GalleryController {
                               Model model) {
         model.addAttribute("authors", userService.findUsers());
         model.addAttribute("courses", courseService.findCourses());
-        model.addAttribute("photos", photoService.findPhotosByAuthorEmail(principal.getName()));
+        model.addAttribute("photos", photoService.findByAuthorEmail(principal.getName()));
         return "/gallery/user_gallery";
     }
 

@@ -7,39 +7,27 @@ import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
-@Entity
+@Embeddable
 public class PasswordResetToken {
 
     private static final int EXPIRATION = 60 * 24;
 
-    @Id
-    @GeneratedValue
-    private long id;
-
-    @Column(nullable = false, unique = true)
+    @Column(name = "prt")
     private String token;
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id", nullable = false)
-    private CustomUser user;
-
+    @Column(name = "prt_expiry_date")
     private Date expiryDate;
 
     public PasswordResetToken() {
     }
 
-    public PasswordResetToken(String token, CustomUser user) {
+    public PasswordResetToken(String token) {
         this.token = token;
-        this.user = user;
         setExpiryDate();
     }
 
     public static int getEXPIRATION() {
         return EXPIRATION;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getToken() {
@@ -50,19 +38,11 @@ public class PasswordResetToken {
         this.token = token;
     }
 
-    public CustomUser getUser() {
-        return user;
-    }
-
-    public void setUser(CustomUser user) {
-        this.user = user;
-    }
-
     public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate){
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 
@@ -72,8 +52,16 @@ public class PasswordResetToken {
         this.expiryDate = cal.getTime();
     }
 
-    public boolean isExpired(){
+    public boolean isExpired() {
         return new Date().after(this.expiryDate);
+    }
+
+    @Override
+    public String toString() {
+        return "PasswordResetToken{" +
+                "token='" + token + '\'' +
+                ", expiryDate=" + expiryDate +
+                '}';
     }
 
     @Override
@@ -84,7 +72,6 @@ public class PasswordResetToken {
 
         return new EqualsBuilder()
                 .append(token, that.token)
-                .append(user, that.user)
                 .append(expiryDate, that.expiryDate)
                 .isEquals();
     }
@@ -93,7 +80,6 @@ public class PasswordResetToken {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(token)
-                .append(user)
                 .append(expiryDate)
                 .toHashCode();
     }
