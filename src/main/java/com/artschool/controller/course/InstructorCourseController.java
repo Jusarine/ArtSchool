@@ -5,13 +5,16 @@ import com.artschool.model.form.CourseForm;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.course.DayService;
 import com.artschool.service.course.DisciplineService;
+import com.artschool.service.gallery.LoadPhotoService;
 import com.artschool.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @Controller
@@ -26,13 +29,16 @@ public class InstructorCourseController {
 
     private final DisciplineService disciplineService;
 
+    private final LoadPhotoService loadPhotoService;
+
     @Autowired
     public InstructorCourseController(CourseService courseService, UserService userService, DayService dayService,
-                                      DisciplineService disciplineService) {
+                                      DisciplineService disciplineService, LoadPhotoService loadPhotoService) {
         this.courseService = courseService;
         this.userService = userService;
         this.dayService = dayService;
         this.disciplineService = disciplineService;
+        this.loadPhotoService = loadPhotoService;
     }
 
     @GetMapping("/list")
@@ -53,12 +59,14 @@ public class InstructorCourseController {
     @PostMapping("/update/{id}")
     public String update(@PathVariable long id,
                          @ModelAttribute CourseForm form,
-                         RedirectAttributes redirectAttributes) {
+                         @RequestParam MultipartFile photo,
+                         RedirectAttributes redirectAttributes) throws IOException {
         Course course = courseService.updateCourse(id, form);
         if (course == null) {
             redirectAttributes.addAttribute("error", "Course with this name already exists!");
             return "redirect:/instructor/course/edit/" + id;
         }
+        loadPhotoService.writeCoursePhoto(id, photo);
         return "redirect:/instructor/course/list";
     }
 
@@ -71,12 +79,16 @@ public class InstructorCourseController {
     }
 
     @PostMapping("/save")
-    public String save(@ModelAttribute CourseForm form, Principal principal, RedirectAttributes redirectAttributes) {
+    public String save(@ModelAttribute CourseForm form,
+                       @RequestParam MultipartFile photo,
+                       Principal principal,
+                       RedirectAttributes redirectAttributes) throws IOException {
         Course course = courseService.createCourse(form, principal.getName());
         if (course == null) {
             redirectAttributes.addAttribute("error", "Course with this name already exists!");
             return "redirect:/instructor/course/create";
         }
+        loadPhotoService.writeCoursePhoto(course.getId(), photo);
         return "redirect:/instructor/course/list";
     }
 

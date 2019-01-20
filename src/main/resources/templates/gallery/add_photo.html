@@ -37,7 +37,7 @@
                                     <a class="lead">Photo name:</a>
                                 </label>
                                 <div class="col-9">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Photo name" required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -46,7 +46,7 @@
                                 </label>
                                 <div class="col-9">
                                     <select id="course" name="course" class="form-control" required>
-                                        <option value="" selected>...</option>
+                                        <option value="" selected>Course name...</option>
                                         <option th:each="course : ${courses}" th:value="${course.name}" th:text="${course.name}" th:selected="${course.name} == ${{param?.course}}"></option>
                                     </select>
                                 </div>
@@ -58,7 +58,7 @@
                                 <div class="col-9">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="photo" name="photo" accept="image/*" required>
-                                        <label class="custom-file-label" for="photo">...</label>
+                                        <label class="custom-file-label" for="photo">Photo...</label>
                                     </div>
                                 </div>
                             </div>

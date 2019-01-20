@@ -25,13 +25,13 @@
                     <div class="col-sm-4">
                         <div class="mx-4">
                             <figure class="figure">
-                                <img src="/images/course.png" class="figure-img img-fluid rounded">
+                                <img th:src="|/course/get_photo/${course.id}|" class="figure-img img-fluid rounded">
                             </figure>
                         </div>
                     </div>
                     <div class="col-sm-8">
                         <h1 class="display-4">Edit course</h1>
-                        <form class="needs-validation form-horizontal mt-4" novalidate th:action="|/instructor/course/update/${id}|" method="POST">
+                        <form class="needs-validation form-horizontal mt-4" novalidate th:action="|/instructor/course/update/${id}|" enctype="multipart/form-data" method="POST">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                             <div class="form-group row">
                                 <label for="name" class="col-3 col-form-label">
@@ -43,10 +43,10 @@
                             </div>
                             <div class="form-group row">
                                 <label for="disciplines" class="col-3 col-form-label">
-                                    <a class="lead">Discipline:</a>
+                                    <a class="lead">Disciplines:</a>
                                 </label>
                                 <div class="col-9">
-                                    <select id="disciplines" name="disciplines" class="selectpicker form-control" multiple title="Discipline..." data-live-search="true" data-style="btn-white" required>
+                                    <select id="disciplines" name="disciplines" class="selectpicker form-control" multiple title="Disciplines..." data-live-search="true" data-style="btn-white" required>
                                         <option th:each="discipline : ${disciplines}" th:value="${discipline.name}" th:text="${discipline.getCapitalizedName()}" th:selected="${course.disciplines.contains(discipline) ?: 'selected'}"></option>
                                     </select>
                                 </div>
@@ -112,9 +112,20 @@
                                     <a class="lead">Days:</a>
                                 </label>
                                 <div class="col-9">
-                                    <select id="days" name="days" class="selectpicker form-control" multiple title="Day..." data-live-search="true" data-style="btn-white" required>
+                                    <select id="days" name="days" class="selectpicker form-control" multiple title="Days..." data-live-search="true" data-style="btn-white" required>
                                         <option th:each="day : ${days}" th:value="${day.name}" th:text="${day.getCapitalizedName()}" th:selected="${course.days.contains(day) ?: 'selected'}"></option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="photo" class="col-3 col-form-label">
+                                    <a class="lead">Photo:</a>
+                                </label>
+                                <div class="col-9">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="photo" name="photo" accept="image/*" required>
+                                        <label class="custom-file-label" for="photo">Photo...</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
