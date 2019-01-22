@@ -59,14 +59,14 @@ public class InstructorCourseController {
     @PostMapping("/update/{id}")
     public String update(@PathVariable long id,
                          @ModelAttribute CourseForm form,
-                         @RequestParam MultipartFile photo,
+                         @RequestParam(required = false) MultipartFile photo,
                          RedirectAttributes redirectAttributes) throws IOException {
         Course course = courseService.updateCourse(id, form);
         if (course == null) {
             redirectAttributes.addAttribute("error", "Course with this name already exists!");
             return "redirect:/instructor/course/edit/" + id;
         }
-        loadPhotoService.writeCoursePhoto(id, photo);
+        if (photo != null && !photo.isEmpty()) loadPhotoService.writeCoursePhoto(id, photo);
         return "redirect:/instructor/course/list";
     }
 

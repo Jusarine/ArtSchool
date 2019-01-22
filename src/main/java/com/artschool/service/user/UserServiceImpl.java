@@ -2,6 +2,8 @@ package com.artschool.service.user;
 
 import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Gender;
+import com.artschool.model.enumeration.UserRole;
+import com.artschool.model.form.ProfileForm;
 import com.artschool.model.form.SignUpStudentForm;
 import com.artschool.model.form.SignUpInstructorForm;
 import com.artschool.repository.CustomUserRepository;
@@ -55,6 +57,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public Student editStudent(String studentEmail, ProfileForm form) {
+        if (!studentEmail.equals(form.getEmail()) && findByEmail(form.getEmail()) != null) return null;
+        Student student = studentRepository.findStudentByEmail(studentEmail);
+        student.setFirstName(form.getFirstName());
+        student.setLastName(form.getLastName());
+        student.setPhoneNumber(form.getPhoneNumber());
+        student.setEmail(form.getEmail());
+        studentRepository.save(student);
+        return student;
+    }
+
+    @Override
+    @Transactional
+    public Instructor createInstructor(Instructor instructor) {
+        if(findInstructorByEmail(instructor.getEmail()) != null) return null;
+        instructorRepository.save(instructor);
+        return instructor;
+    }
+
+    @Override
+    @Transactional
     public Instructor createInstructor(SignUpInstructorForm form, PasswordEncoder passwordEncoder) {
         if (findInstructorByEmail(form.getEmail()) != null) return null;
         String encodedPassword = passwordEncoder.encode(form.getPassword());
@@ -67,10 +90,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Instructor createInstructor(Instructor instructor) {
-        if(findInstructorByEmail(instructor.getEmail()) != null) return null;
-        instructorRepository.save(instructor);
+    public Instructor editInstructor(String instructorEmail, ProfileForm form) {
+        if (!instructorEmail.equals(form.getEmail()) && findByEmail(form.getEmail()) != null) return null;
+        Instructor instructor = instructorRepository.findInstructorByEmail(instructorEmail);
+        instructor.setFirstName(form.getFirstName());
+        instructor.setLastName(form.getLastName());
+        instructor.setPhoneNumber(form.getPhoneNumber());
+        instructor.setEmail(form.getEmail());
+        instructor.setBio(form.getBio());
         return instructor;
+    }
+
+    @Override
+    @Transactional
+    public CustomUser editUser(String email, ProfileForm form) {
+        CustomUser user;
+        if (findByEmail(email).getRole().equals(UserRole.ADMIN))
+            user = editInstructor(email, form);
+        else
+            user = editStudent(email, form);
+        return user;
     }
 
     @Override

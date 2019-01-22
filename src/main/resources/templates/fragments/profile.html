@@ -10,20 +10,6 @@
                         <figure class="figure">
                             <img th:src="|/get_photo/${#object.id}|" class="figure-img img-fluid rounded-circle">
                         </figure>
-                        <div th:if="${owner}">
-                            <form th:action="|/upload_photo/${#object.id}|" enctype="multipart/form-data" method="POST">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="photo" id="photo" accept="image/*" required>
-                                        <label class="custom-file-label" for="photo">...</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon">Upload</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
                 <div class="col-sm-8">
@@ -48,6 +34,10 @@
                         <dt class="col-5 h5">Phone Number:</dt>
                         <dd class="col-7 lead" th:text="${#object.phoneNumber}"></dd>
                     </dl>
+
+                    <div th:if="${owner}">
+                        <a class="btn btn-warning" href="/profile/edit">Edit</a>
+                    </div>
                 </div>
             </div>
         </div>

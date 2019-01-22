@@ -1,5 +1,7 @@
 package com.artschool.controller.user;
 
+import com.artschool.model.entity.CustomUser;
+import com.artschool.model.form.ProfileForm;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.gallery.LoadPhotoService;
 import com.artschool.service.user.StudentSearchService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -26,7 +29,8 @@ public class UserController {
     private final LoadPhotoService loadPhotoService;
 
     @Autowired
-    public UserController(UserService userService, CourseService courseService, StudentSearchService studentSearchService, LoadPhotoService loadPhotoService) {
+    public UserController(UserService userService, CourseService courseService,
+                          StudentSearchService studentSearchService, LoadPhotoService loadPhotoService) {
         this.userService = userService;
         this.courseService = courseService;
         this.studentSearchService = studentSearchService;
@@ -39,6 +43,28 @@ public class UserController {
         modelAndView.addObject("user", userService.findByEmail(principal.getName()));
         modelAndView.addObject("owner", true);
         return modelAndView;
+    }
+
+    @GetMapping("/profile/edit")
+    public ModelAndView editProfile(Principal principal) {
+        return new ModelAndView("/user/edit_profile", "user",
+                userService.findByEmail(principal.getName()));
+    }
+
+    @PostMapping("/profile/save")
+    public String saveProfile(@ModelAttribute ProfileForm form,
+                              @RequestParam(required = false) MultipartFile photo,
+                              Principal principal,
+                              RedirectAttributes redirectAttributes) throws IOException {
+        CustomUser user = userService.editUser(principal.getName(), form);
+        if (user == null) {
+            redirectAttributes.addAttribute("error", "User with this email already exists!");
+            return "redirect:/profile/edit";
+        }
+        if (photo != null && !photo.isEmpty()) loadPhotoService.writeUserPhoto(user.getId(), photo);
+
+        if (user.getEmail().equals(principal.getName())) return "redirect:/profile";
+        else return "redirect:/logout";
     }
 
     @GetMapping("/profile/{id}")

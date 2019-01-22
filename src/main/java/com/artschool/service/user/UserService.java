@@ -1,6 +1,7 @@
 package com.artschool.service.user;
 
 import com.artschool.model.entity.*;
+import com.artschool.model.form.ProfileForm;
 import com.artschool.model.form.SignUpStudentForm;
 import com.artschool.model.form.SignUpInstructorForm;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,9 +15,15 @@ public interface UserService {
 
     Student createStudent(SignUpStudentForm form, PasswordEncoder passwordEncoder);
 
-    Instructor createInstructor(SignUpInstructorForm form, PasswordEncoder passwordEncoder);
+    Student editStudent(String studentEmail, ProfileForm form);
 
     Instructor createInstructor(Instructor instructor);
+
+    Instructor createInstructor(SignUpInstructorForm form, PasswordEncoder passwordEncoder);
+
+    Instructor editInstructor(String instructorEmail, ProfileForm form);
+
+    CustomUser editUser(String email, ProfileForm form);
 
     void editStatus(String userEmail, String status);
 
