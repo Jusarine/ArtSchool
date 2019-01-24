@@ -6,7 +6,7 @@ import java.time.DayOfWeek;
 
 public class SearchCourseForm {
 
-    private String request;
+    private String name;
 
     private String discipline;
 
@@ -23,12 +23,12 @@ public class SearchCourseForm {
     public SearchCourseForm() {
     }
 
-    public String getRequest() {
-        return request;
+    public String getName() {
+        return name;
     }
 
-    public void setRequest(String request) {
-        this.request = request;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDiscipline() {

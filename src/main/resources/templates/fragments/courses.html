@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="courses">
-    <div class="card-group">
-        <div class="col-sm-4 mb-4" th:each="course: ${#object}">
-            <div class="card">
-                <img class="card-img-top" th:src="|/course/get_photo/${course.id}|" style="object-fit: cover; height: 230px;">
-                <div class="card-body">
-                    <h5 class="card-title text-truncate" th:text="${course.name}"></h5>
-                    <p class="card-text" th:text="${course.description}" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;"></p>
-                    <a class="btn btn-primary" th:href="|/course/${course.id}|">Details</a>
-                </div>
-            </div>
+<div th:fragment="courses" class="col-sm-4 mb-4" th:each="course: ${#object}">
+    <div class="card">
+        <img class="card-img-top" th:src="|/course/get_photo/${course.id}|" style="object-fit: cover; height: 230px;">
+        <div class="card-body">
+            <h5 class="card-title text-truncate" th:text="${course.name}"></h5>
+            <p class="card-text" th:text="${course.description}" style="overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;"></p>
+            <a class="btn btn-primary" th:href="|/course/${course.id}|">Details</a>
         </div>
     </div>
 </div>

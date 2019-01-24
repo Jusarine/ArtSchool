@@ -1,6 +1,7 @@
 package com.artschool.service.security;
 
 import com.artschool.model.entity.CustomUser;
+import com.artschool.service.util.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;

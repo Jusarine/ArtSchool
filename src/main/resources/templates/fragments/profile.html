@@ -8,15 +8,23 @@
                 <div class="col-sm-4">
                     <div class="mx-4">
                         <figure class="figure">
-                            <img th:src="|/get_photo/${#object.id}|" class="figure-img img-fluid rounded-circle">
+                            <div th:if="${{#object.role}} == 'ADMIN'">
+                                <img th:src="|/get_photo/instructor/${#object.id}|" class="figure-img img-fluid rounded-circle">
+                            </div>
+                            <div th:if="${{#object.role}} == 'USER'">
+                                <img th:src="|/get_photo/student/${#object.id}|" class="figure-img img-fluid rounded-circle">
+                            </div>
                         </figure>
                     </div>
                 </div>
                 <div class="col-sm-8">
                     <h1 class="display-4" th:text="|${#object.firstName} ${#object.lastName}|"></h1>
                     <div th:if="${owner}">
-                        <div class="lead">
-                            <a class="x_editable" id="status" th:text="${#object.status}" th:data-pk="${#object.id}" data-type="text" data-url="/edit_status"></a>
+                        <div th:if="${{#object.role}} == 'ADMIN'">
+                            <a class="x_editable" id="status" th:text="${#object.status}" th:data-pk="${#object.id}" data-type="text" data-url="/instructor/edit_status"></a>
+                        </div>
+                        <div th:if="${{#object.role}} == 'USER'">
+                            <a class="x_editable" id="status" th:text="${#object.status}" th:data-pk="${#object.id}" data-type="text" data-url="/student/edit_status"></a>
                         </div>
                     </div>
                     <div th:unless="${owner}">
@@ -36,7 +44,12 @@
                     </dl>
 
                     <div th:if="${owner}">
-                        <a class="btn btn-warning" href="/profile/edit">Edit</a>
+                        <div th:if="${{#object.role}} == 'ADMIN'">
+                            <a class="btn btn-warning" href="/instructor/profile/edit">Edit</a>
+                        </div>
+                        <div th:if="${{#object.role}} == 'USER'">
+                            <a class="btn btn-warning" href="/student/profile/edit">Edit</a>
+                        </div>
                     </div>
                 </div>
             </div>

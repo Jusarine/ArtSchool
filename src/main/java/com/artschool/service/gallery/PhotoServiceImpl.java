@@ -4,7 +4,6 @@ import com.artschool.model.entity.Photo;
 import com.artschool.model.form.SearchPhotoForm;
 import com.artschool.repository.PhotoRepository;
 import com.artschool.service.course.CourseService;
-import com.artschool.service.gallery.PhotoService;
 import com.artschool.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -7,7 +7,12 @@
             <div class="row">
                 <div class="col-6">
                     <figure class="figure m-auto">
-                        <img th:src="|/get_photo/${u.id}|" class="figure-img img-fluid rounded-circle" style="object-fit: cover; height:120px; width:120px;">
+                        <div th:if="${{u.role}} == 'ADMIN'">
+                            <img th:src="|/get_photo/instructor/${u.id}|" class="figure-img img-fluid rounded-circle" style="object-fit: cover; height:120px; width:120px;">
+                        </div>
+                        <div th:if="${{u.role}} == 'USER'">
+                            <img th:src="|/get_photo/student/${u.id}|" class="figure-img img-fluid rounded-circle" style="object-fit: cover; height:120px; width:120px;">
+                        </div>
                     </figure>
                 </div>
                 <div class="col-6 my-auto">
@@ -15,7 +20,12 @@
                         <a class="card-text" th:text="|${u.firstName} ${u.lastName}|"></a>
                     </div>
                     <div class="row ml-1">
-                        <a th:href="|/profile/${u.id}|" class="btn btn-primary btn-sm my-2">About</a>
+                        <div th:if="${{u.role}} == 'ADMIN'">
+                            <a th:href="|/search/instructor/${u.id}|" class="btn btn-primary btn-sm my-2">About</a>
+                        </div>
+                        <div th:if="${{u.role}} == 'USER'">
+                            <a th:href="|/search/student/${u.id}|" class="btn btn-primary btn-sm my-2">About</a>
+                        </div>
                     </div>
                 </div>
             </div>

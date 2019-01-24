@@ -12,8 +12,22 @@
         <div th:replace="fragments/user_menu :: user_menu"></div>
     </div>
     <div class="col-md-9">
-        <div th:object="${courses}">
-            <div th:replace="fragments/courses :: courses"></div>
+        <div th:if="${courses} and (${courses.totalPages <= 0} or ${courses.number >= courses.totalPages})" class="alert alert-warning alert-dismissible fade show ml-3 mr-3" role="alert">
+            You haven't enrolled in any courses.
+        </div>
+        <div th:if="${courses} and ${courses.totalPages > 0} and ${courses.number < courses.totalPages}" >
+            <div class="card-group" th:object="${courses}">
+                <div th:replace="fragments/courses :: courses"></div>
+            </div>
+            <div class="row">
+                <div class="pagination mx-auto">
+                    <div th:if="${courses.totalPages > 1}" th:each="page_num : ${#numbers.sequence(1, pages)}">
+                        <div th:class="${page_num == courses.number + 1} ? 'page-item active' : 'page-item'">
+                            <a class="page-link" th:href="${#request.getRequestURI()} + '?size=' + ${courses.size} + '&page=' + ${page_num}" th:text="${page_num}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

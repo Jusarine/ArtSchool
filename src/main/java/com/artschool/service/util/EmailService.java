@@ -1,4 +1,4 @@
-package com.artschool.service.security;
+package com.artschool.service.util;
 
 import org.springframework.mail.SimpleMailMessage;
 

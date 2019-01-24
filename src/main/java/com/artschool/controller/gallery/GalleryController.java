@@ -3,9 +3,11 @@ package com.artschool.controller.gallery;
 import com.artschool.model.entity.Photo;
 import com.artschool.model.form.SearchPhotoForm;
 import com.artschool.service.course.CourseService;
-import com.artschool.service.gallery.LoadPhotoService;
+import com.artschool.service.util.LoadPhotoService;
 import com.artschool.service.gallery.PhotoService;
 import com.artschool.service.user.UserService;
+import com.artschool.service.util.PageableService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,29 +29,42 @@ public class GalleryController {
 
     private final LoadPhotoService loadPhotoService;
 
+    private final PageableService<Photo> pageableService;
+
     public GalleryController(PhotoService photoService, UserService userService, CourseService courseService,
-                             LoadPhotoService loadPhotoService) {
+                             LoadPhotoService loadPhotoService, PageableService<Photo> pageableService) {
         this.photoService = photoService;
         this.userService = userService;
         this.courseService = courseService;
         this.loadPhotoService = loadPhotoService;
+        this.pageableService = pageableService;
     }
 
     @GetMapping
     public String searchPhoto(@ModelAttribute SearchPhotoForm form,
+                              @RequestParam(required = false) Integer page,
+                              @RequestParam(required = false) Integer size,
                               Model model) {
+        Page<Photo> photos = pageableService.paginate(photoService.findPhotos(form), page, size);
+        model.addAttribute("photos", photos);
+        model.addAttribute("pages", photos.getTotalPages());
+
         model.addAttribute("authors", userService.findUsers());
         model.addAttribute("courses", courseService.findCourses());
-        model.addAttribute("photos", photoService.findPhotos(form));
         return "/gallery/gallery";
     }
 
     @GetMapping("/user")
     public String userPhoto(Principal principal,
-                              Model model) {
+                            @RequestParam(required = false) Integer page,
+                            @RequestParam(required = false) Integer size,
+                            Model model) {
+        Page<Photo> photos = pageableService.paginate(photoService.findByAuthorEmail(principal.getName()), page, size);
+        model.addAttribute("photos", photos);
+        model.addAttribute("pages", photos.getTotalPages());
+
         model.addAttribute("authors", userService.findUsers());
         model.addAttribute("courses", courseService.findCourses());
-        model.addAttribute("photos", photoService.findByAuthorEmail(principal.getName()));
         return "/gallery/user_gallery";
     }
 

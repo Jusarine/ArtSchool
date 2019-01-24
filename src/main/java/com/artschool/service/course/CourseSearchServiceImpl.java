@@ -39,14 +39,14 @@ public class CourseSearchServiceImpl implements CourseSearchService {
         retain = false;
         return findAll(findByDay(form.getDay(), findByFee(form.getFromFee(), form.getToFee(),
                 findByInstructor(form.getInstructor(), findByAudience(form.getAudience(),
-                        findByDiscipline(form.getDiscipline(), findByRequest(form.getRequest(), new HashSet<>())))))));
+                        findByDiscipline(form.getDiscipline(), findByRequest(form.getName(), new HashSet<>())))))));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Course> findByRequest(String request, Set<Course> result) {
-        if (request != null && !"".equals(request)) {
-            retainOrAdd(result, courseService.findCoursesByName(request));
+    public Set<Course> findByRequest(String name, Set<Course> result) {
+        if (name != null && !"".equals(name)) {
+            retainOrAdd(result, courseService.findCoursesByName(name));
         }
         return result;
     }

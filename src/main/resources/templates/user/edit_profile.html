@@ -25,13 +25,18 @@
                     <div class="col-sm-4">
                         <div class="mx-4">
                             <figure class="figure">
-                                <img th:src="|/get_photo/${user.id}|" class="figure-img img-fluid rounded-circle">
+                                <div sec:authorize="hasRole('ADMIN')">
+                                    <img th:src="|/get_photo/instructor/${user.id}|" class="figure-img img-fluid rounded-circle">
+                                </div>
+                                <div sec:authorize="hasRole('USER')">
+                                    <img th:src="|/get_photo/student/${user.id}|" class="figure-img img-fluid rounded-circle">
+                                </div>
                             </figure>
                         </div>
                     </div>
                     <div class="col-sm-8">
                         <h1 class="display-4">Edit profile</h1>
-                        <form class="needs-validation form-horizontal mt-4" novalidate th:action="|/profile/save|" enctype="multipart/form-data" method="POST">
+                        <form class="needs-validation form-horizontal mt-4" novalidate th:action="${{user.role}} == 'ADMIN' ? '/instructor/profile/save' : '/student/profile/save'" enctype="multipart/form-data" method="POST">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                             <div class="form-group row">
                                 <label for="first_name" class="col-3 col-form-label">

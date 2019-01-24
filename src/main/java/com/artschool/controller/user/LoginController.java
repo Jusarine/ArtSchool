@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 @Controller
 public class LoginController {
@@ -42,6 +44,14 @@ public class LoginController {
         return "index";
     }
 
+    @GetMapping("/profile")
+    public ModelAndView profile(Principal principal) {
+        ModelAndView modelAndView = new ModelAndView("/user/profile");
+        modelAndView.addObject("user", userService.findByEmail(principal.getName()));
+        modelAndView.addObject("owner", true);
+        return modelAndView;
+    }
+
     @GetMapping("/login")
     public String login() {
         return "/user/login";
@@ -54,7 +64,7 @@ public class LoginController {
             securityService.login(form.getEmail(), form.getPassword());
             return "redirect:/profile";
         }
-        redirectAttributes.addAttribute("error", "Student with this email already exists!");
+        redirectAttributes.addAttribute("error", "User with this email already exists!");
         return "redirect:/login";
     }
 
@@ -68,7 +78,7 @@ public class LoginController {
                                            RedirectAttributes redirectAttributes) {
         Instructor instructor = userService.createInstructor(form, passwordEncoder);
         if (instructor == null) {
-            redirectAttributes.addAttribute("error", "Instructor with this email already exists!");
+            redirectAttributes.addAttribute("error", "User with this email already exists!");
             return "redirect:/instructor/create";
         }
         return "redirect:/profile";
@@ -88,13 +98,11 @@ public class LoginController {
             redirectAttributes.addAttribute("error", "There are not account associated with this email!");
             return "redirect:/forgot_password";
         }
-
         String token = passwordResetService.generateToken();
         user.setPasswordResetToken(new PasswordResetToken(token));
         userService.saveOrUpdate(user);
 
         passwordResetService.sendEmail(user, token, req);
-
         redirectAttributes.addAttribute("success", "Check your email for a link to reset your password.");
         return "redirect:/login";
     }
@@ -115,7 +123,6 @@ public class LoginController {
             redirectAttributes.addAttribute("error", "Wrong password reset token!");
             return "redirect:/login";
         }
-
         user.setPassword(passwordEncoder.encode(password));
         userService.saveOrUpdate(user);
 

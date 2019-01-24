@@ -25,16 +25,16 @@ public class StudentSearchServiceImpl implements StudentSearchService {
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Student> findStudents(String request, Integer course) {
+    public Set<Student> findStudents(String name, Integer course) {
         retain = false;
-        return findAll(findByCourse(course, findByRequest(request, new HashSet<>())));
+        return findAll(findByCourse(course, findByRequest(name, new HashSet<>())));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Set<Student> findByRequest(String request, Set<Student> result) {
-        if (request != null && !"".equals(request)) {
-            retainOrAdd(result, userService.findStudentsByName(request));
+    public Set<Student> findByRequest(String name, Set<Student> result) {
+        if (name != null && !"".equals(name)) {
+            retainOrAdd(result, userService.findStudentsByName(name));
         }
         return result;
     }

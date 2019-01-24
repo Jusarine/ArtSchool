@@ -11,7 +11,7 @@ public interface CourseSearchService {
 
     Set<Course> findCourses(SearchCourseForm form);
 
-    Set<Course> findByRequest(String request, Set<Course> result);
+    Set<Course> findByRequest(String name, Set<Course> result);
 
     Set<Course> findByDiscipline(String discipline, Set<Course> result);
 

@@ -6,9 +6,9 @@ import java.util.Set;
 
 public interface StudentSearchService {
 
-    Set<Student> findStudents(String request, Integer course);
+    Set<Student> findStudents(String name, Integer course);
 
-    Set<Student> findByRequest(String request, Set<Student> result);
+    Set<Student> findByRequest(String name, Set<Student> result);
 
     Set<Student> findByCourse(Integer course, Set<Student> result);
 

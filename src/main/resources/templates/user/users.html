@@ -17,23 +17,40 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div th:if="${instructors?.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
-                There are no instructors matching your request.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div th:if="${instructors} and (${instructors.totalPages <= 0} or ${instructors.number >= instructors.totalPages})" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
+                There are no instructors matching your name.
             </div>
-            <div th:if="${students?.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
-                There are no students matching your request.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div th:if="${students} and (${students.totalPages <= 0} or ${students.number >= students.totalPages})" class="alert alert-warning alert-dismissible fade show ml-3 mr-5" role="alert">
+                There are no students matching your name.
             </div>
-            <div th:if="${instructors}" class="card-group" th:object="${instructors}">
-                <div th:replace="fragments/users :: users"></div>
+
+            <div th:if="${instructors} and ${instructors.totalPages > 0} and ${instructors.number < instructors.totalPages}" >
+                <div class="card-group" th:object="${instructors}">
+                    <div th:replace="fragments/users :: users"></div>
+                </div>
+                <div class="row">
+                    <div class="pagination mx-auto">
+                        <div th:if="${instructors.totalPages > 1}" th:each="page_num : ${#numbers.sequence(1, pages)}">
+                            <div th:class="${page_num == instructors.number + 1} ? 'page-item active' : 'page-item'">
+                                <a class="page-link" th:href="@{/search/instructor(name=${param.name}, size=${instructors.size}, page=${page_num})}" th:text="${page_num}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div th:if="${students}" class="card-group" th:object="${students}">
-                <div th:replace="fragments/users :: users"></div>
+            <div th:if="${students} and ${students.totalPages > 0} and ${students.number < students.totalPages}" >
+                <div class="card-group" th:object="${students}">
+                    <div th:replace="fragments/users :: users"></div>
+                </div>
+                <div class="row">
+                    <div class="pagination mx-auto">
+                        <div th:if="${students.totalPages > 1}" th:each="page_num : ${#numbers.sequence(1, pages)}">
+                            <div th:class="${page_num == students.number + 1} ? 'page-item active' : 'page-item'">
+                                <a class="page-link" th:href="@{/search/student(name=${param.name}, course=${param.course}, size=${students.size}, page=${page_num})}" th:text="${page_num}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -23,15 +23,19 @@ public interface UserService {
 
     Instructor editInstructor(String instructorEmail, ProfileForm form);
 
-    CustomUser editUser(String email, ProfileForm form);
+    void editInstructorStatus(String instructorEmail, String status);
 
-    void editStatus(String userEmail, String status);
+    void editStudentStatus(String studentEmail, String status);
 
     void saveOrUpdate(CustomUser customUser);
 
     Set<Course> getStudentCourses(String studentEmail);
 
     Set<Course> getInstructorCourses(String instructorEmail);
+
+    CustomUser findInstructorById(long id);
+
+    CustomUser findStudentById(long id);
 
     CustomUser findById(long id);
 

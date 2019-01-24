@@ -12,13 +12,10 @@
         <div th:replace="fragments/user_menu :: user_menu"></div>
     </div>
     <div class="col-md-9">
-        <div th:if="${payments.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-3" role="alert">
+        <div th:if="${payments} and (${payments.totalPages <= 0} or ${payments.number >= payments.totalPages})" class="alert alert-warning alert-dismissible fade show mx-3" role="alert">
             You haven't made any payments yet.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
-        <div th:unless="${payments.empty}" class="ml-3 mr-3">
+        <div th:if="${payments} and ${payments.totalPages > 0} and ${payments.number < payments.totalPages}" class="mx-3">
             <table class="table">
                 <thead class="thead-light">
                 <tr>
@@ -39,6 +36,15 @@
                 </tr>
                 </tbody>
             </table>
+            <div class="row">
+                <div class="pagination mx-auto">
+                    <div th:if="${payments.totalPages > 1}" th:each="page_num : ${#numbers.sequence(1, pages)}">
+                        <div th:class="${page_num == payments.number + 1} ? 'page-item active' : 'page-item'">
+                            <a class="page-link" th:href="@{/student/course/payments(size=${payments.size}, page=${page_num})}" th:text="${page_num}"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -12,14 +12,22 @@
             <div th:replace="fragments/search_course :: search_course"></div>
         </div>
         <div class="col-md-9">
-            <div th:if="${courses.empty}" class="alert alert-warning alert-dismissible fade show ml-3 mr-3" role="alert">
-                There are no courses matching your request.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div th:if="${courses} and (${courses.totalPages <= 0} or ${courses.number >= courses.totalPages})" class="alert alert-warning alert-dismissible fade show ml-3 mr-3" role="alert">
+                There are no courses matching your name.
             </div>
-            <div th:unless="${courses.empty}" th:object="${courses}">
-                <div th:replace="fragments/courses :: courses"></div>
+            <div th:if="${courses} and ${courses.totalPages > 0} and ${courses.number < courses.totalPages}" >
+                <div class="card-group" th:object="${courses}">
+                    <div th:replace="fragments/courses :: courses"></div>
+                </div>
+                <div class="row">
+                    <div class="pagination mx-auto">
+                        <div th:if="${courses.totalPages > 1}" th:each="page_num : ${#numbers.sequence(1, pages)}">
+                            <div th:class="${page_num == courses.number + 1} ? 'page-item active' : 'page-item'">
+                                <a class="page-link" th:href="@{/course/search(name=${param.name}, discripline=${param.discipline}, audience=${param.audience}, instructor=${param.instructor}, fromFee=${param.fromFee}, toFee=${param.toFee}, day=${param.day}, size=${courses.size}, page=${page_num})}" th:text="${page_num}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

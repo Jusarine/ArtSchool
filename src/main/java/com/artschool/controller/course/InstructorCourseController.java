@@ -5,9 +5,11 @@ import com.artschool.model.form.CourseForm;
 import com.artschool.service.course.CourseService;
 import com.artschool.service.course.DayService;
 import com.artschool.service.course.DisciplineService;
-import com.artschool.service.gallery.LoadPhotoService;
+import com.artschool.service.util.LoadPhotoService;
 import com.artschool.service.user.UserService;
+import com.artschool.service.util.PageableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,20 +33,30 @@ public class InstructorCourseController {
 
     private final LoadPhotoService loadPhotoService;
 
+    private final PageableService<Course> pageableService;
+
     @Autowired
     public InstructorCourseController(CourseService courseService, UserService userService, DayService dayService,
-                                      DisciplineService disciplineService, LoadPhotoService loadPhotoService) {
+                                      DisciplineService disciplineService, LoadPhotoService loadPhotoService,
+                                      PageableService<Course> pageableService) {
         this.courseService = courseService;
         this.userService = userService;
         this.dayService = dayService;
         this.disciplineService = disciplineService;
         this.loadPhotoService = loadPhotoService;
+        this.pageableService = pageableService;
     }
 
     @GetMapping("/list")
-    public ModelAndView userCourses(Principal principal) {
-        return new ModelAndView("/course/user_courses", "courses",
-                userService.getInstructorCourses(principal.getName()));
+    public ModelAndView userCourses(Principal principal,
+                                    @RequestParam(required = false) Integer page,
+                                    @RequestParam(required = false) Integer size) {
+        ModelAndView modelAndView = new ModelAndView("/course/user_courses");
+        Page<Course> courses = pageableService.paginate(userService.getInstructorCourses(principal.getName()),
+                page, size);
+        modelAndView.addObject("courses", courses);
+        modelAndView.addObject("pages", courses.getTotalPages());
+        return modelAndView;
     }
 
     @GetMapping("/edit/{id}")
@@ -80,7 +92,7 @@ public class InstructorCourseController {
 
     @PostMapping("/save")
     public String save(@ModelAttribute CourseForm form,
-                       @RequestParam MultipartFile photo,
+                       @RequestParam(required = false) MultipartFile photo,
                        Principal principal,
                        RedirectAttributes redirectAttributes) throws IOException {
         Course course = courseService.createCourse(form, principal.getName());
@@ -88,13 +100,14 @@ public class InstructorCourseController {
             redirectAttributes.addAttribute("error", "Course with this name already exists!");
             return "redirect:/instructor/course/create";
         }
-        loadPhotoService.writeCoursePhoto(course.getId(), photo);
+        if (photo != null && !photo.isEmpty()) loadPhotoService.writeCoursePhoto(course.getId(), photo);
         return "redirect:/instructor/course/list";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable long id) {
+    public String delete(@PathVariable long id) throws IOException {
         courseService.deleteCourse(id);
+        loadPhotoService.deleteCoursePhoto(id);
         return "redirect:/instructor/course/list";
     }
 }

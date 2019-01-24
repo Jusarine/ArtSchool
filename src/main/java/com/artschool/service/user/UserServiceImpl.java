@@ -2,7 +2,6 @@ package com.artschool.service.user;
 
 import com.artschool.model.entity.*;
 import com.artschool.model.enumeration.Gender;
-import com.artschool.model.enumeration.UserRole;
 import com.artschool.model.form.ProfileForm;
 import com.artschool.model.form.SignUpStudentForm;
 import com.artschool.model.form.SignUpInstructorForm;
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Student createStudent(Student student) {
-        if (findStudentByEmail(student.getEmail()) != null) return null;
+        if (findByEmail(student.getEmail()) != null) return null;
         studentRepository.save(student);
         return student;
     }
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Student createStudent(SignUpStudentForm form, PasswordEncoder passwordEncoder) {
-        if (findStudentByEmail(form.getEmail()) != null) return null;
+        if (findByEmail(form.getEmail()) != null) return null;
         String encodedPassword = passwordEncoder.encode(form.getPassword());
         Student student = new Student(form.getFirstName(), form.getLastName(), Gender.valueOf(form.getGender()),
                 form.getPhoneNumber(), form.getEmail(), encodedPassword);
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Instructor createInstructor(Instructor instructor) {
-        if(findInstructorByEmail(instructor.getEmail()) != null) return null;
+        if(findByEmail(instructor.getEmail()) != null) return null;
         instructorRepository.save(instructor);
         return instructor;
     }
@@ -79,7 +78,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Instructor createInstructor(SignUpInstructorForm form, PasswordEncoder passwordEncoder) {
-        if (findInstructorByEmail(form.getEmail()) != null) return null;
+        if (findByEmail(form.getEmail()) != null) return null;
         String encodedPassword = passwordEncoder.encode(form.getPassword());
         Instructor instructor = new Instructor(form.getFirstName(), form.getLastName(),
                 Gender.valueOf(form.getGender()), form.getPhoneNumber(), form.getEmail(), encodedPassword,
@@ -103,22 +102,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public CustomUser editUser(String email, ProfileForm form) {
-        CustomUser user;
-        if (findByEmail(email).getRole().equals(UserRole.ADMIN))
-            user = editInstructor(email, form);
-        else
-            user = editStudent(email, form);
-        return user;
+    public void editInstructorStatus(String instructorEmail, String status) {
+        if (status.equals("")) status = null;
+        Instructor instructor = findInstructorByEmail(instructorEmail);
+        instructor.setStatus(status);
+        saveOrUpdate(instructor);
     }
 
     @Override
     @Transactional
-    public void editStatus(String userEmail, String status) {
+    public void editStudentStatus(String studentEmail, String status) {
         if (status.equals("")) status = null;
-        CustomUser customUser = findByEmail(userEmail);
-        customUser.setStatus(status);
-        saveOrUpdate(customUser);
+        Student student = findStudentByEmail(studentEmail);
+        student.setStatus(status);
+        saveOrUpdate(student);
     }
 
     @Override
@@ -142,6 +139,18 @@ public class UserServiceImpl implements UserService {
         Instructor instructor = findInstructorByEmail(instructorEmail);
         Hibernate.initialize(instructor.getCourses());
         return instructor.getCourses();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomUser findInstructorById(long id) {
+        return instructorRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CustomUser findStudentById(long id) {
+        return studentRepository.findById(id).orElse(null);
     }
 
     @Override
