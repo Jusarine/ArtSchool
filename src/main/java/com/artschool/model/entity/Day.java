@@ -13,7 +13,7 @@ public class Day {
 
     @Id
     @Column(name = "day_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)

@@ -13,7 +13,7 @@ import java.util.List;
 public class PageableServiceImpl<T> implements PageableService<T> {
 
     private static final int PAGE_NUMBER = 1;
-    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_SIZE = 9;
 
     @Override
     public PageImpl<T> paginate(List<T> list, Integer pageNumber, Integer pageSize) {

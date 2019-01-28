@@ -55,7 +55,7 @@ public class CourseServiceImpl implements CourseService {
     public Course createCourse(CourseForm form, String instructorEmail) {
         if (courseRepository.findCourseByName(form.getName()) != null) return null;
         Course course = new Course(form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
-                form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form),
+                form.getAudience(), form.getSpaces(), form.getFee(), dateService.createDate(form),
                 dayService.getDays(form.getDays()), form.getDescription(),
                 instructorRepository.findInstructorByEmail(instructorEmail));
         course.getInstructor().addCourse(course);
@@ -78,7 +78,7 @@ public class CourseServiceImpl implements CourseService {
         Course found = courseRepository.findCourseByName(form.getName());
         if (found != null && !(found.getId() == courseId)) return null;
         Course course = new Course(courseId, form.getName(), disciplineService.getDisciplines(form.getDisciplines()),
-                form.getAudience(), form.getAvailableSpaces(), form.getFee(), dateService.createDate(form),
+                form.getAudience(), form.getSpaces(), form.getFee(), dateService.createDate(form),
                 dayService.getDays(form.getDays()), form.getDescription(), findCourseById(courseId).getInstructor());
         courseRepository.save(course);
         return course;
@@ -92,10 +92,17 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
+    public void enrollInCourse(Student student, Course course) {
+        course.addStudent(student);
+        student.addCourse(course);
+        courseRepository.save(course);
+    }
+
+    @Override
+    @Transactional
     public void enrollInCourse(String studentEmail, long courseId) {
         Course course = findCourseById(courseId);
         Student student = studentRepository.findStudentByEmail(studentEmail);
-        course.decrementAvailableSpaces();
         course.addStudent(student);
         student.addCourse(course);
         courseRepository.save(course);
@@ -106,7 +113,6 @@ public class CourseServiceImpl implements CourseService {
     public void unenrollFromCourse(String studentEmail, long courseId) {
         Course course = findCourseById(courseId);
         Student student = studentRepository.findStudentByEmail(studentEmail);
-        course.incrementAvailableSpaces();
         course.removeStudent(student);
         student.removeCourse(course);
         courseRepository.save(course);

@@ -19,6 +19,8 @@ public interface CourseService {
 
     void saveOrUpdate(Course course);
 
+    void enrollInCourse(Student student, Course course);
+
     void enrollInCourse(String studentEmail, long courseId);
 
     void unenrollFromCourse(String studentEmail, long courseId);

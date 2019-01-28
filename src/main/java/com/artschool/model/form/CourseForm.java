@@ -13,7 +13,7 @@ public class CourseForm {
 
     private Audience audience;
 
-    private Integer availableSpaces;
+    private Integer spaces;
 
     private Integer fee;
 
@@ -54,12 +54,12 @@ public class CourseForm {
         this.audience = audience;
     }
 
-    public Integer getAvailableSpaces() {
-        return availableSpaces;
+    public Integer getSpaces() {
+        return spaces;
     }
 
-    public void setAvailableSpaces(Integer availableSpaces) {
-        this.availableSpaces = availableSpaces;
+    public void setSpaces(Integer spaces) {
+        this.spaces = spaces;
     }
 
     public Integer getFee() {

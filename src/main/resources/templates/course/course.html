@@ -25,6 +25,12 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div sec:authorize="hasRole('USER')" th:if="${course.spaces} <= ${course.students.size()}" class="alert alert-warning alert-dismissible fade show mb-3 mx-3" role="alert">
+                All spaces are booked. Unfortunately for now you can't enroll in this course.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="jumbotron mx-3">
                 <div class="row">
                     <div class="col-sm-4">
@@ -79,7 +85,7 @@
                         <hr class="my-4">
                         <dl class="row">
                             <dt class="col-3 lead">Spaces:</dt>
-                            <dd class="col-9 lead" th:text="${course.availableSpaces}"></dd>
+                            <dd class="col-9 lead" th:text="${course.spaces}"></dd>
 
                             <dt class="col-3 lead">Students:</dt>
                             <dd class="col-9 lead">
@@ -89,7 +95,7 @@
                         <div sec:authorize="hasRole('USER')" th:if="${enrolled}">
                             <a class="btn btn-danger btn-lg" th:href="|/student/course/unenroll/${course.id}|">Unenroll</a>
                         </div>
-                        <div sec:authorize="hasRole('USER')" th:if="${course.availableSpaces} > 0" th:unless="${enrolled}">
+                        <div sec:authorize="hasRole('USER')" th:if="${course.spaces} > ${course.students.size()}" th:unless="${enrolled}">
                             <a class="btn btn-secondary mb-3" th:href="|/student/course/restore/${course.id}|">Restore using transactions</a>
                             <div id="paypal-button-container"></div>
                             <div th:replace="fragments/payment :: paypal"></div>

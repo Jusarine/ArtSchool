@@ -17,7 +17,7 @@ public class Course {
 
     @Id
     @Column(name = "course_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false, unique = true)
@@ -33,7 +33,7 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private Audience audience;
 
-    private Integer availableSpaces;
+    private Integer spaces;
 
     private Integer fee;
 
@@ -75,12 +75,12 @@ public class Course {
     public Course() {
     }
 
-    public Course(String name, List<Discipline> disciplines, Audience audience, Integer availableSpaces, Integer fee,
+    public Course(String name, List<Discipline> disciplines, Audience audience, Integer spaces, Integer fee,
                   Date date, List<Day> days, String description, Instructor instructor) {
         this.name = name;
         this.disciplines = disciplines;
         this.audience = audience;
-        this.availableSpaces = availableSpaces;
+        this.spaces = spaces;
         this.fee = fee;
         this.date = date;
         this.days = days;
@@ -89,13 +89,13 @@ public class Course {
         this.instructor = instructor;
     }
 
-    public Course(long id, String name, List<Discipline> disciplines, Audience audience, Integer availableSpaces,
+    public Course(long id, String name, List<Discipline> disciplines, Audience audience, Integer spaces,
                   Integer fee, Date date, List<Day> days, String description, Instructor instructor) {
         this.id = id;
         this.name = name;
         this.disciplines = disciplines;
         this.audience = audience;
-        this.availableSpaces = availableSpaces;
+        this.spaces = spaces;
         this.fee = fee;
         this.date = date;
         this.days = days;
@@ -132,20 +132,12 @@ public class Course {
         this.audience = audience;
     }
 
-    public Integer getAvailableSpaces() {
-        return availableSpaces;
+    public Integer getSpaces() {
+        return spaces;
     }
 
-    public void setAvailableSpaces(Integer availableSpaces) {
-        this.availableSpaces = availableSpaces;
-    }
-
-    public void incrementAvailableSpaces() {
-        availableSpaces++;
-    }
-
-    public void decrementAvailableSpaces() {
-        availableSpaces--;
+    public void setSpaces(Integer spaces) {
+        this.spaces = spaces;
     }
 
     public Integer getFee() {
@@ -292,7 +284,7 @@ public class Course {
         return new EqualsBuilder()
                 .append(name, that.name)
                 .append(audience, that.audience)
-                .append(availableSpaces, that.availableSpaces)
+                .append(spaces, that.spaces)
                 .append(fee, that.fee)
                 .append(date, that.date)
                 .append(description, that.description)
@@ -305,7 +297,7 @@ public class Course {
         return new HashCodeBuilder()
                 .append(name)
                 .append(audience)
-                .append(availableSpaces)
+                .append(spaces)
                 .append(fee)
                 .append(date)
                 .append(description)

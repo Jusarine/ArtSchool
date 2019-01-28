@@ -2,6 +2,7 @@ package com.artschool.controller.user;
 
 import com.artschool.model.entity.Instructor;
 import com.artschool.model.form.ProfileForm;
+import com.artschool.service.course.CourseService;
 import com.artschool.service.util.LoadPhotoService;
 import com.artschool.service.user.UserService;
 import com.artschool.service.util.PageableService;
@@ -22,14 +23,17 @@ public class InstructorController {
 
     private final UserService userService;
 
+    private final CourseService courseService;
+
     private final LoadPhotoService loadPhotoService;
 
     private final PageableService<Instructor> instructorPageableService;
 
     @Autowired
-    public InstructorController(UserService userService, LoadPhotoService loadPhotoService,
+    public InstructorController(UserService userService, CourseService courseService, LoadPhotoService loadPhotoService,
                                 PageableService<Instructor> instructorPageableService) {
         this.userService = userService;
+        this.courseService = courseService;
         this.loadPhotoService = loadPhotoService;
         this.instructorPageableService = instructorPageableService;
     }
@@ -58,6 +62,7 @@ public class InstructorController {
             if (owner != null && owner.getId() == id) modelAndView.addObject("owner", true);
         }
         modelAndView.addObject("member", userService.findInstructorById(id));
+        modelAndView.addObject("courses", courseService.findCourses());
         return modelAndView;
     }
 

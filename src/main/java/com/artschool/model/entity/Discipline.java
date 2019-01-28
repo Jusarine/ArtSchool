@@ -12,7 +12,7 @@ public class Discipline {
 
     @Id
     @Column(name = "discipline_id")
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)

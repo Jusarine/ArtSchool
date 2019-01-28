@@ -67,6 +67,7 @@ public class StudentController {
             if (owner != null && owner.getId() == id) modelAndView.addObject("owner", true);
         }
         modelAndView.addObject("member", userService.findStudentById(id));
+        modelAndView.addObject("courses", courseService.findCourses());
         return modelAndView;
     }
 

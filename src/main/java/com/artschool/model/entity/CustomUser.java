@@ -15,7 +15,7 @@ import java.util.Set;
 public abstract class CustomUser {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "user_id")
     private long id;
 
